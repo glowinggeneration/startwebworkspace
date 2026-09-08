@@ -1,24 +1,30 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+// A full marketing landing page (mega nav, bento grid, testimonials, device
+// mockups) is Phase 6 — see docs/ui-components/COMPONENT_MAP.md. This is a
+// minimal, real placeholder rather than a blank or default-framework page.
 export const Route = createFileRoute("/")({
-  component: Index,
+  component: LandingPage,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
+function LandingPage() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center">
+      <img src="/brand/startweb-blue.svg" alt="Startweb" className="h-8 w-auto" />
+      <h1 className="type-display max-w-xl">Pipeline, delivery and invoicing in one workspace.</h1>
+      <p className="type-body max-w-md text-muted-foreground">
+        Startweb Workspace turns closed-won deals straight into tracked projects — one place for
+        your team, your clients, and everything you bill them.
+      </p>
+      <div className="flex gap-3">
+        <Button asChild>
+          <Link to="/register">Get started</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link to="/auth">Sign in</Link>
+        </Button>
+      </div>
     </div>
   );
 }
