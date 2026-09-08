@@ -185,6 +185,76 @@ export type Database = {
           },
         ]
       }
+      deal_handoffs: {
+        Row: {
+          acknowledged_at: string | null
+          acknowledged_by: string | null
+          created_at: string
+          deal_id: string
+          handed_off_at: string
+          handed_off_by: string | null
+          id: string
+          logins_note: string | null
+          project_id: string | null
+          scope: string | null
+          signed_document_url: string | null
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          created_at?: string
+          deal_id: string
+          handed_off_at?: string
+          handed_off_by?: string | null
+          id?: string
+          logins_note?: string | null
+          project_id?: string | null
+          scope?: string | null
+          signed_document_url?: string | null
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          acknowledged_at?: string | null
+          acknowledged_by?: string | null
+          created_at?: string
+          deal_id?: string
+          handed_off_at?: string
+          handed_off_by?: string | null
+          id?: string
+          logins_note?: string | null
+          project_id?: string | null
+          scope?: string | null
+          signed_document_url?: string | null
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "deal_handoffs_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: true
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_handoffs_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "deal_handoffs_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       deals: {
         Row: {
           account_id: string
@@ -510,6 +580,173 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      project_phases: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          project_id: string
+          sort_order: number
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          project_id: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          project_id?: string
+          sort_order?: number
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_phases_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_phases_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_template_phases: {
+        Row: {
+          id: string
+          name: string
+          sort_order: number
+          template_id: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          sort_order?: number
+          template_id: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          sort_order?: number
+          template_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_template_phases_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "project_templates"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_templates: {
+        Row: {
+          created_at: string
+          id: string
+          is_default: boolean
+          name: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_default?: boolean
+          name?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_templates_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          account_id: string
+          created_at: string
+          deal_id: string | null
+          id: string
+          name: string
+          owner_id: string | null
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          account_id: string
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          name: string
+          owner_id?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          account_id?: string
+          created_at?: string
+          deal_id?: string | null
+          id?: string
+          name?: string
+          owner_id?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_deal_id_fkey"
+            columns: ["deal_id"]
+            isOneToOne: true
+            referencedRelation: "deals"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       weekly_reviews: {
         Row: {
