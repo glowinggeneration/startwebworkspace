@@ -748,6 +748,154 @@ export type Database = {
           },
         ]
       }
+      resource_allocations: {
+        Row: {
+          allocated_hours: number
+          created_at: string
+          id: string
+          project_id: string
+          updated_at: string
+          user_id: string
+          week_start: string
+          workspace_id: string
+        }
+        Insert: {
+          allocated_hours?: number
+          created_at?: string
+          id?: string
+          project_id: string
+          updated_at?: string
+          user_id: string
+          week_start: string
+          workspace_id: string
+        }
+        Update: {
+          allocated_hours?: number
+          created_at?: string
+          id?: string
+          project_id?: string
+          updated_at?: string
+          user_id?: string
+          week_start?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "resource_allocations_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "resource_allocations_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      task_assignees: {
+        Row: {
+          assigned_at: string
+          task_id: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          assigned_at?: string
+          task_id: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          assigned_at?: string
+          task_id?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "task_assignees_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "tasks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "task_assignees_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tasks: {
+        Row: {
+          created_at: string
+          description: string | null
+          due_date: string | null
+          id: string
+          phase_id: string
+          priority: string
+          project_id: string
+          status: string
+          title: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          phase_id: string
+          priority?: string
+          project_id: string
+          status?: string
+          title: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          id?: string
+          phase_id?: string
+          priority?: string
+          project_id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tasks_phase_id_fkey"
+            columns: ["phase_id"]
+            isOneToOne: false
+            referencedRelation: "project_phases"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tasks_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       weekly_reviews: {
         Row: {
           calling_block_kept: boolean | null
@@ -870,6 +1018,10 @@ export type Database = {
       is_workspace_member: {
         Args: { _user_id: string; _workspace_id: string }
         Returns: boolean
+      }
+      recompute_phase_and_project_status: {
+        Args: { p_phase_id: string }
+        Returns: undefined
       }
     }
     Enums: {
