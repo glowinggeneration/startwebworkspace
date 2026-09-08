@@ -1,4 +1,1 @@
-# project_id is set once a real Supabase project is created (see .env.example
-# for the connection variables the app itself reads). Fill this in so
-# `supabase` CLI commands know which project to target.
-project_id = ""
+project_id = "gvtkjpbxwrjazlvibuaa"
