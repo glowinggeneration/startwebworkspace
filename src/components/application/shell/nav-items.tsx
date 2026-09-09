@@ -4,6 +4,7 @@ import {
   FolderKanban,
   Gauge,
   Kanban,
+  Megaphone,
   LayoutDashboard,
   Receipt,
   ScrollText,
@@ -40,6 +41,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Delivery",
     items: [
       { to: "/projects", label: "Projects", icon: FolderKanban },
+      { to: "/campaigns", label: "Campaigns", icon: Megaphone },
       { to: "/workload", label: "Workload", icon: Gauge },
       { to: "/activity", label: "Activity", icon: CalendarCheck },
     ],
