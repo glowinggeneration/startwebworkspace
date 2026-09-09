@@ -23,7 +23,7 @@ export function SplitAuthLayout({
     <div className="flex min-h-screen w-full flex-col lg:flex-row">
       <div className="relative flex min-h-[32vh] w-full flex-col justify-between overflow-hidden bg-primary text-primary-foreground lg:min-h-screen lg:w-1/2">
         <div className="relative z-10 flex items-center justify-between p-8 lg:p-10">
-          <img src="/brand/startweb-white.svg" alt="Startweb" className="h-6 w-auto" />
+          <span className="text-lg font-bold tracking-[0.14em] text-white uppercase">Startweb</span>
         </div>
         <div className="relative z-10 p-8 pb-16 lg:p-10 lg:pb-20">
           <TextAnimate
