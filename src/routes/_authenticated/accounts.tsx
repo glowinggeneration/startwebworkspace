@@ -207,8 +207,8 @@ function AccountsPage() {
               />
             </Panel>
           ) : view === "list" ? (
-            <Panel className="overflow-hidden">
-              <table className="w-full text-left text-sm">
+            <Panel className="overflow-x-auto">
+              <table className="w-full min-w-[42rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     <th scope="col" className="px-5 py-3">Company</th>

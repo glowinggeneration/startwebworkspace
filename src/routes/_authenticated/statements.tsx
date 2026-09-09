@@ -169,8 +169,8 @@ function StatementsPage() {
           />
         </Panel>
       ) : (
-        <Panel className="overflow-hidden">
-          <table className="w-full text-left text-sm">
+        <Panel className="overflow-x-auto">
+          <table className="w-full min-w-[42rem] text-left text-sm">
             <thead className="border-b border-border bg-muted/40">
               <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                 <th scope="col" className="p-3">Invoice</th>
