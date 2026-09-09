@@ -4,7 +4,6 @@ import {
   AlertTriangle,
   ArrowRight,
   CalendarDays,
-  Clock,
   Download,
   Filter,
   MoreHorizontal,
@@ -199,7 +198,7 @@ export function CommandBoard({
               On track
             </span>
           ) : (
-            <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-warning/15 px-2.5 py-1.5 text-warning-foreground">
+            <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-warning/15 px-2.5 py-1.5 text-warning">
               <AlertTriangle className="size-4" aria-hidden="true" /> Below target
             </span>
           )}
@@ -499,31 +498,23 @@ function CallingBlockCard() {
         <div className="flex-1">
           <p className="type-body text-muted-foreground">Suggested time</p>
           <div className="mt-2 flex items-center gap-2">
-            <div className="relative flex-1">
+            <div className="min-w-0 flex-1">
               <Input
                 type="time"
                 value={start}
                 aria-label="Calling block start time"
                 onChange={(event) => setStart(event.target.value)}
-                className="h-10 pr-8"
-              />
-              <Clock
-                className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground"
-                aria-hidden="true"
+                className="h-10 w-full min-w-0"
               />
             </div>
             <span className="type-body text-muted-foreground">to</span>
-            <div className="relative flex-1">
+            <div className="min-w-0 flex-1">
               <Input
                 type="time"
                 value={end}
                 aria-label="Calling block end time"
                 onChange={(event) => setEnd(event.target.value)}
-                className="h-10 pr-8"
-              />
-              <Clock
-                className="pointer-events-none absolute top-1/2 right-2.5 size-4 -translate-y-1/2 text-muted-foreground"
-                aria-hidden="true"
+                className="h-10 w-full min-w-0"
               />
             </div>
           </div>
