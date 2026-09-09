@@ -12,10 +12,15 @@ export default defineConfig({
   // bundled into the server output instead of left as a bare import.
   ssr: { noExternal: true },
   environments: {
-    // Rolldown's CommonJS interop shim calls createRequire(import.meta.url) at
-    // module scope; the Worker runtime leaves import.meta.url undefined, so
-    // give it a stable stand-in path.
-    ssr: { define: { "import.meta.url": JSON.stringify("file:///bundle/server.js") } },
+    ssr: {
+      resolve: {
+        alias: {
+          // Rolldown's CommonJS interop shim calls createRequire(import.meta.url)
+          // at module scope, which throws in the Worker runtime.
+          "node:module": new URL("./src/lib/worker/node-module-shim.ts", import.meta.url).pathname,
+        },
+      },
+    },
   },
   plugins: [
     tsConfigPaths(),
