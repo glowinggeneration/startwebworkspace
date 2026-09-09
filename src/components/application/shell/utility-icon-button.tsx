@@ -30,7 +30,7 @@ export function UtilityIconButton({
   className,
   type = "button",
   variant = "ghost",
-  size = "icon-sm",
+  size = "icon",
   ...props
 }: UtilityIconButtonProps) {
   return (
