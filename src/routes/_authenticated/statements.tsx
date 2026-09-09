@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download } from "lucide-react";
+import { Download, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -14,19 +16,52 @@ import { useAccounts } from "@/hooks/use-accounts";
 import { useStatement } from "@/hooks/use-statement";
 import { downloadStatementPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
+import {
+  EmptyState,
+  PageHeader,
+  Panel,
+  Toolbar,
+} from "@/components/application/shell/page-parts";
 
 export const Route = createFileRoute("/_authenticated/statements")({
   component: StatementsPage,
+  head: () => ({
+    meta: [
+      { title: "Statements | Startweb" },
+      {
+        name: "description",
+        content: "Every invoice and payment for one client account, rolled up from live data.",
+      },
+      { property: "og:title", content: "Statements | Startweb" },
+      { property: "og:description", content: "Client statements derived from live invoices." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
 });
 
 function StatementsPage() {
   const { workspaceId } = useActiveWorkspace();
   const { data: accounts } = useAccounts(workspaceId);
   const [accountId, setAccountId] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+  const [activity, setActivity] = useState<"all" | "outstanding" | "settled">("all");
   const { data: lines } = useStatement(workspaceId, accountId);
 
   const accountName = accounts?.find((a) => a.id === accountId)?.name ?? "";
-  const totals = (lines ?? []).reduce(
+
+  const filteredLines = useMemo(() => {
+    return (lines ?? []).filter((line) => {
+      if (fromDate && line.issueDate < fromDate) return false;
+      if (toDate && line.issueDate > toDate) return false;
+      if (activity === "outstanding" && line.balance <= 0) return false;
+      if (activity === "settled" && line.balance > 0) return false;
+      return true;
+    });
+  }, [lines, fromDate, toDate, activity]);
+
+  const totals = filteredLines.reduce(
     (acc, line) => ({
       total: acc.total + line.total,
       paid: acc.paid + line.paid,
@@ -36,11 +71,11 @@ function StatementsPage() {
   );
 
   function handleDownload() {
-    if (!lines || !accountName) return;
+    if (filteredLines.length === 0 || !accountName) return;
     downloadStatementPdf({
       accountName,
       generatedOn: new Date().toISOString().slice(0, 10),
-      lines: lines.map((line) => ({
+      lines: filteredLines.map((line) => ({
         invoiceNumber: line.invoiceNumber,
         issueDate: line.issueDate,
         total: line.total,
@@ -51,18 +86,23 @@ function StatementsPage() {
   }
 
   return (
-    <div className="section-stack p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="type-display">Statements</h1>
-          <p className="type-body text-muted-foreground">
-            Every invoice and payment for one account, rolled up and always derived from the live
-            data, never a separate record to keep in sync.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
+    <div className="space-y-6 p-8">
+      <PageHeader
+        title="Statements"
+        description="Every invoice and payment for one account, always derived from the live data."
+        actions={
+          <Button variant="outline" onClick={handleDownload} disabled={filteredLines.length === 0}>
+            <Download className="size-4" aria-hidden="true" />
+            Download PDF
+          </Button>
+        }
+      />
+
+      <Toolbar>
+        <div className="min-w-56 flex-1 space-y-1.5">
+          <Label htmlFor="statement-account">Account</Label>
           <Select value={accountId} onValueChange={setAccountId}>
-            <SelectTrigger className="w-56">
+            <SelectTrigger id="statement-account" className="h-11 bg-card">
               <SelectValue placeholder="Pick an account" />
             </SelectTrigger>
             <SelectContent>
@@ -73,65 +113,110 @@ function StatementsPage() {
               ))}
             </SelectContent>
           </Select>
-          <Button
-            variant="outline"
-            onClick={handleDownload}
-            disabled={!accountId || (lines?.length ?? 0) === 0}
-          >
-            <Download className="size-4" aria-hidden="true" />
-            PDF
-          </Button>
         </div>
-      </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="statement-from">From</Label>
+          <Input
+            id="statement-from"
+            type="date"
+            value={fromDate}
+            onChange={(event) => setFromDate(event.target.value)}
+            className="h-11 w-44 bg-card"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="statement-to">To</Label>
+          <Input
+            id="statement-to"
+            type="date"
+            value={toDate}
+            onChange={(event) => setToDate(event.target.value)}
+            className="h-11 w-44 bg-card"
+          />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="statement-activity">Activity</Label>
+          <Select
+            value={activity}
+            onValueChange={(value) => setActivity(value as typeof activity)}
+          >
+            <SelectTrigger id="statement-activity" className="h-11 w-48 bg-card">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All activity</SelectItem>
+              <SelectItem value="outstanding">Outstanding only</SelectItem>
+              <SelectItem value="settled">Settled only</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </Toolbar>
 
-      {!accountId && (
-        <p className="type-body rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
-          Pick an account to see its statement.
-        </p>
-      )}
-
-      {accountId && lines && lines.length === 0 && (
-        <p className="type-body rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
-          No invoices for this account yet.
-        </p>
-      )}
-
-      {accountId && lines && lines.length > 0 && (
-        <div className="card-surface overflow-hidden">
-          <table className="w-full text-left">
+      {!accountId ? (
+        <Panel>
+          <EmptyState
+            icon={ScrollText}
+            title="Pick an account to build a statement"
+            description="Choose a client above and their invoices and payments appear here."
+          />
+        </Panel>
+      ) : filteredLines.length === 0 ? (
+        <Panel>
+          <EmptyState
+            icon={ScrollText}
+            title="Nothing to show for this selection"
+            description="There are no invoices for this account in the chosen range."
+          />
+        </Panel>
+      ) : (
+        <Panel className="overflow-hidden">
+          <table className="w-full text-left text-sm">
             <thead className="border-b border-border bg-muted/40">
-              <tr>
-                <th className="p-3 type-meta font-medium text-muted-foreground">Invoice</th>
-                <th className="p-3 type-meta font-medium text-muted-foreground">Issued</th>
-                <th className="p-3 type-meta font-medium text-muted-foreground">Total</th>
-                <th className="p-3 type-meta font-medium text-muted-foreground">Paid</th>
-                <th className="p-3 type-meta font-medium text-muted-foreground">Balance</th>
+              <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                <th scope="col" className="p-3">Invoice</th>
+                <th scope="col" className="p-3">Issued</th>
+                <th scope="col" className="p-3">Total</th>
+                <th scope="col" className="p-3">Paid</th>
+                <th scope="col" className="p-3">Balance</th>
               </tr>
             </thead>
             <tbody>
-              {lines.map((line) => (
+              {filteredLines.map((line) => (
                 <tr key={line.invoiceId} className="border-b border-border last:border-0">
-                  <td className="p-3 type-body">{line.invoiceNumber}</td>
-                  <td className="p-3 type-body">{line.issueDate}</td>
-                  <td className="p-3 type-body">{currency.format(line.total)}</td>
-                  <td className="p-3 type-body">{currency.format(line.paid)}</td>
-                  <td className="p-3 type-body font-medium">{currency.format(line.balance)}</td>
+                  <td className="p-3">{line.invoiceNumber}</td>
+                  <td className="p-3">{line.issueDate}</td>
+                  <td className="p-3">{currency.format(line.total)}</td>
+                  <td className="p-3">{currency.format(line.paid)}</td>
+                  <td className="p-3 font-medium">{currency.format(line.balance)}</td>
                 </tr>
               ))}
             </tbody>
             <tfoot className="border-t border-border bg-muted/40">
               <tr>
-                <td className="p-3 type-body font-medium" colSpan={2}>
+                <td className="p-3 font-medium" colSpan={2}>
                   Total
                 </td>
-                <td className="p-3 type-body font-medium">{currency.format(totals.total)}</td>
-                <td className="p-3 type-body font-medium">{currency.format(totals.paid)}</td>
-                <td className="p-3 type-body font-medium">{currency.format(totals.balance)}</td>
+                <td className="p-3 font-medium">{currency.format(totals.total)}</td>
+                <td className="p-3 font-medium">{currency.format(totals.paid)}</td>
+                <td className="p-3 font-medium">{currency.format(totals.balance)}</td>
               </tr>
             </tfoot>
           </table>
-        </div>
+        </Panel>
       )}
+
+      <Panel className="flex flex-wrap items-center justify-between gap-4 p-5">
+        <div>
+          <p className="text-base font-semibold text-foreground">Statement options</p>
+          <p className="text-sm text-muted-foreground">
+            The PDF follows the account, date range and activity you selected above.
+          </p>
+        </div>
+        <Button variant="outline" onClick={handleDownload} disabled={filteredLines.length === 0}>
+          <Download className="size-4" aria-hidden="true" />
+          Download PDF
+        </Button>
+      </Panel>
     </div>
   );
 }
