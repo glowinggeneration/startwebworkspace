@@ -27,9 +27,14 @@ export function SplitAuthLayout({
           <img src="/brand/startweb-white.svg" alt="Startweb" className="h-6 w-auto" />
         </div>
         <div className="relative z-10 p-8 pb-16 lg:p-10 lg:pb-20">
-          <h1 className="mb-4 max-w-md text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+          <TextAnimate
+            as="h1"
+            by="word"
+            animation="blurInUp"
+            className="mb-4 max-w-md text-4xl font-semibold leading-tight tracking-tight xl:text-5xl"
+          >
             {headline}
-          </h1>
+          </TextAnimate>
           <p className="max-w-md text-base text-primary-foreground/85">{subhead}</p>
         </div>
       </div>
@@ -49,7 +54,14 @@ export function SplitAuthLayout({
               desktop or tablet to continue.
             </p>
           </div>
-          <div className="hidden md:block">{children}</div>
+          <div className="relative hidden overflow-hidden rounded-3xl border border-border/70 bg-card p-8 shadow-xs md:block">
+            <ShineBorder
+              borderWidth={1}
+              duration={16}
+              shineColor={["var(--color-primary)", "var(--color-accent-warm)"]}
+            />
+            <div className="relative">{children}</div>
+          </div>
         </div>
       </div>
     </div>
