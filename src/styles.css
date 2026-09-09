@@ -67,6 +67,7 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-warning-surface: var(--warning-surface);
+  --color-accent-warm: var(--accent-warm);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-info-surface: var(--info-surface);
@@ -140,6 +141,7 @@
   --success: oklch(0.4987 0.1168 157.07);
   --success-foreground: oklch(1 0 0);
   --success-surface: oklch(0.9788 0.0221 160.24);
+  --accent-warm: oklch(0.7686 0.1647 70.08);
   --warning: oklch(0.4705 0.1047 59.08);
   --warning-foreground: oklch(1 0 0);
   --warning-surface: oklch(0.9849 0.0204 91.58);
@@ -194,6 +196,7 @@
   --success: oklch(0.7 0.14 157);
   --success-foreground: oklch(0.16 0.03 264);
   --success-surface: oklch(0.3 0.05 157);
+  --accent-warm: oklch(0.8 0.14 72);
   --warning: oklch(0.78 0.13 75);
   --warning-foreground: oklch(0.16 0.03 264);
   --warning-surface: oklch(0.32 0.05 75);
