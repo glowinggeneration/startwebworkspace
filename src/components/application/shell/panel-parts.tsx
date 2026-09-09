@@ -52,7 +52,7 @@ export function PanelTitleBar({
         type="button"
         onClick={onClose}
         aria-label={closeLabel}
-        className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+        className="-mt-1 -mr-1 inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
       >
         <X className="size-5" aria-hidden="true" />
       </button>
