@@ -47,6 +47,8 @@ import {
   Toolbar,
 } from "@/components/application/shell/page-parts";
 import { Button } from "@/components/ui/button";
+import { AnimatedList } from "@/components/vendor/magicui/animated-list";
+import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
