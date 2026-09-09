@@ -18,6 +18,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AuthenticatedAccountsRouteImport } from './routes/_authenticated/accounts'
 import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedImportReviewRouteImport } from './routes/_authenticated/import-review'
 import { Route as AuthenticatedInvoicingRouteImport } from './routes/_authenticated/invoicing'
 import { Route as AuthenticatedPipelineRouteImport } from './routes/_authenticated/pipeline'
 import { Route as AuthenticatedProjectsRouteImport } from './routes/_authenticated/projects'
@@ -72,6 +73,12 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedImportReviewRoute =
+  AuthenticatedImportReviewRouteImport.update({
+    id: '/import-review',
+    path: '/import-review',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedInvoicingRoute = AuthenticatedInvoicingRouteImport.update({
   id: '/invoicing',
   path: '/invoicing',
@@ -128,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/accounts': typeof AuthenticatedAccountsRoute
   '/activity': typeof AuthenticatedActivityRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/import-review': typeof AuthenticatedImportReviewRoute
   '/invoicing': typeof AuthenticatedInvoicingRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/projects': typeof AuthenticatedProjectsRouteWithChildren
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/accounts': typeof AuthenticatedAccountsRoute
   '/activity': typeof AuthenticatedActivityRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/import-review': typeof AuthenticatedImportReviewRoute
   '/invoicing': typeof AuthenticatedInvoicingRoute
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/projects': typeof AuthenticatedProjectsRouteWithChildren
@@ -168,6 +177,7 @@ export interface FileRoutesById {
   '/_authenticated/accounts': typeof AuthenticatedAccountsRoute
   '/_authenticated/activity': typeof AuthenticatedActivityRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/import-review': typeof AuthenticatedImportReviewRoute
   '/_authenticated/invoicing': typeof AuthenticatedInvoicingRoute
   '/_authenticated/pipeline': typeof AuthenticatedPipelineRoute
   '/_authenticated/projects': typeof AuthenticatedProjectsRouteWithChildren
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/activity'
     | '/dashboard'
+    | '/import-review'
     | '/invoicing'
     | '/pipeline'
     | '/projects'
@@ -208,6 +219,7 @@ export interface FileRouteTypes {
     | '/accounts'
     | '/activity'
     | '/dashboard'
+    | '/import-review'
     | '/invoicing'
     | '/pipeline'
     | '/projects'
@@ -228,6 +240,7 @@ export interface FileRouteTypes {
     | '/_authenticated/accounts'
     | '/_authenticated/activity'
     | '/_authenticated/dashboard'
+    | '/_authenticated/import-review'
     | '/_authenticated/invoicing'
     | '/_authenticated/pipeline'
     | '/_authenticated/projects'
@@ -314,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/import-review': {
+      id: '/_authenticated/import-review'
+      path: '/import-review'
+      fullPath: '/import-review'
+      preLoaderRoute: typeof AuthenticatedImportReviewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/invoicing': {
       id: '/_authenticated/invoicing'
       path: '/invoicing'
@@ -397,6 +417,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountsRoute: typeof AuthenticatedAccountsRoute
   AuthenticatedActivityRoute: typeof AuthenticatedActivityRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedImportReviewRoute: typeof AuthenticatedImportReviewRoute
   AuthenticatedInvoicingRoute: typeof AuthenticatedInvoicingRoute
   AuthenticatedPipelineRoute: typeof AuthenticatedPipelineRoute
   AuthenticatedProjectsRoute: typeof AuthenticatedProjectsRouteWithChildren
@@ -410,6 +431,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountsRoute: AuthenticatedAccountsRoute,
   AuthenticatedActivityRoute: AuthenticatedActivityRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedImportReviewRoute: AuthenticatedImportReviewRoute,
   AuthenticatedInvoicingRoute: AuthenticatedInvoicingRoute,
   AuthenticatedPipelineRoute: AuthenticatedPipelineRoute,
   AuthenticatedProjectsRoute: AuthenticatedProjectsRouteWithChildren,
