@@ -168,7 +168,6 @@
   --sidebar-ring: oklch(1 0 0);
 }
 
-
 .dark {
   --brand-blue: oklch(0.65 0.2 264);
   --brand-hover: oklch(0.7 0.18 264);
@@ -227,7 +226,6 @@
     0 24px 48px -24px oklch(0 0 0 / 0.4);
 }
 
-
 @layer base {
   * {
     border-color: var(--color-border);
@@ -270,7 +268,6 @@
   .tabular-figures {
     font-variant-numeric: tabular-nums;
   }
-
 
   h1,
   h2,
@@ -461,7 +458,6 @@
     box-shadow var(--motion-base) var(--ease-out-apple),
     border-color var(--motion-base) var(--ease-out-apple);
 }
-
 
 @keyframes reveal-soft {
   from {

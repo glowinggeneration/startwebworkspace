@@ -7,11 +7,7 @@ import { initialsOf } from "@/lib/initials";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/core/theme-toggle";
 import { GlobalCommandPalette, openCommandPalette } from "@/components/core/global-command";
-import {
-  NAV_GROUPS,
-  NAV_ITEMS,
-  SETTINGS_NAV_ITEM,
-} from "@/components/application/shell/nav-items";
+import { NAV_GROUPS, NAV_ITEMS, SETTINGS_NAV_ITEM } from "@/components/application/shell/nav-items";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -135,7 +131,9 @@ export function StartwebShell({ children }: { children: ReactNode }) {
             <SidebarTrigger className="md:hidden" />
             <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-muted-foreground">
               <Home className="size-4" aria-hidden="true" />
-              <span className="type-label text-foreground">{currentPage?.label ?? "Workspace"}</span>
+              <span className="type-label text-foreground">
+                {currentPage?.label ?? "Workspace"}
+              </span>
             </nav>
           </div>
           <div className="flex items-center gap-2">
