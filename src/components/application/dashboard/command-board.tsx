@@ -368,20 +368,26 @@ export function CommandBoard({
 function MetricCard({
   label,
   value,
+  info,
   children,
 }: {
   label: string;
   value: string;
+  info?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div className="card-surface flex flex-col gap-2 p-5">
-      <p className="type-body text-muted-foreground">{label}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="type-body text-muted-foreground">{label}</p>
+        {info}
+      </div>
       <p className="type-display tabular-nums">{value}</p>
       <div className="mt-1">{children}</div>
     </div>
   );
 }
+
 
 function EditTargetDialog({
   workspaceId,
