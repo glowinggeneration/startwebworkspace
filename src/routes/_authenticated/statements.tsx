@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, ScrollText } from "lucide-react";
+import { Building2, Download, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FilterCombobox } from "@/components/application/shell/filter-combobox";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -95,19 +96,21 @@ function StatementsPage() {
 
       <Toolbar>
         <div className="min-w-56 flex-1 space-y-1.5">
-          <Label htmlFor="statement-account">Account</Label>
-          <Select value={accountId} onValueChange={setAccountId}>
-            <SelectTrigger id="statement-account" className="h-11 bg-card">
-              <SelectValue placeholder="Pick an account" />
-            </SelectTrigger>
-            <SelectContent>
-              {accounts?.map((account) => (
-                <SelectItem key={account.id} value={account.id}>
-                  {account.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Label>Account</Label>
+          <FilterCombobox
+            value={accountId}
+            onValueChange={setAccountId}
+            icon={Building2}
+            ariaLabel="Statement account"
+            placeholder="Pick an account"
+            searchPlaceholder="Search accounts..."
+            emptyLabel="No account found."
+            className="w-full"
+            options={(accounts ?? []).map((account) => ({
+              value: account.id,
+              label: account.name,
+            }))}
+          />
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="statement-from">From</Label>

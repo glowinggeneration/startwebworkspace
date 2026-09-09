@@ -1,6 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import type { WorkspaceRole } from "@/integrations/supabase/app-types";
+import { KineticTextLoader } from "@/components/core/kinetic-loader";
 import { StartwebShell } from "@/components/application/shell/startweb-shell";
 
 export interface WorkspaceMembership {
@@ -41,7 +42,6 @@ export const Route = createFileRoute("/_authenticated")({
       throw redirect({ to: "/profile-setup" });
     }
 
-
     return {
       user: data.user,
       memberships: memberRows.map((m): WorkspaceMembership => ({
@@ -67,8 +67,7 @@ function AuthenticatedSkeleton() {
     <div className="flex min-h-screen" aria-busy="true" aria-label="Loading your workspace">
       <div className="hidden w-[15.5rem] shrink-0 bg-sidebar md:block" />
       <div className="flex-1 space-y-4 p-8">
-        <div className="h-8 w-56 animate-pulse rounded bg-muted" />
-        <div className="h-4 w-80 animate-pulse rounded bg-muted" />
+        <KineticTextLoader text="Loading" className="py-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-28 animate-pulse rounded-xl bg-muted" />

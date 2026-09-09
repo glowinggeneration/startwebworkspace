@@ -13,13 +13,7 @@ import {
   XCircle,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { FilterCombobox } from "@/components/application/shell/filter-combobox";
 import {
   Table,
   TableBody,
@@ -194,34 +188,38 @@ function PipelinePage() {
             className="h-11 bg-card pl-9"
           />
         </div>
-        <Select value={industryFilter} onValueChange={setIndustryFilter}>
-          <SelectTrigger className="h-11 w-56 bg-card" aria-label="Filter by industry">
-            <Tag className="size-4 text-muted-foreground" aria-hidden="true" />
-            <SelectValue placeholder="All industries" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All industries</SelectItem>
-            {industries?.map((industry) => (
-              <SelectItem key={industry.id} value={industry.id}>
-                {industry.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-        <Select value={ownerFilter} onValueChange={setOwnerFilter}>
-          <SelectTrigger className="h-11 w-56 bg-card" aria-label="Filter by owner">
-            <Users className="size-4 text-muted-foreground" aria-hidden="true" />
-            <SelectValue placeholder="All owners" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All owners</SelectItem>
-            {members?.map((member) => (
-              <SelectItem key={member.userId} value={member.userId}>
-                {member.name}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+        <FilterCombobox
+          value={industryFilter}
+          onValueChange={setIndustryFilter}
+          icon={Tag}
+          ariaLabel="Filter by industry"
+          placeholder="All industries"
+          searchPlaceholder="Search industries..."
+          emptyLabel="No industry found."
+          options={[
+            { value: "all", label: "All industries" },
+            ...(industries ?? []).map((industry) => ({
+              value: industry.id,
+              label: industry.name,
+            })),
+          ]}
+        />
+        <FilterCombobox
+          value={ownerFilter}
+          onValueChange={setOwnerFilter}
+          icon={Users}
+          ariaLabel="Filter by owner"
+          placeholder="All owners"
+          searchPlaceholder="Search people..."
+          emptyLabel="No one found."
+          options={[
+            { value: "all", label: "All owners" },
+            ...(members ?? []).map((member) => ({
+              value: member.userId,
+              label: member.name,
+            })),
+          ]}
+        />
       </Toolbar>
 
       {isLoading ? (
