@@ -47,8 +47,7 @@ export function ConversationImportCard() {
         <div>
           <h2 className="type-section">Conversation import</h2>
           <p className="type-body text-muted-foreground">
-            Bring the reviewed conversation records into this workspace. Preview first, then
-            commit.
+            Bring the reviewed conversation records into this workspace. Preview first, then commit.
           </p>
         </div>
         <div className="flex items-center gap-2">
