@@ -93,15 +93,18 @@
   /* Startweb brand blue #164BFA — sidebar, primary actions, links. */
   --brand-blue: oklch(0.5147 0.2622 264.55);
   --brand-hover: oklch(0.4451 0.2302 264.67);
-  --radius: 0.5rem;
-  --radius-card: 0.625rem;
+  --radius: 0.625rem;
+  --radius-card: 0.875rem;
   --font-sans:
     "Inter", -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, "Segoe UI", sans-serif;
 
   /* Flat, operational elevation — cards read through dividers, not shadow. */
-  --shadow-xs: 0 1px 2px oklch(0.21 0.034 263 / 0.05);
-  --shadow-soft: 0 1px 2px oklch(0.21 0.034 263 / 0.06);
-  --shadow-elevated: 0 4px 16px -4px oklch(0.21 0.034 263 / 0.12);
+  --shadow-xs: 0 0.5px 1px oklch(0.21 0.034 263 / 0.05);
+  --shadow-soft:
+    0 0.5px 1px oklch(0.21 0.034 263 / 0.04), 0 2px 6px -2px oklch(0.21 0.034 263 / 0.06);
+  --shadow-elevated:
+    0 1px 1px oklch(0.21 0.034 263 / 0.04), 0 8px 24px -8px oklch(0.21 0.034 263 / 0.14),
+    0 24px 48px -24px oklch(0.21 0.034 263 / 0.12);
   --ease-out-apple: cubic-bezier(0.32, 0.72, 0, 1);
   --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-apple: cubic-bezier(0.4, 0, 0.2, 1);
@@ -114,7 +117,7 @@
   --card-pad-lg: 1.5rem;
   --section-gap: 1.5rem;
 
-  --background: oklch(0.9789 0.0029 264.54);
+  --background: oklch(0.9821 0.0022 264.54);
   --foreground: oklch(0.2099 0.0341 263.44);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2099 0.0341 263.44);
@@ -122,17 +125,17 @@
   --popover-foreground: oklch(0.2099 0.0341 263.44);
   --primary: oklch(0.5147 0.2622 264.55);
   --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.9427 0.0058 264.53);
+  --secondary: oklch(0.9563 0.0043 264.53);
   --secondary-foreground: oklch(0.2099 0.0341 263.44);
-  --muted: oklch(0.9427 0.0058 264.53);
+  --muted: oklch(0.9563 0.0043 264.53);
   --muted-foreground: oklch(0.4422 0.0355 257.79);
   --accent: oklch(0.9666 0.0157 266.28);
   --accent-foreground: oklch(0.5147 0.2622 264.55);
   --destructive: oklch(0.5003 0.1821 29.51);
   --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.8715 0.0123 259.82);
-  --divider: oklch(0.9427 0.0058 264.53);
-  --input: oklch(0.8715 0.0123 259.82);
+  --border: oklch(0.9134 0.0055 259.82);
+  --divider: oklch(0.9445 0.004 264.53);
+  --input: oklch(0.8931 0.0068 259.82);
   --ring: oklch(0.5147 0.2622 264.55);
   --success: oklch(0.4987 0.1168 157.07);
   --success-foreground: oklch(1 0 0);
@@ -217,9 +220,11 @@
   --sidebar-border: oklch(1 0 0 / 18%);
   --sidebar-ring: oklch(1 0 0);
 
-  --shadow-xs: 0 1px 2px oklch(0 0 0 / 0.3);
-  --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.35);
-  --shadow-elevated: 0 4px 16px -4px oklch(0 0 0 / 0.5);
+  --shadow-xs: 0 0.5px 1px oklch(0 0 0 / 0.3);
+  --shadow-soft: 0 0.5px 1px oklch(0 0 0 / 0.3), 0 2px 6px -2px oklch(0 0 0 / 0.35);
+  --shadow-elevated:
+    0 1px 1px oklch(0 0 0 / 0.3), 0 8px 24px -8px oklch(0 0 0 / 0.5),
+    0 24px 48px -24px oklch(0 0 0 / 0.4);
 }
 
 
@@ -256,6 +261,8 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    font-feature-settings: "cv11", "ss01", "calt";
+    letter-spacing: -0.011em;
   }
 
   /* Financial and count columns use tabular figures. */
@@ -301,7 +308,7 @@
   [role="button"],
   [role="tab"] {
     transition-property: color, background-color, border-color, box-shadow, opacity, transform;
-    transition-duration: 200ms;
+    transition-duration: var(--motion-base);
     transition-timing-function: var(--ease-out-apple);
   }
 
@@ -331,6 +338,16 @@
 }
 
 @layer components {
+  /* Buttons and inputs pick up the softer Apple radius and a subtle press. */
+  button:not([data-slot="sidebar-menu-button"]):active:not(:disabled) {
+    transform: scale(0.985);
+  }
+
+  table thead th {
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+
   .rounded-2xl.border.bg-card,
   .rounded-xl.border.bg-card,
   .rounded-2xl.border.border-border.bg-card {
@@ -342,6 +359,15 @@
   [data-slot="select-content"],
   [data-slot="dialog-content"] {
     box-shadow: var(--shadow-elevated);
+    border-radius: calc(var(--radius) + 4px);
+    background-color: color-mix(in oklab, var(--color-popover) 88%, transparent);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+  }
+
+  [data-slot="dialog-overlay"] {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
   }
 }
 
@@ -354,9 +380,9 @@
 }
 
 @utility press-scale {
-  transition: transform 200ms var(--ease-out-apple);
+  transition: transform var(--motion-fast) var(--ease-out-apple);
   &:active {
-    transform: scale(0.97);
+    transform: scale(0.98);
   }
 }
 
@@ -367,29 +393,30 @@
  */
 @utility type-display {
   font-size: 2rem;
-  line-height: 2.5rem;
+  line-height: 2.375rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.032em;
 }
 
 @utility type-title {
   font-size: 2rem;
-  line-height: 2.5rem;
+  line-height: 2.375rem;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.032em;
 }
 
 @utility type-section {
-  font-size: 1.125rem;
-  line-height: 1.625rem;
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.018em;
 }
 
 @utility type-card {
-  font-size: 1.125rem;
-  line-height: 1.625rem;
+  font-size: 1.0625rem;
+  line-height: 1.5rem;
   font-weight: 600;
+  letter-spacing: -0.016em;
 }
 
 @utility type-body {
@@ -408,14 +435,15 @@
   font-size: 0.875rem;
   line-height: 1.25rem;
   font-weight: 500;
+  letter-spacing: -0.006em;
 }
 
 @utility type-metric {
   font-size: 2rem;
-  line-height: 2.5rem;
+  line-height: 2.375rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 
 @utility type-meta {
@@ -482,7 +510,7 @@
     transform var(--motion-base) var(--ease-spring),
     box-shadow var(--motion-base) var(--ease-out-apple);
   &:hover {
-    transform: translateY(-2px);
+    transform: translateY(-1px);
     box-shadow: var(--shadow-elevated);
   }
 }
