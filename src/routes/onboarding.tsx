@@ -95,8 +95,9 @@ function OnboardingPage() {
   async function handleProfileSubmit(values: ProfileValues) {
     const { error } = await supabase
       .from("profiles")
-      .update({ full_name: values.fullName })
+      .update({ full_name: values.fullName, profile_completed: true })
       .eq("id", user.id);
+
 
     if (error) {
       toast.error("Couldn't save your profile", { description: error.message });
