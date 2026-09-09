@@ -209,6 +209,7 @@ function ProjectsPage() {
                 ...(members ?? []).map((member) => ({
                   value: member.userId,
                   label: member.name,
+                  avatarName: member.name,
                 })),
               ]}
             />

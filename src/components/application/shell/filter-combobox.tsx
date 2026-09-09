@@ -15,7 +15,43 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export type ComboboxOption = {
   value: string;
   label: string;
+  /** Optional leading icon for this option. */
+  icon?: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" }>;
+  /** When set, the option shows an initials avatar instead of an icon. */
+  avatarName?: string;
+  /** Optional second line, for example an email address or a count. */
+  description?: string;
 };
+
+function initialsOf(name: string) {
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "?"
+  );
+}
+
+function OptionMark({ option }: { option: ComboboxOption }) {
+  if (option.avatarName) {
+    return (
+      <span
+        aria-hidden="true"
+        className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-[0.625rem] font-semibold text-secondary-foreground"
+      >
+        {initialsOf(option.avatarName)}
+      </span>
+    );
+  }
+  if (option.icon) {
+    const Leading = option.icon;
+    return <Leading className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />;
+  }
+  return null;
+}
 
 /**
  * Searchable single-select filter: a quiet trigger showing the current choice,
@@ -61,7 +97,9 @@ export function FilterCombobox({
           )}
         >
           <span className="flex min-w-0 items-center gap-2">
-            {Icon ? (
+            {selected && (selected.avatarName || selected.icon) ? (
+              <OptionMark option={selected} />
+            ) : Icon ? (
               <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden={true} />
             ) : null}
             <span className={cn("truncate", !selected && "text-muted-foreground")}>
@@ -87,14 +125,22 @@ export function FilterCombobox({
                   }}
                   className="gap-2"
                 >
+                  <OptionMark option={option} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate">{option.label}</span>
+                    {option.description ? (
+                      <span className="type-meta block truncate text-muted-foreground">
+                        {option.description}
+                      </span>
+                    ) : null}
+                  </span>
                   <Check
                     className={cn(
-                      "size-4 shrink-0",
+                      "size-4 shrink-0 text-primary",
                       option.value === value ? "opacity-100" : "opacity-0",
                     )}
                     aria-hidden="true"
                   />
-                  <span className="truncate">{option.label}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
