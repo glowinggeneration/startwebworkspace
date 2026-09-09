@@ -125,14 +125,22 @@ export function FilterCombobox({
                   }}
                   className="gap-2"
                 >
+                  <OptionMark option={option} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate">{option.label}</span>
+                    {option.description ? (
+                      <span className="type-meta block truncate text-muted-foreground">
+                        {option.description}
+                      </span>
+                    ) : null}
+                  </span>
                   <Check
                     className={cn(
-                      "size-4 shrink-0",
+                      "size-4 shrink-0 text-primary",
                       option.value === value ? "opacity-100" : "opacity-0",
                     )}
                     aria-hidden="true"
                   />
-                  <span className="truncate">{option.label}</span>
                 </CommandItem>
               ))}
             </CommandGroup>
