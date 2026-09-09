@@ -68,6 +68,39 @@ export type Database = {
           },
         ]
       }
+      audit_log: {
+        Row: {
+          action: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          ip: string | null
+          metadata: Json
+          resource_id: string | null
+          resource_table: string
+        }
+        Insert: {
+          action: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          ip?: string | null
+          metadata?: Json
+          resource_id?: string | null
+          resource_table: string
+        }
+        Update: {
+          action?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          ip?: string | null
+          metadata?: Json
+          resource_id?: string | null
+          resource_table?: string
+        }
+        Relationships: []
+      }
       contacts: {
         Row: {
           account_id: string
@@ -1063,6 +1096,24 @@ export type Database = {
           },
         ]
       }
+      rate_limit_hits: {
+        Row: {
+          bucket_key: string
+          created_at: string
+          id: number
+        }
+        Insert: {
+          bucket_key: string
+          created_at?: string
+          id?: never
+        }
+        Update: {
+          bucket_key?: string
+          created_at?: string
+          id?: never
+        }
+        Relationships: []
+      }
       resource_allocations: {
         Row: {
           allocated_hours: number
@@ -1261,8 +1312,66 @@ export type Database = {
           },
         ]
       }
+      workspace_invitations: {
+        Row: {
+          accepted_at: string | null
+          accepted_by: string | null
+          client_account_id: string | null
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          invited_by: string | null
+          role: Database["public"]["Enums"]["workspace_role"]
+          token: string
+          workspace_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          client_account_id?: string | null
+          created_at?: string
+          email: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role: Database["public"]["Enums"]["workspace_role"]
+          token?: string
+          workspace_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          accepted_by?: string | null
+          client_account_id?: string | null
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          invited_by?: string | null
+          role?: Database["public"]["Enums"]["workspace_role"]
+          token?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "workspace_invitations_client_account_id_fkey"
+            columns: ["client_account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "workspace_invitations_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       workspace_members: {
         Row: {
+          client_account_id: string | null
           created_at: string
           id: string
           role: Database["public"]["Enums"]["workspace_role"]
@@ -1270,6 +1379,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          client_account_id?: string | null
           created_at?: string
           id?: string
           role: Database["public"]["Enums"]["workspace_role"]
@@ -1277,6 +1387,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          client_account_id?: string | null
           created_at?: string
           id?: string
           role?: Database["public"]["Enums"]["workspace_role"]
@@ -1284,6 +1395,13 @@ export type Database = {
           workspace_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "workspace_members_client_account_id_fkey"
+            columns: ["client_account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "workspace_members_workspace_id_fkey"
             columns: ["workspace_id"]
@@ -1322,6 +1440,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      accept_workspace_invitation: {
+        Args: { p_token: string }
+        Returns: string
+      }
+      can_view_account: {
+        Args: { _account_id: string; _user_id: string; _workspace_id: string }
+        Returns: boolean
+      }
+      client_account_id_for: {
+        Args: { _user_id: string; _workspace_id: string }
+        Returns: string
+      }
+      get_invitation_preview: {
+        Args: { p_token: string }
+        Returns: {
+          email: string
+          is_accepted: boolean
+          is_expired: boolean
+          role: Database["public"]["Enums"]["workspace_role"]
+          workspace_name: string
+        }[]
+      }
       has_workspace_role: {
         Args: {
           _role: Database["public"]["Enums"]["workspace_role"]
@@ -1330,13 +1470,30 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_client_role: {
+        Args: { _user_id: string; _workspace_id: string }
+        Returns: boolean
+      }
       is_workspace_member: {
         Args: { _user_id: string; _workspace_id: string }
         Returns: boolean
       }
+      log_audit_event: {
+        Args: {
+          _action: string
+          _metadata?: Json
+          _resource_id?: string
+          _resource_table: string
+        }
+        Returns: undefined
+      }
       next_document_number: {
         Args: { p_series: string; p_workspace_id: string }
         Returns: string
+      }
+      prune_rate_limit_hits: {
+        Args: { p_older_than?: string }
+        Returns: undefined
       }
       recompute_invoice_paid_status: {
         Args: { p_invoice_id: string }
