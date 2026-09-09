@@ -46,7 +46,10 @@ export function AvatarCircles({ numPeople, className, avatars, size = "md" }: Av
             src={avatar.imageUrl}
             alt={avatar.name}
             loading="lazy"
-            className={cn(dimension, "rounded-full border-2 border-card object-cover shadow-xs")}
+            className={cn(
+              dimension,
+              "rounded-full border-2 border-card object-cover object-top shadow-xs",
+            )}
           />
         ) : (
           <span

@@ -20,6 +20,7 @@ const sizes = {
 export function AvatarLabelGroup({
   title,
   subtitle,
+  imageUrl,
   size = "md",
   status,
   trailing,
@@ -27,6 +28,8 @@ export function AvatarLabelGroup({
 }: {
   title: string;
   subtitle?: string | undefined;
+  /** Optional profile photo. Falls back to initials when absent. */
+  imageUrl?: string | null | undefined;
   size?: keyof typeof sizes | undefined;
   /** Optional presence-style dot colour class, e.g. "bg-success". */
   status?: string | undefined;
@@ -37,15 +40,24 @@ export function AvatarLabelGroup({
   return (
     <div className={cn("flex min-w-0 items-center gap-3", className)}>
       <span className="relative shrink-0">
-        <span
-          aria-hidden="true"
-          className={cn(
-            "flex items-center justify-center rounded-full bg-primary/10 font-semibold text-primary",
-            s.avatar,
-          )}
-        >
-          {initials(title)}
-        </span>
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt=""
+            loading="lazy"
+            className={cn("rounded-full object-cover object-top", s.avatar)}
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            className={cn(
+              "flex items-center justify-center rounded-full bg-primary/10 font-semibold text-primary",
+              s.avatar,
+            )}
+          >
+            {initials(title)}
+          </span>
+        )}
         {status ? (
           <span
             aria-hidden="true"

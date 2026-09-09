@@ -798,26 +798,32 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
           email: string
           full_name: string
           id: string
+          job_title: string | null
           profile_completed: boolean
           updated_at: string
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
           email: string
           full_name?: string
           id: string
+          job_title?: string | null
           profile_completed?: boolean
           updated_at?: string
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
           email?: string
           full_name?: string
           id?: string
+          job_title?: string | null
           profile_completed?: boolean
           updated_at?: string
         }
@@ -1505,6 +1511,10 @@ export type Database = {
       recompute_phase_and_project_status: {
         Args: { p_phase_id: string }
         Returns: undefined
+      }
+      shares_workspace: {
+        Args: { _target: string; _viewer: string }
+        Returns: boolean
       }
     }
     Enums: {

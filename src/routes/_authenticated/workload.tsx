@@ -93,7 +93,9 @@ function WorkloadPage() {
             <div className="flex items-center gap-2">
               <AvatarCircles
                 size="sm"
-                avatars={members.slice(0, 5).map((member) => ({ name: member.name }))}
+                avatars={members
+                  .slice(0, 5)
+                  .map((member) => ({ name: member.name, imageUrl: member.avatarUrl }))}
                 numPeople={Math.max(members.length - 5, 0)}
               />
               <span className="text-sm text-muted-foreground">
@@ -181,7 +183,8 @@ function WorkloadPage() {
             <Panel key={member.userId} className="p-5">
               <AvatarLabelGroup
                 title={member.name}
-                subtitle={member.email ?? undefined}
+                subtitle={member.jobTitle ?? member.email ?? undefined}
+                imageUrl={member.avatarUrl}
                 status={isOverCapacity ? "bg-danger" : totalHours > 0 ? "bg-success" : "bg-muted"}
               />
               <div className="mt-4 flex items-baseline justify-between">

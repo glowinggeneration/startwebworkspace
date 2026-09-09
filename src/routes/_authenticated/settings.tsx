@@ -68,7 +68,8 @@ function SettingsPage() {
               <AvatarLabelGroup
                 size="sm"
                 title={member.name}
-                subtitle={member.email ?? undefined}
+                subtitle={member.jobTitle ?? member.email ?? undefined}
+                imageUrl={member.avatarUrl}
               />
               <span className="type-meta shrink-0 rounded-full bg-secondary px-2 py-0.5 capitalize text-secondary-foreground">
                 {member.role}
