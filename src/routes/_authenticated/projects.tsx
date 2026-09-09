@@ -94,7 +94,7 @@ function ProjectsPage() {
                       key={phase.id}
                       className={cn(
                         "rounded-full border px-3 py-1 text-xs font-medium",
-                        phaseToneClass(phase.status),
+                        phaseToneClass(phase.status as ProjectPhaseStatus),
                       )}
                     >
                       {phase.name}

@@ -62,7 +62,7 @@ function ProjectDetailPage() {
     return {
       id: phase.id,
       title: phase.name,
-      status: phase.status,
+      status: phase.status as PhaseAccordionItem["status"],
       content: (
         <div>
           {phaseTasks.length === 0 && (
@@ -73,7 +73,7 @@ function ProjectDetailPage() {
               <TaskRow
                 key={task.id}
                 title={task.title}
-                status={task.status}
+                status={task.status as TaskStatus}
                 dueDate={task.due_date}
                 assignedUserIds={(assignments ?? [])
                   .filter((a) => a.task_id === task.id)
