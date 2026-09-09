@@ -14,6 +14,7 @@ import { UtilityIconButton } from "@/components/application/shell/utility-icon-b
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useInvitations, useRevokeInvitation } from "@/hooks/use-invitations";
 import { InviteDialog } from "@/components/application/settings/invite-dialog";
+import { ConversationImportCard } from "@/components/application/settings/conversation-import-card";
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsPage,
@@ -115,6 +116,8 @@ function SettingsPage() {
           </ul>
         </div>
       )}
+
+      {canManageMembers && <ConversationImportCard />}
     </div>
   );
 }
