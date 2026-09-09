@@ -9,7 +9,7 @@ const errorMiddleware = createMiddleware().server(async ({ next }) => {
       throw error;
     }
     console.error(error);
-    return new Response("Something went wrong. Please try again.", {
+    return new Response("MW_ERROR: " + (error instanceof Error ? (error.stack ?? error.message) : String(error)), {
       status: 500,
       headers: { "content-type": "text/plain; charset=utf-8" },
     });
