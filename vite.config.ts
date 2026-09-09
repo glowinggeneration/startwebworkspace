@@ -42,4 +42,4 @@ export default defineConfig(({ command }) => ({
     viteReact(),
     workerRequireShim(),
   ],
-});
+}));
