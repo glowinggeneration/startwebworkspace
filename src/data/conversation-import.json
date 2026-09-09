@@ -1,0 +1,952 @@
+{
+  "namespace": "startweb-whatsapp-2026-09-09",
+  "as_of": "2026-09-09",
+  "accounts": [
+    {
+      "account_key": "ACC-AFRIBIZ",
+      "account_name": "AfriBiz Invest",
+      "account_type": "client",
+      "relationship_status": "Active",
+      "primary_service": "Website development",
+      "primary_contact": "Dr Collen Mashawana",
+      "review_priority": "High",
+      "summary": "Website delivered and handed over; later edits and payment history discussed. Verify current support status.",
+      "source_refs": "collen-00017; collen-00027; collen-00091; collen-00098; ntokozo-02047"
+    },
+    {
+      "account_key": "ACC-FUTURETECH",
+      "account_name": "AfriBiz Future Tech",
+      "account_type": "client",
+      "relationship_status": "Approved / onboarding",
+      "primary_service": "Website development",
+      "primary_contact": "Dr Collen Mashawana",
+      "review_priority": "High",
+      "summary": "Work approved on 9 Sep 2026 at same rate as AfriBiz Invest; invoice/deposit processing referenced.",
+      "source_refs": "collen-00155; collen-00164; collen-00169; collen-00171; collen-00172; collen-00174"
+    },
+    {
+      "account_key": "ACC-GOLGOTHA",
+      "account_name": "Golgotha Boutique Hotel",
+      "account_type": "client",
+      "relationship_status": "In progress",
+      "primary_service": "Website and booking management",
+      "primary_contact": "Dr Collen Mashawana",
+      "review_priority": "High",
+      "summary": "Modern interactive site with booking backend; long-stay corporate and government positioning. Deposit status requires review.",
+      "source_refs": "collen-00100; collen-00105; collen-00108; collen-00116; collen-00117; collen-00154"
+    },
+    {
+      "account_key": "ACC-FKF",
+      "account_name": "Football Kenya Federation",
+      "account_type": "client",
+      "relationship_status": "Closing",
+      "primary_service": "Digital communications and CommsIQ",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Final month noted; reports and remaining commitments to be completed.",
+      "source_refs": "ntokozo-02252; ntokozo-02650"
+    },
+    {
+      "account_key": "ACC-ATOMIC",
+      "account_name": "Atomic Influence",
+      "account_type": "client/project",
+      "relationship_status": "In progress",
+      "primary_service": "B2B creator marketing platform",
+      "primary_contact": "Internal / external stakeholders",
+      "review_priority": "High",
+      "summary": "Platform development with marketplace payment flow; payment provider and campaign reserve logic under discussion.",
+      "source_refs": "ndu-00050; ndu-01499; ndu-01573; ndu-02005"
+    },
+    {
+      "account_key": "ACC-DIBUKA",
+      "account_name": "Dibuka",
+      "account_type": "client",
+      "relationship_status": "Needs review",
+      "primary_service": "Website and content",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Prior technical issue and lost-client reference conflict with later calendar requests. Confirm current relationship.",
+      "source_refs": "ndu-00001; ndu-00618; ntokozo-00152; ntokozo-00319"
+    },
+    {
+      "account_key": "ACC-ITIRELE",
+      "account_name": "Itirele",
+      "account_type": "client",
+      "relationship_status": "Active / review",
+      "primary_service": "Social media strategy and content",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Three-month strategy/calendar produced; ongoing graphics and calendar work referenced.",
+      "source_refs": "ndu-00618; ndu-00661; ntokozo-00153; ntokozo-00319"
+    },
+    {
+      "account_key": "ACC-HERITAGE",
+      "account_name": "Heritage",
+      "account_type": "client",
+      "relationship_status": "Active",
+      "primary_service": "Social media content and photography",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Explicitly confirmed as client; content calendar and shoot preparation discussed.",
+      "source_refs": "ntokozo-00144; ntokozo-00206; ntokozo-00210; ntokozo-00279"
+    },
+    {
+      "account_key": "ACC-DRMOYO",
+      "account_name": "Dr Bruce Moyo",
+      "account_type": "client",
+      "relationship_status": "Active / review",
+      "primary_service": "Social media content and website",
+      "primary_contact": "Dr Bruce Moyo",
+      "review_priority": "High",
+      "summary": "Calendars and creatives referenced; website payment/live status requires confirmation.",
+      "source_refs": "ntokozo-00031; dodi-00744; ntokozo-02833; ntokozo-03426"
+    },
+    {
+      "account_key": "ACC-MATLOTLO",
+      "account_name": "Matlotlo Khumo",
+      "account_type": "client/product",
+      "relationship_status": "At risk",
+      "primary_service": "Website development and social media",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Development and social media tracked; as of 9 Sep no post recorded in conversation.",
+      "source_refs": "ntokozo-00319; ntokozo-03414; ntokozo-03587"
+    },
+    {
+      "account_key": "ACC-CHASM",
+      "account_name": "Chasm Bridge Charity",
+      "account_type": "client",
+      "relationship_status": "Paused / payment pending",
+      "primary_service": "Website and social media",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Web and social assets identified; work paused for slow feedback/non-payment, later said to be back awaiting payment.",
+      "source_refs": "ntokozo-00368; ntokozo-00385; ntokozo-01662; ntokozo-02102"
+    },
+    {
+      "account_key": "ACC-FILAMENT",
+      "account_name": "Filament (Pty) Ltd",
+      "account_type": "client",
+      "relationship_status": "Paused / payment pending",
+      "primary_service": "Website and social media",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Web and social assets identified; slow feedback and unpaid status reported.",
+      "source_refs": "ntokozo-00368; ntokozo-00386; ntokozo-01662"
+    },
+    {
+      "account_key": "ACC-JOVIKIDS",
+      "account_name": "Jovikids",
+      "account_type": "client",
+      "relationship_status": "In progress",
+      "primary_service": "E-commerce website",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Proposal and final touch-ups referenced; information, domain and fulfilment details remained under follow-up.",
+      "source_refs": "ntokozo-01495; ntokozo-01497; ntokozo-03414; ntokozo-03438; ntokozo-03441"
+    },
+    {
+      "account_key": "ACC-NARA",
+      "account_name": "Nara Projects",
+      "account_type": "client",
+      "relationship_status": "Active / review",
+      "primary_service": "Email and domain setup",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Email setup guide and domain renewal discussed.",
+      "source_refs": "ndu-01360; ndu-01376; ntokozo-01587; ntokozo-01642"
+    },
+    {
+      "account_key": "ACC-PROTEL",
+      "account_name": "Protel Studios",
+      "account_type": "lead/client",
+      "relationship_status": "Proposal / enablement",
+      "primary_service": "Social media and white-label platform",
+      "primary_contact": "Sarah",
+      "review_priority": "Medium",
+      "summary": "Proposal delivered; white-label product session and payment follow-up discussed.",
+      "source_refs": "ntokozo-00771; ntokozo-00776; ntokozo-02323; ntokozo-03301; ntokozo-03303"
+    },
+    {
+      "account_key": "ACC-EASYDOCS",
+      "account_name": "Easy Documents",
+      "account_type": "client",
+      "relationship_status": "Paused",
+      "primary_service": "Content and email marketing",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Reported paid but paused because margin was too small.",
+      "source_refs": "ntokozo-00484; ntokozo-01662"
+    },
+    {
+      "account_key": "ACC-MAKWELENG",
+      "account_name": "Makweleng",
+      "account_type": "client",
+      "relationship_status": "Paused / unpaid",
+      "primary_service": "Social media content",
+      "primary_contact": "Unknown",
+      "review_priority": "High",
+      "summary": "Creative work referenced; unpaid and low-margin status reported.",
+      "source_refs": "dodi-00744; ntokozo-01662"
+    },
+    {
+      "account_key": "ACC-OTHEBE",
+      "account_name": "Othebe LG Transportation",
+      "account_type": "lead",
+      "relationship_status": "Proposal sent",
+      "primary_service": "Website and business profile",
+      "primary_contact": "Unknown",
+      "review_priority": "Medium",
+      "summary": "Profile/proposal received; proposal sent after brief.",
+      "source_refs": "ntokozo-01908; ntokozo-01914; ntokozo-01941"
+    },
+    {
+      "account_key": "ACC-MAPHIRI",
+      "account_name": "Dr Maphiri",
+      "account_type": "lead",
+      "relationship_status": "Proposal / follow-up",
+      "primary_service": "Design and social media",
+      "primary_contact": "Dr Maphiri",
+      "review_priority": "Medium",
+      "summary": "Design services and social proposal referenced; response status unclear.",
+      "source_refs": "ntokozo-00101; ntokozo-00115; ntokozo-00319; ntokozo-01101"
+    },
+    {
+      "account_key": "ACC-SHIVURI",
+      "account_name": "Dr Shivuri",
+      "account_type": "lead",
+      "relationship_status": "Proposal / follow-up",
+      "primary_service": "Social media content",
+      "primary_contact": "Dr Shivuri",
+      "review_priority": "Medium",
+      "summary": "Content proposal sent; calendar/go-live timing remained under review.",
+      "source_refs": "ntokozo-00874; ntokozo-01100"
+    },
+    {
+      "account_key": "ACC-LEBO",
+      "account_name": "Lebo project",
+      "account_type": "client",
+      "relationship_status": "Delivered / review",
+      "primary_service": "Website or proposal support",
+      "primary_contact": "Lebo",
+      "review_priority": "Medium",
+      "summary": "Website completion/delivery mentioned; exact account identity requires confirmation.",
+      "source_refs": "ntokozo-01875; ntokozo-03200"
+    },
+    {
+      "account_key": "ACC-BLESSING",
+      "account_name": "Blessing project",
+      "account_type": "client",
+      "relationship_status": "Awaiting inputs / payment review",
+      "primary_service": "E-commerce website",
+      "primary_contact": "Blessing",
+      "review_priority": "High",
+      "summary": "Site described as done, but domain, payment, courier, processor and pricing inputs required confirmation.",
+      "source_refs": "ntokozo-01631; ntokozo-01992; ntokozo-02571; ntokozo-02659; ntokozo-02999; ntokozo-03200"
+    },
+    {
+      "account_key": "ACC-BONOLO",
+      "account_name": "Bonolo project",
+      "account_type": "lead/client",
+      "relationship_status": "Alignment",
+      "primary_service": "Application changes, website and content",
+      "primary_contact": "Bonolo",
+      "review_priority": "High",
+      "summary": "Follow-up, meeting, content calendar, invoice and development plan referenced; account identity needs confirmation.",
+      "source_refs": "ntokozo-00101; ntokozo-00115; ntokozo-02944; ntokozo-03031; ntokozo-03200"
+    }
+  ],
+  "contacts": [
+    {
+      "contact_key": "CON-COLLEN",
+      "full_name": "Dr Collen Mashawana",
+      "role": "Client decision-maker",
+      "account_keys": "ACC-AFRIBIZ; ACC-FUTURETECH; ACC-GOLGOTHA",
+      "business_email": null,
+      "notes": "Primary commercial contact across the AfriBiz engagements.",
+      "source_refs": "collen-00001; collen-00155"
+    },
+    {
+      "contact_key": "CON-DODI",
+      "full_name": "Dodi Maleka",
+      "role": "Head of Business Development / collaborator",
+      "account_keys": null,
+      "business_email": null,
+      "notes": "Internal business-development and strategy conversation; do not import personal financial discussion.",
+      "source_refs": "dodi-02325; dodi-02572"
+    },
+    {
+      "contact_key": "CON-NDU",
+      "full_name": "Ndumiso Yedwa",
+      "role": "Chief Technology Officer / developer",
+      "account_keys": null,
+      "business_email": null,
+      "notes": "Internal technical delivery contact across web and application projects.",
+      "source_refs": "ndu-00600; ndu-01145"
+    },
+    {
+      "contact_key": "CON-NTOKOZO",
+      "full_name": "Ntokozo Hlatshwayo",
+      "role": "Head of Operations and Delivery",
+      "account_keys": null,
+      "business_email": null,
+      "notes": "Internal operations contact. Personal identity and banking details were excluded.",
+      "source_refs": "ntokozo-00014; ntokozo-00115"
+    },
+    {
+      "contact_key": "CON-BRUCE",
+      "full_name": "Dr Bruce Moyo",
+      "role": "Client",
+      "account_keys": "ACC-DRMOYO",
+      "business_email": null,
+      "notes": "Contact details absent from safe source text.",
+      "source_refs": "ntokozo-00031"
+    },
+    {
+      "contact_key": "CON-MAPHIRI",
+      "full_name": "Dr Maphiri",
+      "role": "Prospect",
+      "account_keys": "ACC-MAPHIRI",
+      "business_email": null,
+      "notes": "Contact details absent from safe source text.",
+      "source_refs": "ntokozo-00101"
+    },
+    {
+      "contact_key": "CON-SHIVURI",
+      "full_name": "Dr Shivuri",
+      "role": "Prospect",
+      "account_keys": "ACC-SHIVURI",
+      "business_email": null,
+      "notes": "Contact details absent from safe source text.",
+      "source_refs": "ntokozo-00874"
+    },
+    {
+      "contact_key": "CON-SARAH",
+      "full_name": "Sarah",
+      "role": "Client or channel partner",
+      "account_keys": "ACC-PROTEL",
+      "business_email": null,
+      "notes": "Identity and relationship need confirmation.",
+      "source_refs": "ntokozo-02323; ntokozo-03303"
+    },
+    {
+      "contact_key": "CON-BLESSING",
+      "full_name": "Blessing",
+      "role": "Client",
+      "account_keys": "ACC-BLESSING",
+      "business_email": null,
+      "notes": "Identity and company name need confirmation.",
+      "source_refs": "ntokozo-01631; ntokozo-02659"
+    },
+    {
+      "contact_key": "CON-BONOLO",
+      "full_name": "Bonolo",
+      "role": "Client or prospect",
+      "account_keys": "ACC-BONOLO",
+      "business_email": null,
+      "notes": "Identity and company name need confirmation.",
+      "source_refs": "ntokozo-00101; ntokozo-03031"
+    }
+  ],
+  "projects": [
+    {
+      "project_key": "PRJ-AFRIBIZ-WEB",
+      "project_name": "AfriBiz Invest website",
+      "account_key": "ACC-AFRIBIZ",
+      "service_type": "Website development",
+      "status": "Delivered / support review",
+      "owner_contact_key": "CON-COLLEN",
+      "start_date": "2026-06-29",
+      "due_date": "2026-08-10",
+      "value_zar": null,
+      "summary": "Corporate website redesign, handover and later content/service edits.",
+      "source_refs": "collen-00017; collen-00091; collen-00098"
+    },
+    {
+      "project_key": "PRJ-AFRIBIZ-MALAWI",
+      "project_name": "AfriBiz Malawi website section",
+      "account_key": "ACC-AFRIBIZ",
+      "service_type": "Website update",
+      "status": "Delivered",
+      "owner_contact_key": "CON-COLLEN",
+      "start_date": "2026-08-12",
+      "due_date": "2026-08-14",
+      "value_zar": null,
+      "summary": "Update country count and add Malawi content.",
+      "source_refs": "collen-00127; collen-00131; collen-00139"
+    },
+    {
+      "project_key": "PRJ-FUTURETECH-WEB",
+      "project_name": "AfriBiz Future Tech website",
+      "account_key": "ACC-FUTURETECH",
+      "service_type": "Website development",
+      "status": "Approved / deposit review",
+      "owner_contact_key": "CON-COLLEN",
+      "start_date": "2026-09-09",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Approved at same rate as AfriBiz Invest. Await source information and confirm deposit.",
+      "source_refs": "collen-00164; collen-00171; collen-00172; collen-00174"
+    },
+    {
+      "project_key": "PRJ-GOLGOTHA-WEB",
+      "project_name": "Golgotha Boutique Hotel website",
+      "account_key": "ACC-GOLGOTHA",
+      "service_type": "Website and booking system",
+      "status": "In progress / payment review",
+      "owner_contact_key": "CON-COLLEN",
+      "start_date": "2026-08-10",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Website plus booking backend; focus on longer-stay corporate/government clients.",
+      "source_refs": "collen-00105; collen-00108; collen-00116; collen-00154"
+    },
+    {
+      "project_key": "PRJ-FKF-CLOSE",
+      "project_name": "FKF service closeout",
+      "account_key": "ACC-FKF",
+      "service_type": "Campaign reporting and delivery",
+      "status": "In progress",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-20",
+      "due_date": "2026-09-30",
+      "value_zar": null,
+      "summary": "Submit reports and outstanding commitments during final month. End date inferred from final-month message and must be reviewed.",
+      "source_refs": "ntokozo-02650"
+    },
+    {
+      "project_key": "PRJ-ATOMIC",
+      "project_name": "Atomic Influence platform",
+      "account_key": "ACC-ATOMIC",
+      "service_type": "Product development",
+      "status": "In progress",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-06-13",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "B2B creator platform with payment provider and reserved-funds workflow.",
+      "source_refs": "ndu-00050; ndu-01499; ndu-01587"
+    },
+    {
+      "project_key": "PRJ-DIBUKA-CONTENT",
+      "project_name": "Dibuka content calendar",
+      "account_key": "ACC-DIBUKA",
+      "service_type": "Content calendar",
+      "status": "Needs review",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-07-14",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Calendar was assigned to Ndumiso; current client state conflicts with earlier lost-client note.",
+      "source_refs": "ndu-00618; ntokozo-00152"
+    },
+    {
+      "project_key": "PRJ-ITIRELE-CONTENT",
+      "project_name": "Itirele social media strategy",
+      "account_key": "ACC-ITIRELE",
+      "service_type": "Social media strategy",
+      "status": "Delivered / active review",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-07-14",
+      "due_date": "2026-10-15",
+      "value_zar": null,
+      "summary": "Three-month strategy and daily calendar created for 16 Jul to 15 Oct 2026.",
+      "source_refs": "ndu-00661"
+    },
+    {
+      "project_key": "PRJ-HERITAGE-CONTENT",
+      "project_name": "Heritage social media launch",
+      "account_key": "ACC-HERITAGE",
+      "service_type": "Content and photography",
+      "status": "In progress",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-07-15",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Content calendar, design and shoot preparation.",
+      "source_refs": "ntokozo-00144; ntokozo-00206; ntokozo-00210"
+    },
+    {
+      "project_key": "PRJ-DRMOYO-CONTENT",
+      "project_name": "Dr Bruce Moyo social content",
+      "account_key": "ACC-DRMOYO",
+      "service_type": "Social media",
+      "status": "Active / review",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-07-09",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Calendars and creative set prepared; live/payment status to verify.",
+      "source_refs": "ntokozo-00031; dodi-00744; ntokozo-02833"
+    },
+    {
+      "project_key": "PRJ-MATLOTLO",
+      "project_name": "Matlotlo Khumo development and social",
+      "account_key": "ACC-MATLOTLO",
+      "service_type": "Website and social media",
+      "status": "At risk",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-07-16",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Tracked work; no post had been made by 9 Sep according to conversation.",
+      "source_refs": "ntokozo-00319; ntokozo-03587"
+    },
+    {
+      "project_key": "PRJ-CHASM",
+      "project_name": "Chasm Bridge website and social",
+      "account_key": "ACC-CHASM",
+      "service_type": "Website and social media",
+      "status": "Paused / payment pending",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-07-16",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Resume only after commercial status and brief are confirmed.",
+      "source_refs": "ntokozo-00368; ntokozo-01662; ntokozo-02102"
+    },
+    {
+      "project_key": "PRJ-FILAMENT",
+      "project_name": "Filament website and social",
+      "account_key": "ACC-FILAMENT",
+      "service_type": "Website and social media",
+      "status": "Paused / payment pending",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-07-16",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Slow feedback and unpaid status.",
+      "source_refs": "ntokozo-00368; ntokozo-01662"
+    },
+    {
+      "project_key": "PRJ-JOVIKIDS",
+      "project_name": "Jovikids e-commerce website",
+      "account_key": "ACC-JOVIKIDS",
+      "service_type": "Website development",
+      "status": "In progress / inputs required",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-08",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Obtain missing operating information and domain details; Transfigure reselling relationship noted.",
+      "source_refs": "ntokozo-01495; ntokozo-03414; ntokozo-03438"
+    },
+    {
+      "project_key": "PRJ-NARA-EMAIL",
+      "project_name": "Nara Projects email setup",
+      "account_key": "ACC-NARA",
+      "service_type": "Email setup",
+      "status": "Delivered / review",
+      "owner_contact_key": "CON-NDU",
+      "start_date": "2026-08-11",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Email setup guide delivered; verify working accounts.",
+      "source_refs": "ndu-01360; ntokozo-01642"
+    },
+    {
+      "project_key": "PRJ-PROTEL-PLATFORM",
+      "project_name": "Protel white-label platform session",
+      "account_key": "ACC-PROTEL",
+      "service_type": "Product enablement",
+      "status": "Meeting required",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-23",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Schedule session for Sarah to demonstrate the white-labelled system.",
+      "source_refs": "ntokozo-02323"
+    },
+    {
+      "project_key": "PRJ-OTHEBE-PROP",
+      "project_name": "Othebe transport proposal",
+      "account_key": "ACC-OTHEBE",
+      "service_type": "Proposal",
+      "status": "Sent",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-10",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Proposal sent after company profile and brief.",
+      "source_refs": "ntokozo-01908; ntokozo-01941"
+    },
+    {
+      "project_key": "PRJ-BLESSING-WEB",
+      "project_name": "Blessing e-commerce website",
+      "account_key": "ACC-BLESSING",
+      "service_type": "Website development",
+      "status": "Inputs and payment review",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-20",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Confirm pricing, domain registration, courier company and payment processor.",
+      "source_refs": "ntokozo-02659; ntokozo-02999; ntokozo-03200"
+    },
+    {
+      "project_key": "PRJ-BONOLO",
+      "project_name": "Bonolo alignment and delivery",
+      "account_key": "ACC-BONOLO",
+      "service_type": "Application, website and content",
+      "status": "Alignment",
+      "owner_contact_key": "CON-NTOKOZO",
+      "start_date": "2026-08-26",
+      "due_date": null,
+      "value_zar": null,
+      "summary": "Calendar, invoice and development plan sent; confirm repository access and scope.",
+      "source_refs": "ntokozo-03031; ntokozo-03200"
+    }
+  ],
+  "actions": [
+    {
+      "action_key": "ACT-001",
+      "project_key": "PRJ-FUTURETECH-WEB",
+      "action": "Collect company information and source assets",
+      "owner_contact_key": "CON-COLLEN",
+      "status": "Waiting on client",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Requested immediately after approval.",
+      "source_refs": "collen-00165"
+    },
+    {
+      "action_key": "ACT-002",
+      "project_key": "PRJ-FUTURETECH-WEB",
+      "action": "Confirm deposit and record payment",
+      "owner_contact_key": "CON-COLLEN",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Finance processing promised.",
+      "source_refs": "collen-00174"
+    },
+    {
+      "action_key": "ACT-003",
+      "project_key": "PRJ-GOLGOTHA-WEB",
+      "action": "Confirm deposit and current build status",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Deposit was being pursued.",
+      "source_refs": "collen-00154"
+    },
+    {
+      "action_key": "ACT-004",
+      "project_key": "PRJ-FKF-CLOSE",
+      "action": "Complete final reports and outstanding commitments",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": "2026-09-30",
+      "notes": "Review inferred due date before use.",
+      "source_refs": "ntokozo-02650"
+    },
+    {
+      "action_key": "ACT-005",
+      "project_key": "PRJ-MATLOTLO",
+      "action": "Audit content status and publish approved content",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Conversation states no content had been posted by 9 Sep.",
+      "source_refs": "ntokozo-03587"
+    },
+    {
+      "action_key": "ACT-006",
+      "project_key": "PRJ-CHASM",
+      "action": "Confirm payment and obtain detailed social brief",
+      "owner_contact_key": "CON-NDU",
+      "status": "Blocked",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Work reported back but awaiting payment.",
+      "source_refs": "ntokozo-02102"
+    },
+    {
+      "action_key": "ACT-007",
+      "project_key": "PRJ-FILAMENT",
+      "action": "Confirm payment and feedback",
+      "owner_contact_key": "CON-NDU",
+      "status": "Blocked",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Slow feedback and unpaid status.",
+      "source_refs": "ntokozo-01662"
+    },
+    {
+      "action_key": "ACT-008",
+      "project_key": "PRJ-JOVIKIDS",
+      "action": "Collect remaining business and fulfilment information",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Use existing website where appropriate and verify missing details.",
+      "source_refs": "ntokozo-03414; ntokozo-03438"
+    },
+    {
+      "action_key": "ACT-009",
+      "project_key": "PRJ-JOVIKIDS",
+      "action": "Confirm domain registration and ownership",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Domain described as in-house; confirm operational access.",
+      "source_refs": "ntokozo-03414; ntokozo-03441"
+    },
+    {
+      "action_key": "ACT-010",
+      "project_key": "PRJ-BLESSING-WEB",
+      "action": "Confirm product pricing, courier and payment processor",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Required before final submission.",
+      "source_refs": "ntokozo-02999; ntokozo-03200"
+    },
+    {
+      "action_key": "ACT-011",
+      "project_key": "PRJ-BLESSING-WEB",
+      "action": "Confirm domain registration method",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "Medium",
+      "due_date": null,
+      "notes": "Decide whether to register through client account.",
+      "source_refs": "ntokozo-02659"
+    },
+    {
+      "action_key": "ACT-012",
+      "project_key": "PRJ-BONOLO",
+      "action": "Hold alignment meeting and confirm scope",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Invoice and development plan already sent.",
+      "source_refs": "ntokozo-03200"
+    },
+    {
+      "action_key": "ACT-013",
+      "project_key": "PRJ-PROTEL-PLATFORM",
+      "action": "Schedule white-label product session with Sarah",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "Medium",
+      "due_date": null,
+      "notes": "Take Sarah through the system.",
+      "source_refs": "ntokozo-02323"
+    },
+    {
+      "action_key": "ACT-014",
+      "project_key": "PRJ-DIBUKA-CONTENT",
+      "action": "Confirm whether Dibuka remains an active client",
+      "owner_contact_key": "CON-NDU",
+      "status": "Needs review",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Source contains conflicting relationship states.",
+      "source_refs": "ndu-00001; ntokozo-00152"
+    },
+    {
+      "action_key": "ACT-015",
+      "project_key": "PRJ-DRMOYO-CONTENT",
+      "action": "Confirm website payment and go-live status",
+      "owner_contact_key": "CON-NTOKOZO",
+      "status": "Open",
+      "priority": "High",
+      "due_date": null,
+      "notes": "Website live status tied to payment.",
+      "source_refs": "ntokozo-03426"
+    },
+    {
+      "action_key": "ACT-016",
+      "project_key": "PRJ-NARA-EMAIL",
+      "action": "Verify all configured email accounts work",
+      "owner_contact_key": "CON-NDU",
+      "status": "Open",
+      "priority": "Medium",
+      "due_date": null,
+      "notes": "Guide was delivered, but operational verification is not explicit.",
+      "source_refs": "ndu-01360; ntokozo-01642"
+    }
+  ],
+  "notes": [
+    {
+      "note_key": "NOTE-001",
+      "account_key": "ACC-AFRIBIZ",
+      "note_date": "2026-07-14",
+      "category": "Client brief",
+      "note": "Client wanted a futuristic corporate site and supplied group profile and integrated infrastructure positioning.",
+      "source_refs": "collen-00027; collen-00028; collen-00040"
+    },
+    {
+      "note_key": "NOTE-002",
+      "account_key": "ACC-AFRIBIZ",
+      "note_date": "2026-08-14",
+      "category": "Delivery update",
+      "note": "Malawi content update reported complete.",
+      "source_refs": "collen-00139"
+    },
+    {
+      "note_key": "NOTE-003",
+      "account_key": "ACC-FUTURETECH",
+      "note_date": "2026-09-09",
+      "category": "Commercial approval",
+      "note": "Client approved proceeding at the same rate as AfriBiz Invest. Exact amount was only in an omitted document and is not imported.",
+      "source_refs": "collen-00171; collen-00172"
+    },
+    {
+      "note_key": "NOTE-004",
+      "account_key": "ACC-GOLGOTHA",
+      "note_date": "2026-08-10",
+      "category": "Positioning",
+      "note": "Hotel wants corporate and government long-stay guests in addition to daily clients.",
+      "source_refs": "collen-00116; collen-00117"
+    },
+    {
+      "note_key": "NOTE-005",
+      "account_key": "ACC-FKF",
+      "note_date": "2026-08-20",
+      "category": "Account direction",
+      "note": "Treat as final month and close all reporting and delivery commitments properly.",
+      "source_refs": "ntokozo-02650"
+    },
+    {
+      "note_key": "NOTE-006",
+      "account_key": "ACC-CHASM",
+      "note_date": "2026-08-12",
+      "category": "Commercial state",
+      "note": "Paused because feedback was slow and payment had not been received.",
+      "source_refs": "ntokozo-01662"
+    },
+    {
+      "note_key": "NOTE-007",
+      "account_key": "ACC-FILAMENT",
+      "note_date": "2026-08-12",
+      "category": "Commercial state",
+      "note": "Paused because feedback was slow and payment had not been received.",
+      "source_refs": "ntokozo-01662"
+    },
+    {
+      "note_key": "NOTE-008",
+      "account_key": "ACC-EASYDOCS",
+      "note_date": "2026-08-12",
+      "category": "Commercial state",
+      "note": "Reported paid but paused due to insufficient margin.",
+      "source_refs": "ntokozo-01662"
+    },
+    {
+      "note_key": "NOTE-009",
+      "account_key": "ACC-MAKWELENG",
+      "note_date": "2026-08-12",
+      "category": "Commercial state",
+      "note": "Reported unpaid and low margin; work paused.",
+      "source_refs": "ntokozo-01662"
+    },
+    {
+      "note_key": "NOTE-010",
+      "account_key": "ACC-MATLOTLO",
+      "note_date": "2026-09-09",
+      "category": "Delivery risk",
+      "note": "No content post had been made by the review date according to the operations chat.",
+      "source_refs": "ntokozo-03587"
+    }
+  ],
+  "review_items": [
+    {
+      "review_key": "REV-001",
+      "record_type": "Account",
+      "record_key": "ACC-DIBUKA",
+      "issue": "Relationship state",
+      "evidence": "One source says client lost; later sources assign active calendar work.",
+      "required_decision": "Confirm active, paused or former client before enabling workflows.",
+      "source_refs": "ndu-00001; ntokozo-00152"
+    },
+    {
+      "review_key": "REV-002",
+      "record_type": "Project",
+      "record_key": "PRJ-FUTURETECH-WEB",
+      "issue": "Commercial amount",
+      "evidence": "Exact invoice amount is in an omitted document.",
+      "required_decision": "Enter amount only from the actual invoice.",
+      "source_refs": "collen-00171"
+    },
+    {
+      "review_key": "REV-003",
+      "record_type": "Project",
+      "record_key": "PRJ-GOLGOTHA-WEB",
+      "issue": "Commercial amount/status",
+      "evidence": "R5 600 excluding VAT was proposed, but later price negotiation and deposit status changed.",
+      "required_decision": "Confirm final agreed price and payment balance.",
+      "source_refs": "collen-00105; collen-00115; collen-00154"
+    },
+    {
+      "review_key": "REV-004",
+      "record_type": "Account",
+      "record_key": "ACC-BLESSING",
+      "issue": "Account identity",
+      "evidence": "Only first name appears in safe text.",
+      "required_decision": "Link to the correct company before importing as a client account.",
+      "source_refs": "ntokozo-01631; ntokozo-03200"
+    },
+    {
+      "review_key": "REV-005",
+      "record_type": "Account",
+      "record_key": "ACC-BONOLO",
+      "issue": "Account identity",
+      "evidence": "Only first name appears in safe text.",
+      "required_decision": "Link to the correct company before importing as a client account.",
+      "source_refs": "ntokozo-00101; ntokozo-03200"
+    },
+    {
+      "review_key": "REV-006",
+      "record_type": "Account",
+      "record_key": "ACC-LEBO",
+      "issue": "Account identity",
+      "evidence": "Conversation references a project and proposal but no confirmed company name.",
+      "required_decision": "Resolve company and scope.",
+      "source_refs": "ntokozo-01875; ntokozo-03200"
+    },
+    {
+      "review_key": "REV-007",
+      "record_type": "Contact",
+      "record_key": "CON-SARAH",
+      "issue": "Identity and account",
+      "evidence": "Sarah may be a partner/client contact associated with Protel.",
+      "required_decision": "Confirm full name, role and account.",
+      "source_refs": "ntokozo-02323; ntokozo-03303"
+    },
+    {
+      "review_key": "REV-008",
+      "record_type": "Project",
+      "record_key": "PRJ-FKF-CLOSE",
+      "issue": "Due date",
+      "evidence": "30 Sep 2026 inferred from final-month statement.",
+      "required_decision": "Replace with contractual end date.",
+      "source_refs": "ntokozo-02650"
+    },
+    {
+      "review_key": "REV-009",
+      "record_type": "All",
+      "record_key": null,
+      "issue": "Omitted attachments",
+      "evidence": "Documents, images, audio and voice notes were omitted from the exports.",
+      "required_decision": "Attach original documents before importing figures, terms or deliverables mentioned only inside them.",
+      "source_refs": "all conversations"
+    },
+    {
+      "review_key": "REV-010",
+      "record_type": "All",
+      "record_key": null,
+      "issue": "Sensitive content excluded",
+      "evidence": "Credentials, banking details, personal identifiers and private financial exchanges were excluded.",
+      "required_decision": "Do not restore these from raw chats into CRM notes.",
+      "source_refs": "redaction log"
+    }
+  ]
+}
