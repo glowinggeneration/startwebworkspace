@@ -129,11 +129,34 @@ export function StartwebShell({ children }: { children: ReactNode }) {
         <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-divider bg-card/80 px-6 backdrop-blur-xl backdrop-saturate-150">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="md:hidden" />
-            <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-muted-foreground">
-              <Home className="size-4" aria-hidden="true" />
-              <span className="type-label text-foreground">
-                {currentPage?.label ?? "Workspace"}
-              </span>
+            <nav aria-label="Breadcrumb">
+              <ol className="flex items-center gap-1.5 text-muted-foreground">
+                <li>
+                  <Link
+                    to="/dashboard"
+                    className="flex items-center gap-1.5 rounded-md px-1 py-0.5 transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  >
+                    <Home className="size-3.5" aria-hidden="true" />
+                    <span className="type-label">Home</span>
+                  </Link>
+                </li>
+                {currentPage ? (
+                  <>
+                    <li aria-hidden="true">
+                      <ChevronRight className="size-3.5 text-muted-foreground/70" />
+                    </li>
+                    <li>
+                      <span
+                        aria-current="page"
+                        className="flex items-center gap-1.5 px-1 py-0.5 text-foreground"
+                      >
+                        <currentPage.icon className="size-3.5 text-foreground/80" aria-hidden="true" />
+                        <span className="type-label">{currentPage.label}</span>
+                      </span>
+                    </li>
+                  </>
+                ) : null}
+              </ol>
             </nav>
           </div>
           <div className="flex items-center gap-2">
