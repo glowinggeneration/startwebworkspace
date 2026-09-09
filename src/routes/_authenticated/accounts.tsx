@@ -29,6 +29,13 @@ import {
 } from "@/components/application/shell/page-parts";
 import { cn } from "@/lib/utils";
 import { currency } from "@/lib/sales/currency";
+import {
+  PanelHeader,
+  PanelTitleBar,
+  PanelSection,
+  PanelFooter,
+} from "@/components/application/shell/panel-parts";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 
 export const Route = createFileRoute("/_authenticated/accounts")({
   component: AccountsPage,
@@ -204,6 +211,10 @@ function AccountsPage() {
             </Panel>
           ) : view === "list" ? (
             <Panel className="overflow-x-auto">
+              <PanelHeader
+                title="Client directory"
+                description={`${filtered.length} ${filtered.length === 1 ? "company" : "companies"} in this workspace.`}
+              />
               <table className="w-full min-w-[42rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
@@ -267,79 +278,86 @@ function AccountsPage() {
         </div>
 
         {panelOpen ? (
-          <Panel className="w-full shrink-0 p-6 xl:w-96">
-            <div className="mb-5 flex items-start justify-between gap-3">
-              <div>
-                <h2 className="text-lg font-semibold text-foreground">New account</h2>
-                <p className="text-sm text-muted-foreground">
-                  Capture the company and its first contact.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => setPanelOpen(false)}
-                aria-label="Close new account panel"
-                className="rounded-md p-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                <X className="size-5" aria-hidden="true" />
-              </button>
-            </div>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-1.5">
-                <Label htmlFor="account-name">Company name</Label>
-                <Input id="account-name" {...form.register("name")} />
-                {form.formState.errors.name ? (
-                  <p className="text-sm text-destructive">{form.formState.errors.name.message}</p>
-                ) : null}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="account-website">Website</Label>
-                <Input id="account-website" placeholder="https://" {...form.register("website")} />
-                {form.formState.errors.website ? (
-                  <p className="text-sm text-destructive">
-                    {form.formState.errors.website.message}
-                  </p>
-                ) : null}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="account-contact">Primary contact</Label>
-                <Input id="account-contact" {...form.register("contactName")} />
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="account-email">Email</Label>
-                <Input id="account-email" type="email" {...form.register("contactEmail")} />
-                {form.formState.errors.contactEmail ? (
-                  <p className="text-sm text-destructive">
-                    {form.formState.errors.contactEmail.message}
-                  </p>
-                ) : null}
-              </div>
-              <div className="space-y-1.5">
-                <Label htmlFor="account-industry">Industry</Label>
-                <Select
-                  value={form.watch("industryId") || ""}
-                  onValueChange={(value) => form.setValue("industryId", value)}
-                >
-                  <SelectTrigger id="account-industry">
-                    <SelectValue placeholder="Select an industry" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {industries?.map((industry) => (
-                      <SelectItem key={industry.id} value={industry.id}>
-                        {industry.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="flex items-center gap-3 pt-2">
-                <Button type="submit" disabled={createAccount.isPending}>
-                  {createAccount.isPending ? "Saving..." : "Create account"}
-                </Button>
-                <Button type="button" variant="ghost" onClick={() => setPanelOpen(false)}>
+          <Panel className="w-full shrink-0 self-start p-6 xl:w-96">
+            <PanelTitleBar
+              title="New account"
+              description="Capture the company and its first contact."
+              onClose={() => setPanelOpen(false)}
+              closeLabel="Close new account panel"
+            />
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <PanelSection>
+                <div className="space-y-1.5">
+                  <Label htmlFor="account-name">Company name</Label>
+                  <Input id="account-name" {...form.register("name")} />
+                  {form.formState.errors.name ? (
+                    <p className="text-sm text-destructive">{form.formState.errors.name.message}</p>
+                  ) : null}
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="account-website">Website</Label>
+                  <Input
+                    id="account-website"
+                    placeholder="https://"
+                    {...form.register("website")}
+                  />
+                  {form.formState.errors.website ? (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.website.message}
+                    </p>
+                  ) : null}
+                </div>
+              </PanelSection>
+
+              <PanelSection>
+                <div className="space-y-1.5">
+                  <Label htmlFor="account-contact">Primary contact</Label>
+                  <Input id="account-contact" {...form.register("contactName")} />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="account-email">Email</Label>
+                  <Input id="account-email" type="email" {...form.register("contactEmail")} />
+                  {form.formState.errors.contactEmail ? (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.contactEmail.message}
+                    </p>
+                  ) : null}
+                </div>
+              </PanelSection>
+
+              <PanelSection>
+                <div className="space-y-1.5">
+                  <Label htmlFor="account-industry">Industry</Label>
+                  <Select
+                    value={form.watch("industryId") || ""}
+                    onValueChange={(value) => form.setValue("industryId", value)}
+                  >
+                    <SelectTrigger id="account-industry">
+                      <SelectValue placeholder="Select an industry" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {industries?.map((industry) => (
+                        <SelectItem key={industry.id} value={industry.id}>
+                          {industry.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </PanelSection>
+
+              <PanelFooter>
+                <Button type="button" variant="outline" onClick={() => setPanelOpen(false)}>
                   Cancel
                 </Button>
-              </div>
+                <Button type="submit" disabled={createAccount.isPending}>
+                  {createAccount.isPending ? (
+                    <LoadingIndicator size="sm" label="Saving" />
+                  ) : (
+                    "Create account"
+                  )}
+                </Button>
+              </PanelFooter>
             </form>
           </Panel>
         ) : null}

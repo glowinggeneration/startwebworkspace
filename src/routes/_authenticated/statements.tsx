@@ -18,6 +18,7 @@ import { useStatement } from "@/hooks/use-statement";
 import { downloadStatementPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
 import { EmptyState, PageHeader, Panel, Toolbar } from "@/components/application/shell/page-parts";
+import { PanelHeader } from "@/components/application/shell/panel-parts";
 
 export const Route = createFileRoute("/_authenticated/statements")({
   component: StatementsPage,
@@ -165,6 +166,10 @@ function StatementsPage() {
         </Panel>
       ) : (
         <Panel className="overflow-x-auto">
+          <PanelHeader
+            title="Statement lines"
+            description="Invoices for the selected account and date range."
+          />
           <table className="w-full min-w-[42rem] text-left text-sm">
             <thead className="border-b border-border bg-muted/40">
               <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">

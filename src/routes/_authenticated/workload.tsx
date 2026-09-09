@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useProjects } from "@/hooks/use-projects";
@@ -21,6 +20,7 @@ import {
   Toolbar,
 } from "@/components/application/shell/page-parts";
 import { InfoPopover } from "@/components/application/shell/info-popover";
+import { StatusPill, ProgressMeter } from "@/components/application/shell/panel-parts";
 
 // A fixed weekly-capacity assumption, not yet a per-user setting — see
 // docs/build-standards/EXCEPTION_REGISTER.md if this needs to vary by
@@ -193,14 +193,20 @@ function WorkloadPage() {
                 >
                   {totalHours}h of {capacityPerPerson}h
                 </span>
-                <span className="text-sm font-semibold tabular-nums text-foreground">
-                  {Math.round(percent)}%
-                </span>
+                {isOverCapacity ? (
+                  <StatusPill label="Over capacity" tone="critical" />
+                ) : totalHours > 0 ? (
+                  <StatusPill label="Allocated" tone="positive" />
+                ) : (
+                  <StatusPill label="Available" tone="neutral" />
+                )}
               </div>
 
-              <Progress
+              <ProgressMeter
                 value={percent}
-                className={cn("mt-4", isOverCapacity && "[&>div]:bg-danger")}
+                label={`${member.name} capacity used`}
+                tone={isOverCapacity ? "critical" : "info"}
+                className="mt-4"
               />
               <ul className="mt-3 space-y-1">
                 {memberAllocations.length === 0 && (
