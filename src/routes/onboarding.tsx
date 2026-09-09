@@ -73,31 +73,24 @@ function OnboardingPage() {
 
   async function handleAccountSubmit(values: AccountValues) {
     const slug = `${slugify(values.workspaceName)}-${user.id.slice(0, 6)}`;
-    const { data: workspace, error: workspaceError } = await supabase
+    const newWorkspaceId = crypto.randomUUID();
+
+    // The creator is added as owner by a database trigger, so no RETURNING
+    // read is needed here (the read policy requires membership that doesn't
+    // exist yet at RETURNING time).
+    const { error: workspaceError } = await supabase
       .from("workspaces")
-      .insert({ name: values.workspaceName, slug })
-      .select("id")
-      .single();
+      .insert({ id: newWorkspaceId, name: values.workspaceName, slug });
 
-    if (workspaceError || !workspace) {
-      toast.error("Couldn't create your workspace", { description: workspaceError?.message });
+    if (workspaceError) {
+      toast.error("Couldn't create your workspace", { description: workspaceError.message });
       return;
     }
 
-    const { error: memberError } = await supabase
-      .from("workspace_members")
-      .insert({ workspace_id: workspace.id, user_id: user.id, role: "owner" });
-
-    if (memberError) {
-      toast.error("Couldn't finish setting up your workspace", {
-        description: memberError.message,
-      });
-      return;
-    }
-
-    setWorkspaceId(workspace.id);
+    setWorkspaceId(newWorkspaceId);
     setStepIndex(1);
   }
+
 
   async function handleProfileSubmit(values: ProfileValues) {
     const { error } = await supabase
