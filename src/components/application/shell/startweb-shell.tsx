@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { Home, LogOut, Search, Settings } from "lucide-react";
+import { ChevronRight, Home, LogOut, Search, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useProfile } from "@/hooks/use-profile";
 import { initialsOf } from "@/lib/initials";
