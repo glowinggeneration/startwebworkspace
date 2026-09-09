@@ -52,7 +52,7 @@ const dealSchema = z.object({
 type DealFormInput = z.input<typeof dealSchema>;
 type DealFormOutput = z.output<typeof dealSchema>;
 
-export function NewDealDialog() {
+export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: accounts } = useAccounts(workspaceId);
@@ -106,10 +106,12 @@ export function NewDealDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="size-4" aria-hidden="true" />
-          New deal
-        </Button>
+        {trigger ?? (
+          <Button>
+            <Plus className="size-4" aria-hidden="true" />
+            New deal
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -42,7 +42,7 @@ const accountSchema = z.object({
 
 type AccountFormValues = z.infer<typeof accountSchema>;
 
-export function NewAccountDialog() {
+export function NewAccountDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: industries } = useIndustries(workspaceId);
@@ -74,10 +74,12 @@ export function NewAccountDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="size-4" aria-hidden="true" />
-          New account
-        </Button>
+        {trigger ?? (
+          <Button>
+            <Plus className="size-4" aria-hidden="true" />
+            New account
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
