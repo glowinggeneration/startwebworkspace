@@ -122,7 +122,11 @@ export function InviteDialog() {
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={createInvitation.isPending}>
-            {createInvitation.isPending ? "Creating…" : "Create invite link"}
+            {createInvitation.isPending ? (
+              <LoadingIndicator size="sm" label="Creating" />
+            ) : (
+              "Create invite link"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

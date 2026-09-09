@@ -104,7 +104,11 @@ export function NewInvoiceDialog({ trigger }: { trigger?: React.ReactNode } = {}
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={createInvoice.isPending}>
-            {createInvoice.isPending ? "Creating…" : "Create invoice"}
+            {createInvoice.isPending ? (
+              <LoadingIndicator size="sm" label="Creating" />
+            ) : (
+              "Create invoice"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

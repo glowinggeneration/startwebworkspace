@@ -108,7 +108,11 @@ function ProfileSetupPage() {
               />
               <p className="type-meta text-muted-foreground">Signed in as {user.email}</p>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? "Saving…" : "Continue to workspace"}
+                {form.formState.isSubmitting ? (
+                  <LoadingIndicator size="sm" label="Saving" />
+                ) : (
+                  "Continue to workspace"
+                )}
               </Button>
             </form>
           </Form>

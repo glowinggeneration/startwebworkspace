@@ -137,7 +137,11 @@ function OnboardingPage() {
                   )}
                 />
                 <Button type="submit" disabled={accountForm.formState.isSubmitting}>
-                  {accountForm.formState.isSubmitting ? "Creating…" : "Continue"}
+                  {accountForm.formState.isSubmitting ? (
+                    <LoadingIndicator size="sm" label="Creating" />
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </form>
             </Form>
@@ -170,7 +174,11 @@ function OnboardingPage() {
                   )}
                 />
                 <Button type="submit" disabled={profileForm.formState.isSubmitting}>
-                  {profileForm.formState.isSubmitting ? "Saving…" : "Continue"}
+                  {profileForm.formState.isSubmitting ? (
+                    <LoadingIndicator size="sm" label="Saving" />
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </form>
             </Form>

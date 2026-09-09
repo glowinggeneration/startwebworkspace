@@ -104,7 +104,11 @@ export function NewQuoteDialog({ trigger }: { trigger?: React.ReactNode } = {}) 
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={createQuote.isPending}>
-            {createQuote.isPending ? "Creating…" : "Create quote"}
+            {createQuote.isPending ? (
+              <LoadingIndicator size="sm" label="Creating" />
+            ) : (
+              "Create quote"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
