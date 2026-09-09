@@ -1,4 +1,15 @@
+## Context routine
+
+Before any build, fix or audit task, read `docs/context/RULES.md` and the
+living documents beside it (`PRODUCT.md`, `ARCHITECTURE.md`,
+`DATA_MODEL.md`, `CURRENT_WORK.md`, `DECISIONS.md`). New work starts from
+the brief and plan templates in `docs/context/templates/` and is recorded in
+`docs/context/work/`. Update the documents in the same change that makes
+them untrue.
+
 ## Application Build Master Rules
+
+
 
 This project follows `docs/build-standards/MASTER_RULES.md` (v1.0, 30 Aug 2026) — the mandatory build standard covering product definition,
 architecture, interface/accessibility, security, database migrations,
