@@ -194,7 +194,7 @@ export function CommandBoard({
         </MetricCard>
 
         <MetricCard label="Target coverage" value={`${coverage.coverage.toFixed(2)}×`}>
-          {coverage.status === "healthy" ? (
+          {coverage.status === "on-track" ? (
             <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5 text-success">
               On track
             </span>
