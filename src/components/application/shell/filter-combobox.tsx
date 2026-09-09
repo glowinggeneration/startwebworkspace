@@ -97,7 +97,9 @@ export function FilterCombobox({
           )}
         >
           <span className="flex min-w-0 items-center gap-2">
-            {Icon ? (
+            {selected && (selected.avatarName || selected.icon) ? (
+              <OptionMark option={selected} />
+            ) : Icon ? (
               <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden={true} />
             ) : null}
             <span className={cn("truncate", !selected && "text-muted-foreground")}>
