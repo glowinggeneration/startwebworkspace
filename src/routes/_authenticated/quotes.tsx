@@ -1,6 +1,16 @@
+import { useMemo, useState } from "react";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { Download } from "lucide-react";
+import { Download, FileText, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  EmptyState,
+  ExplainerPanel,
+  PageHeader,
+  Panel,
+  Toolbar,
+  UnderlineTabs,
+} from "@/components/application/shell/page-parts";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -20,6 +30,19 @@ import type { QuoteStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/quotes")({
   component: QuotesPage,
+  head: () => ({
+    meta: [
+      { title: "Quotes | Startweb" },
+      {
+        name: "description",
+        content: "Build client quotes and convert accepted ones straight into invoices.",
+      },
+      { property: "og:title", content: "Quotes | Startweb" },
+      { property: "og:description", content: "Quote your clients and convert to invoices." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
 });
 
 const STATUS_OPTIONS: QuoteStatus[] = ["draft", "sent", "accepted", "declined", "expired"];
@@ -50,44 +73,100 @@ function QuotesPage() {
     }
   }
 
-  return (
-    <div className="section-stack p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="type-display">Quotes</h1>
-          <p className="type-body text-muted-foreground">
-            An accepted quote converts straight into an invoice with the same line items.
-          </p>
-        </div>
-        <NewQuoteDialog />
-      </div>
+  const [tab, setTab] = useState<"all" | QuoteStatus>("all");
+  const [search, setSearch] = useState("");
 
-      {isLoading && (
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return (quotes ?? []).filter((quote) => {
+      if (tab !== "all" && quote.status !== tab) return false;
+      if (!term) return true;
+      return (
+        quote.quote_number.toLowerCase().includes(term) ||
+        accountName(quote.account_id).toLowerCase().includes(term)
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quotes, accounts, tab, search]);
+
+  const countFor = (status: QuoteStatus) =>
+    (quotes ?? []).filter((quote) => quote.status === status).length;
+
+  return (
+    <div className="space-y-6 p-8">
+      <PageHeader
+        title="Quotes"
+        description="An accepted quote converts straight into an invoice with the same line items."
+        actions={<NewQuoteDialog />}
+      />
+
+      <UnderlineTabs
+        ariaLabel="Quote status"
+        value={tab}
+        onValueChange={setTab}
+        options={[
+          { value: "all", label: "All quotes", count: quotes?.length ?? 0 },
+          ...STATUS_OPTIONS.map((status) => ({
+            value: status,
+            label: status.charAt(0).toUpperCase() + status.slice(1),
+            count: countFor(status),
+          })),
+        ]}
+      />
+
+      <Toolbar>
+        <div className="relative min-w-56 flex-1">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <Input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search quotes..."
+            aria-label="Search quotes"
+            className="h-11 bg-card pl-9"
+          />
+        </div>
+      </Toolbar>
+
+      {isLoading ? (
+        <div className="h-64 animate-pulse rounded-xl bg-muted" />
+      ) : filtered.length === 0 ? (
+        <Panel>
+          <EmptyState
+            icon={FileText}
+            title="No quotes yet"
+            description="Create a quote for a client and send it for approval."
+            action={<NewQuoteDialog />}
+          />
+        </Panel>
+      ) : (
         <div className="space-y-3">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-16 animate-pulse rounded-xl bg-muted" />
+          {filtered.map((quote) => (
+            <QuoteRow
+              key={quote.id}
+              quote={quote}
+              accountName={accountName(quote.account_id)}
+              onStatusChange={(status) => updateStatus.mutate({ id: quote.id, status })}
+              onConvert={() => handleConvert(quote)}
+              converting={convertToInvoice.isPending}
+            />
           ))}
         </div>
       )}
 
-      {quotes && quotes.length === 0 && (
-        <p className="type-body rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
-          No quotes yet.
-        </p>
-      )}
-
-      <div className="space-y-3">
-        {quotes?.map((quote) => (
-          <QuoteRow
-            key={quote.id}
-            quote={quote}
-            accountName={accountName(quote.account_id)}
-            onStatusChange={(status) => updateStatus.mutate({ id: quote.id, status })}
-            onConvert={() => handleConvert(quote)}
-            converting={convertToInvoice.isPending}
-          />
-        ))}
-      </div>
+      <ExplainerPanel
+        icon={FileText}
+        title="How a quote becomes an invoice"
+        description="One accepted quote creates exactly one invoice."
+      >
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          <li>Set a quote to accepted once the client confirms.</li>
+          <li>Use Convert to invoice, the line items carry across unchanged.</li>
+          <li>A quote can only be converted once, so retries never duplicate an invoice.</li>
+        </ul>
+      </ExplainerPanel>
     </div>
   );
 }
