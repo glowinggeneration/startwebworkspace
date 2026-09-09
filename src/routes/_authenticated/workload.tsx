@@ -2,7 +2,6 @@ import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { ChevronLeft, ChevronRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useProjects } from "@/hooks/use-projects";
