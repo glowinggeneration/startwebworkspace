@@ -30,7 +30,7 @@ function SettingsPage() {
   }
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div>
         <h1 className="type-display">{workspaceName}</h1>
         <p className="type-body text-muted-foreground">

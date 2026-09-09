@@ -51,12 +51,12 @@ function StatementsPage() {
   }
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="type-display">Statements</h1>
           <p className="type-body text-muted-foreground">
-            Every invoice and payment for one account, rolled up — always derived from the live
+            Every invoice and payment for one account, rolled up and always derived from the live
             data, never a separate record to keep in sync.
           </p>
         </div>

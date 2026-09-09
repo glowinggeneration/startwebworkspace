@@ -87,7 +87,7 @@ export function DealCard({
           >
             <div className="space-y-3 p-4">
               <DataRow icon={Package} label="Package">
-                {packageName ?? "—"}
+                {packageName ?? "No package"}
               </DataRow>
               {deal.next_step && (
                 <DataRow icon={MessageSquareText} label="Next step">

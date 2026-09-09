@@ -78,20 +78,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Startweb Workspace" },
       {
         name: "description",
-        content: "Startweb Workspace — pipeline, delivery and invoicing for one agency workspace.",
+        content: "Pipeline, delivery and invoicing for one agency workspace.",
       },
       { property: "og:title", content: "Startweb Workspace" },
       {
         property: "og:description",
-        content: "Startweb Workspace — pipeline, delivery and invoicing for one agency workspace.",
+        content: "Pipeline, delivery and invoicing for one agency workspace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap",
+      },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
     ],
+
   }),
   shellComponent: RootShell,
   component: RootComponent,

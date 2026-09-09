@@ -16,7 +16,7 @@ function AccountsPage() {
   const industryName = (id: string | null) => industries?.find((i) => i.id === id)?.name ?? null;
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="type-display">Accounts</h1>

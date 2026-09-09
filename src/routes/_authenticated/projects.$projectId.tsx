@@ -91,7 +91,7 @@ function ProjectDetailPage() {
   });
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div>
         <Link
           to="/projects"

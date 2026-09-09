@@ -38,7 +38,7 @@ function ProjectsPage() {
   }
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div>
         <h1 className="type-display">Projects</h1>
         <p className="type-body text-muted-foreground">
@@ -56,7 +56,7 @@ function ProjectsPage() {
 
       {projects && projects.length === 0 && (
         <p className="type-body rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
-          No projects yet — mark a deal won on the Pipeline board to create one.
+          No projects yet. Mark a deal won on the Pipeline board to create one.
         </p>
       )}
 
@@ -114,7 +114,7 @@ function ProjectsPage() {
                     <p className="type-meta text-muted-foreground">
                       {handoff.acknowledged_at
                         ? `Handoff acknowledged ${new Date(handoff.acknowledged_at).toLocaleDateString("en-ZA")}`
-                        : `Handed off ${new Date(handoff.handed_off_at).toLocaleDateString("en-ZA")} — needs a same-day acknowledgement`}
+                        : `Handed off ${new Date(handoff.handed_off_at).toLocaleDateString("en-ZA")}, needs a same-day acknowledgement`}
                     </p>
                   </div>
                   {!handoff.acknowledged_at && (

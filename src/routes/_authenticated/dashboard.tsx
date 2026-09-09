@@ -12,16 +12,16 @@ function DashboardPage() {
   const workspaceName = memberships[0]?.workspaceName;
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div>
-        <h1 className="type-display">
+        <h1 className="type-title">
           {profile?.full_name ? `Welcome back, ${profile.full_name.split(" ")[0]}` : "Welcome back"}
         </h1>
         <p className="type-body text-muted-foreground">
-          {workspaceName ? `${workspaceName} — ` : ""}the Command Board — look here Monday and
-          Friday.
+          {workspaceName ? `${workspaceName}. ` : ""}Your command board for Monday and Friday.
         </p>
       </div>
+
       <CommandBoard />
     </div>
   );
