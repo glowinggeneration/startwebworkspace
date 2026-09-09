@@ -300,6 +300,81 @@
     outline: none;
   }
 
+  /*
+   * Comfortable hit targets on touch input. Pointer-precise input keeps the
+   * compact desktop density; coarse pointers get the 44px minimum.
+   */
+  @media (pointer: coarse) {
+    button,
+    [role="button"],
+    [role="tab"],
+    a[data-slot="sidebar-menu-button"],
+    summary,
+    input:not([type="checkbox"]):not([type="radio"]),
+    select,
+    textarea {
+      min-height: 2.75rem;
+    }
+
+    button:where([aria-label]),
+    [role="button"]:where([aria-label]) {
+      min-width: 2.75rem;
+    }
+  }
+
+  /* Respect the system Increase Contrast setting. */
+  @media (prefers-contrast: more) {
+    :root,
+    .dark {
+      --border: color-mix(in oklab, var(--foreground) 45%, transparent);
+      --divider: color-mix(in oklab, var(--foreground) 35%, transparent);
+      --input: color-mix(in oklab, var(--foreground) 55%, transparent);
+      --muted-foreground: color-mix(in oklab, var(--foreground) 88%, transparent);
+    }
+
+    :focus-visible {
+      outline-width: 3px;
+      outline-color: var(--color-ring);
+    }
+  }
+
+  /* Respect the system Reduce Transparency setting: no blur, opaque surfaces. */
+  @media (prefers-reduced-transparency: reduce) {
+    [data-slot="popover-content"],
+    [data-slot="dropdown-menu-content"],
+    [data-slot="select-content"],
+    [data-slot="dialog-content"],
+    [data-slot="dialog-overlay"],
+    .app-header,
+    .backdrop-blur-md,
+    .backdrop-blur-xl {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+
+    [data-slot="popover-content"],
+    [data-slot="dropdown-menu-content"],
+    [data-slot="select-content"],
+    [data-slot="dialog-content"] {
+      background-color: var(--color-popover) !important;
+    }
+  }
+
+  /* Windows High Contrast: keep focus and state visible without colour. */
+  @media (forced-colors: active) {
+    :focus-visible {
+      outline: 3px solid Highlight;
+    }
+
+    [aria-current="page"],
+    [aria-selected="true"],
+    [data-active="true"] {
+      forced-color-adjust: none;
+      background-color: Highlight;
+      color: HighlightText;
+    }
+  }
+
   button,
   a,
   input,
@@ -377,6 +452,38 @@
 
 @utility surface-soft {
   box-shadow: var(--shadow-soft);
+}
+
+/* Keyboard-only shortcut past the navigation rail, first stop in the tab order. */
+@utility skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 100;
+  transform: translateY(-200%);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  padding: 0.625rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: var(--shadow-elevated);
+  transition: transform var(--motion-base) var(--ease-out-apple);
+  &:focus-visible {
+    transform: translateY(0);
+  }
+}
+
+/* Scroll edge effect: the header separates from content only once it scrolls. */
+@utility app-header {
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color var(--motion-base) var(--ease-out-apple),
+    box-shadow var(--motion-base) var(--ease-out-apple);
+  &[data-scrolled="true"] {
+    border-bottom-color: var(--color-divider);
+    box-shadow: 0 1px 0 color-mix(in oklab, var(--color-foreground) 4%, transparent);
+  }
 }
 
 @utility press-scale {
