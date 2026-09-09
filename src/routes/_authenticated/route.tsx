@@ -60,21 +60,13 @@ export const Route = createFileRoute("/_authenticated")({
   ),
 });
 
-/** Stable placeholder while the session and membership check resolve, so a
- * cold load shows the shell instead of a blank page. */
+/** Quiet placeholder while the session and membership check resolve: the
+ * shell frame appears immediately, with no spinner or pulsing blocks. */
 function AuthenticatedSkeleton() {
   return (
-    <div className="flex min-h-screen" aria-busy="true" aria-label="Loading your workspace">
+    <div className="flex min-h-screen" aria-busy="true" aria-label="Opening your workspace">
       <div className="hidden w-[15.5rem] shrink-0 bg-sidebar md:block" />
-      <div className="flex-1 space-y-4 p-8">
-        <KineticTextLoader text="Loading" className="py-6" />
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className="h-28 animate-pulse rounded-xl bg-muted" />
-          ))}
-        </div>
-        <div className="h-64 animate-pulse rounded-xl bg-muted" />
-      </div>
+      <div className="flex-1 bg-background" />
     </div>
   );
 }
