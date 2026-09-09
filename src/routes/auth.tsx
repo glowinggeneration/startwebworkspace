@@ -34,8 +34,15 @@ export const Route = createFileRoute("/auth")({
   ssr: false,
   validateSearch: searchSchema,
   beforeLoad: async ({ search }) => {
-    const { data } = await supabase.auth.getUser();
-    if (data.user) {
+    let user = null;
+    try {
+      const { data } = await supabase.auth.getUser();
+      user = data.user;
+    } catch {
+      // Transient auth/network failure: show the sign-in form instead of an error page.
+      return;
+    }
+    if (user) {
       throw redirect({ to: search.next ?? "/dashboard" });
     }
   },
