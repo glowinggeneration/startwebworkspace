@@ -31,7 +31,10 @@ export function LoadingIndicator({
       aria-live="polite"
       className={cn("inline-flex items-center gap-2 align-middle", className)}
     >
-      <span className="relative inline-flex shrink-0" style={{ width: dimensions, height: dimensions }}>
+      <span
+        className="relative inline-flex shrink-0"
+        style={{ width: dimensions, height: dimensions }}
+      >
         <svg
           width={dimensions}
           height={dimensions}

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 import { Input } from "@/components/ui/input";
 import {
   Form,
