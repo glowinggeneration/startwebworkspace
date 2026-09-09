@@ -1,6 +1,8 @@
 import * as React from "react";
 import { ChevronDown, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { TextAnimate } from "@/components/vendor/magicui/text-animate";
+
 
 /** Page title block with an optional right-hand action area. */
 export function PageHeader({
@@ -17,9 +19,16 @@ export function PageHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 className="text-[2.25rem] font-semibold leading-[1.1] tracking-[-0.032em] text-foreground">
+        <TextAnimate
+          as="h1"
+          by="word"
+          animation="blurInUp"
+          duration={0.4}
+          className="text-[2.25rem] font-semibold leading-[1.1] tracking-[-0.032em] text-foreground"
+        >
           {title}
-        </h1>
+        </TextAnimate>
+
         {description ? (
           <p className="mt-1.5 text-[0.9375rem] leading-relaxed tracking-[-0.006em] text-muted-foreground">
             {description}
