@@ -1,6 +1,9 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Monitor } from "lucide-react";
+import { ShineBorder } from "@/components/vendor/magicui/shine-border";
+import { TextAnimate } from "@/components/vendor/magicui/text-animate";
+
 
 /**
  * Adapted from the supplied Split-Screen Registration Page component
