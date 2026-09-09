@@ -212,10 +212,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                   </span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  className="group gap-2"
-                  onSelect={() => openCommandPalette()}
-                >
+                <DropdownMenuItem className="group gap-2" onSelect={() => openCommandPalette()}>
                   <Search
                     className="size-4 text-muted-foreground transition-transform duration-200 group-focus:scale-110"
                     aria-hidden="true"
