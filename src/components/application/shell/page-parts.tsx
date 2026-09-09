@@ -190,16 +190,21 @@ export function MetricTile({
   label,
   value,
   hint,
+  info,
   className,
 }: {
   label: string;
   value: string;
   hint?: string;
+  info?: React.ReactNode;
   className?: string;
 }) {
   return (
     <Panel className={cn("reveal lift-hover p-5", className)}>
-      <p className="text-sm text-muted-foreground">{label}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-sm text-muted-foreground">{label}</p>
+        {info}
+      </div>
       <p className="mt-2 text-[2rem] font-semibold leading-none tracking-[-0.03em] tabular-nums text-foreground">
         {value}
       </p>

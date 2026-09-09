@@ -29,6 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InfoPopover } from "@/components/application/shell/info-popover";
 import {
   Dialog,
   DialogContent,
@@ -192,7 +193,16 @@ export function CommandBoard({
           </p>
         </MetricCard>
 
-        <MetricCard label="Target coverage" value={`${coverage.coverage.toFixed(2)}×`}>
+        <MetricCard
+          label="Target coverage"
+          value={`${coverage.coverage.toFixed(2)}×`}
+          info={
+            <InfoPopover title="Target coverage">
+              <p>Planned pipeline value for the month divided by the monthly revenue target.</p>
+              <p>Anything under 1.00× means the plan does not yet cover the target.</p>
+            </InfoPopover>
+          }
+        >
           {coverage.status === "on-track" ? (
             <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5 text-success">
               On track
@@ -346,9 +356,7 @@ export function CommandBoard({
                 />
               ))}
             </div>
-            <p className="type-meta mt-2 text-muted-foreground">
-              {Math.round(achieved)}% achieved
-            </p>
+            <p className="type-meta mt-2 text-muted-foreground">{Math.round(achieved)}% achieved</p>
 
             <div className="mt-4 flex items-center justify-between border-t border-divider pt-4">
               <span className="type-body text-muted-foreground">Remaining</span>
@@ -368,15 +376,20 @@ export function CommandBoard({
 function MetricCard({
   label,
   value,
+  info,
   children,
 }: {
   label: string;
   value: string;
+  info?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
     <div className="card-surface flex flex-col gap-2 p-5">
-      <p className="type-body text-muted-foreground">{label}</p>
+      <div className="flex items-start justify-between gap-2">
+        <p className="type-body text-muted-foreground">{label}</p>
+        {info}
+      </div>
       <p className="type-display tabular-nums">{value}</p>
       <div className="mt-1">{children}</div>
     </div>

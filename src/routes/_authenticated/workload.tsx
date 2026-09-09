@@ -19,6 +19,7 @@ import {
   SegmentedControl,
   Toolbar,
 } from "@/components/application/shell/page-parts";
+import { InfoPopover } from "@/components/application/shell/info-popover";
 
 // A fixed weekly-capacity assumption, not yet a per-user setting — see
 // docs/build-standards/EXCEPTION_REGISTER.md if this needs to vary by
@@ -142,9 +143,29 @@ function WorkloadPage() {
       </Toolbar>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <MetricTile label="Team capacity" value={`${totals.capacity}h`} />
+        <MetricTile
+          label="Team capacity"
+          value={`${totals.capacity}h`}
+          info={
+            <InfoPopover title="How capacity is worked out">
+              <p>
+                Each person counts as {WEEKLY_CAPACITY_HOURS} hours a week, multiplied by the number
+                of people in the workspace and the period shown.
+              </p>
+              <p>Per person hours are not yet configurable.</p>
+            </InfoPopover>
+          }
+        />
         <MetricTile label="Allocated" value={`${totals.allocated}h`} />
-        <MetricTile label="Available" value={`${totals.available}h`} />
+        <MetricTile
+          label="Available"
+          value={`${totals.available}h`}
+          info={
+            <InfoPopover title="Available hours">
+              <p>Capacity less allocated hours. It never goes below zero.</p>
+            </InfoPopover>
+          }
+        />
         <MetricTile label="Utilisation" value={`${totals.utilisation}%`} />
       </div>
 
