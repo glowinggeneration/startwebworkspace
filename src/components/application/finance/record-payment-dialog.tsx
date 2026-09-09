@@ -13,19 +13,33 @@ import {
 } from "@/components/ui/dialog";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useRecordPayment } from "@/hooks/use-payments";
+import { currency } from "@/lib/sales/currency";
 
-export function RecordPaymentDialog({ invoiceId }: { invoiceId: string }) {
+export function RecordPaymentDialog({
+  invoiceId,
+  outstanding,
+}: {
+  invoiceId: string;
+  outstanding: number;
+}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const recordPayment = useRecordPayment(workspaceId, invoiceId);
 
   const [amount, setAmount] = useState(0);
+  const settled = outstanding <= 0;
   const [paidAt, setPaidAt] = useState(() => new Date().toISOString().slice(0, 10));
   const [method, setMethod] = useState("");
 
   async function handleSubmit() {
     if (amount <= 0) {
       toast.error("Enter an amount greater than zero");
+      return;
+    }
+    if (amount > outstanding + 0.01) {
+      toast.error("That is more than the outstanding balance", {
+        description: `This invoice still owes ${currency.format(outstanding)}.`,
+      });
       return;
     }
     try {
@@ -44,7 +58,12 @@ export function RecordPaymentDialog({ invoiceId }: { invoiceId: string }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button size="sm" variant="outline">
+        <Button
+          size="sm"
+          variant="outline"
+          disabled={settled}
+          title={settled ? "This invoice is fully paid" : undefined}
+        >
           Record payment
         </Button>
       </DialogTrigger>
@@ -54,10 +73,15 @@ export function RecordPaymentDialog({ invoiceId }: { invoiceId: string }) {
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <div className="space-y-2">
-            <Label>Amount (ZAR)</Label>
+            <Label htmlFor={`payment-amount-${invoiceId}`}>Amount (ZAR)</Label>
+            <p className="type-meta text-muted-foreground">
+              Outstanding balance {currency.format(outstanding)}
+            </p>
             <Input
+              id={`payment-amount-${invoiceId}`}
               type="number"
               min={0}
+              max={outstanding}
               step={100}
               value={amount}
               onChange={(event) => setAmount(event.target.valueAsNumber || 0)}
