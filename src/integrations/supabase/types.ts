@@ -14,39 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
+      account_notes: {
+        Row: {
+          account_id: string
+          category: string | null
+          created_at: string
+          id: string
+          import_key: string | null
+          import_source: string | null
+          note: string
+          note_date: string | null
+          source_refs: string | null
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          account_id: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          import_key?: string | null
+          import_source?: string | null
+          note: string
+          note_date?: string | null
+          source_refs?: string | null
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          account_id?: string
+          category?: string | null
+          created_at?: string
+          id?: string
+          import_key?: string | null
+          import_source?: string | null
+          note?: string
+          note_date?: string | null
+          source_refs?: string | null
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "account_notes_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "account_notes_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       accounts: {
         Row: {
+          account_type: string | null
           country: string | null
           created_at: string
           id: string
+          import_key: string | null
+          import_source: string | null
           industry_id: string | null
           is_reference_client: boolean
           name: string
+          primary_service: string | null
           reference_note: string | null
+          relationship_status: string | null
+          review_priority: string | null
+          source_refs: string | null
+          summary: string | null
           updated_at: string
           website: string | null
           workspace_id: string
         }
         Insert: {
+          account_type?: string | null
           country?: string | null
           created_at?: string
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
           name: string
+          primary_service?: string | null
           reference_note?: string | null
+          relationship_status?: string | null
+          review_priority?: string | null
+          source_refs?: string | null
+          summary?: string | null
           updated_at?: string
           website?: string | null
           workspace_id: string
         }
         Update: {
+          account_type?: string | null
           country?: string | null
           created_at?: string
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
           name?: string
+          primary_service?: string | null
           reference_note?: string | null
+          relationship_status?: string | null
+          review_priority?: string | null
+          source_refs?: string | null
+          summary?: string | null
           updated_at?: string
           website?: string | null
           workspace_id?: string
@@ -107,9 +188,13 @@ export type Database = {
           created_at: string
           email: string | null
           id: string
+          import_key: string | null
+          import_source: string | null
           name: string
+          notes: string | null
           phone: string | null
           role_title: string | null
+          source_refs: string | null
           workspace_id: string
         }
         Insert: {
@@ -117,9 +202,13 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           name: string
+          notes?: string | null
           phone?: string | null
           role_title?: string | null
+          source_refs?: string | null
           workspace_id: string
         }
         Update: {
@@ -127,9 +216,13 @@ export type Database = {
           created_at?: string
           email?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           name?: string
+          notes?: string | null
           phone?: string | null
           role_title?: string | null
+          source_refs?: string | null
           workspace_id?: string
         }
         Relationships: [
@@ -367,6 +460,68 @@ export type Database = {
           },
           {
             foreignKeyName: "deals_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      import_review_items: {
+        Row: {
+          created_at: string
+          evidence: string | null
+          id: string
+          import_key: string | null
+          import_source: string | null
+          issue: string
+          record_key: string | null
+          record_type: string
+          required_decision: string | null
+          resolved_at: string | null
+          resolved_by: string | null
+          source_refs: string | null
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          evidence?: string | null
+          id?: string
+          import_key?: string | null
+          import_source?: string | null
+          issue: string
+          record_key?: string | null
+          record_type: string
+          required_decision?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          source_refs?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          evidence?: string | null
+          id?: string
+          import_key?: string | null
+          import_source?: string | null
+          issue?: string
+          record_key?: string | null
+          record_type?: string
+          required_decision?: string | null
+          resolved_at?: string | null
+          resolved_by?: string | null
+          source_refs?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "import_review_items_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -943,10 +1098,18 @@ export type Database = {
           account_id: string
           created_at: string
           deal_id: string | null
+          due_date: string | null
           id: string
+          import_key: string | null
+          import_source: string | null
           name: string
           owner_id: string | null
+          service_type: string | null
+          source_refs: string | null
+          start_date: string | null
           status: string
+          status_label: string | null
+          summary: string | null
           updated_at: string
           workspace_id: string
         }
@@ -954,10 +1117,18 @@ export type Database = {
           account_id: string
           created_at?: string
           deal_id?: string | null
+          due_date?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           name: string
           owner_id?: string | null
+          service_type?: string | null
+          source_refs?: string | null
+          start_date?: string | null
           status?: string
+          status_label?: string | null
+          summary?: string | null
           updated_at?: string
           workspace_id: string
         }
@@ -965,10 +1136,18 @@ export type Database = {
           account_id?: string
           created_at?: string
           deal_id?: string | null
+          due_date?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           name?: string
           owner_id?: string | null
+          service_type?: string | null
+          source_refs?: string | null
+          start_date?: string | null
           status?: string
+          status_label?: string | null
+          summary?: string | null
           updated_at?: string
           workspace_id?: string
         }
@@ -1213,10 +1392,14 @@ export type Database = {
           description: string | null
           due_date: string | null
           id: string
+          import_key: string | null
+          import_source: string | null
           phase_id: string
           priority: string
           project_id: string
+          source_refs: string | null
           status: string
+          status_label: string | null
           title: string
           updated_at: string
           workspace_id: string
@@ -1226,10 +1409,14 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           phase_id: string
           priority?: string
           project_id: string
+          source_refs?: string | null
           status?: string
+          status_label?: string | null
           title: string
           updated_at?: string
           workspace_id: string
@@ -1239,10 +1426,14 @@ export type Database = {
           description?: string | null
           due_date?: string | null
           id?: string
+          import_key?: string | null
+          import_source?: string | null
           phase_id?: string
           priority?: string
           project_id?: string
+          source_refs?: string | null
           status?: string
+          status_label?: string | null
           title?: string
           updated_at?: string
           workspace_id?: string
