@@ -67,8 +67,13 @@ export function TextAnimate({
   const container: Variants = {
     hidden: {},
     show: {
-      transition: { delayChildren: delay, staggerChildren: by === "character" ? 0.015 : 0.05 },
+      transition: {
+        delayChildren: delay,
+        // Cap the whole reveal at roughly half a second, however long the text.
+        staggerChildren: Math.min(by === "character" ? 0.015 : 0.05, 0.5 / segments.length),
+      },
     },
+
   };
   const item: Variants = {
     hidden: hidden[animation],
