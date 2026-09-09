@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { SplitAuthLayout, AuthFooterLink } from "@/components/application/auth/split-auth-layout";
 import { SocialAuthButtons } from "@/components/application/auth/social-auth-buttons";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 import { checkAuthRateLimit } from "@/lib/auth/check-auth-rate-limit";
 
 const searchSchema = z.object({
@@ -90,7 +91,12 @@ function AuthPage() {
       </div>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <form
+          noValidate
+          aria-label="Sign in"
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex flex-col gap-4"
+        >
           <FormField
             control={form.control}
             name="email"
@@ -100,7 +106,10 @@ function AuthPage() {
                 <FormControl>
                   <Input
                     type="email"
+                    inputMode="email"
                     autoComplete="email"
+                    autoCapitalize="none"
+                    spellCheck={false}
                     placeholder="you@company.com"
                     {...field}
                   />
@@ -122,8 +131,12 @@ function AuthPage() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="mt-2" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Signing in…" : "Sign in"}
+          <Button type="submit" className="mt-2 h-10" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? (
+              <LoadingIndicator size="sm" label="Signing in" />
+            ) : (
+              "Sign in"
+            )}
           </Button>
         </form>
       </Form>
