@@ -55,12 +55,16 @@ export function LoadingIndicator({
           viewBox={`0 0 ${dimensions} ${dimensions}`}
           aria-hidden="true"
           className="absolute inset-0"
-          animate={reduceMotion ? undefined : { rotate: 360 }}
-          transition={
-            reduceMotion
-              ? undefined
-              : { repeat: Number.POSITIVE_INFINITY, duration: 0.9, ease: "linear" }
-          }
+          {...(reduceMotion
+            ? {}
+            : {
+                animate: { rotate: 360 },
+                transition: {
+                  repeat: Number.POSITIVE_INFINITY,
+                  duration: 0.9,
+                  ease: "linear" as const,
+                },
+              })}
         >
           <circle
             cx={dimensions / 2}
