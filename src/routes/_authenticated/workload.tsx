@@ -93,7 +93,9 @@ function WorkloadPage() {
             <div className="flex items-center gap-2">
               <AvatarCircles
                 size="sm"
-                avatars={members.slice(0, 5).map((member) => ({ name: member.name, imageUrl: member.avatarUrl }))}
+                avatars={members
+                  .slice(0, 5)
+                  .map((member) => ({ name: member.name, imageUrl: member.avatarUrl }))}
                 numPeople={Math.max(members.length - 5, 0)}
               />
               <span className="text-sm text-muted-foreground">

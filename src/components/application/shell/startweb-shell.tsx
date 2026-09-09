@@ -17,7 +17,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   AlertDialog,
@@ -126,6 +126,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
           </SidebarMenu>
           <div className="flex items-center gap-3 border-t border-white/20 pt-4">
             <Avatar className="size-9 bg-white/15">
+              <AvatarImage src={profile?.avatar_url ?? undefined} alt="" className="object-top" />
               <AvatarFallback className="bg-transparent text-sm font-semibold text-sidebar-foreground">
                 {initialsOf(profile?.full_name)}
               </AvatarFallback>
@@ -193,6 +194,11 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                   aria-label="Account menu"
                 >
                   <Avatar className="size-9 ring-2 ring-primary/25 ring-offset-2 ring-offset-card">
+                    <AvatarImage
+                      src={profile?.avatar_url ?? undefined}
+                      alt=""
+                      className="object-top"
+                    />
                     <AvatarFallback>{initialsOf(profile?.full_name)}</AvatarFallback>
                   </Avatar>
                 </Button>
@@ -200,6 +206,11 @@ export function StartwebShell({ children }: { children: ReactNode }) {
               <DropdownMenuContent align="end" className="w-64">
                 <DropdownMenuLabel className="flex items-center gap-3 py-2.5">
                   <Avatar className="size-9">
+                    <AvatarImage
+                      src={profile?.avatar_url ?? undefined}
+                      alt=""
+                      className="object-top"
+                    />
                     <AvatarFallback>{initialsOf(profile?.full_name)}</AvatarFallback>
                   </Avatar>
                   <span className="min-w-0">
