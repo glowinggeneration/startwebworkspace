@@ -10,6 +10,7 @@ import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
 import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
 import { AvatarLabelGroup } from "@/components/application/shell/avatar-label-group";
+import { UtilityIconButton } from "@/components/application/shell/utility-icon-button";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useInvitations, useRevokeInvitation } from "@/hooks/use-invitations";
 import { InviteDialog } from "@/components/application/settings/invite-dialog";
@@ -96,22 +97,17 @@ function SettingsPage() {
                   </span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Button
-                    size="icon"
-                    variant="ghost"
+                  <UtilityIconButton
+                    label="Copy invite link"
+                    icon={<Copy className="size-4" aria-hidden="true" />}
                     onClick={() => copyInviteLink(invitation.token)}
-                    aria-label="Copy invite link"
-                  >
-                    <Copy className="size-4" aria-hidden="true" />
-                  </Button>
-                  <Button
-                    size="icon"
-                    variant="ghost"
+                  />
+                  <UtilityIconButton
+                    label="Revoke invitation"
+                    danger
+                    icon={<X className="size-4" aria-hidden="true" />}
                     onClick={() => revokeInvitation.mutate(invitation.id)}
-                    aria-label="Revoke invitation"
-                  >
-                    <X className="size-4" aria-hidden="true" />
-                  </Button>
+                  />
                 </div>
               </li>
             ))}

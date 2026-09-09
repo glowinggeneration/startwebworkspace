@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { InfoPopover } from "@/components/application/shell/info-popover";
+import { UtilityIconButton } from "@/components/application/shell/utility-icon-button";
 import {
   Dialog,
   DialogContent,
@@ -252,9 +253,10 @@ export function CommandBoard({
               </div>
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="Filter rows">
-                    <Filter className="size-4" aria-hidden="true" />
-                  </Button>
+                  <UtilityIconButton
+                    label="Filter rows"
+                    icon={<Filter className="size-4" aria-hidden="true" />}
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuCheckboxItem
@@ -265,9 +267,11 @@ export function CommandBoard({
                   </DropdownMenuCheckboxItem>
                 </DropdownMenuContent>
               </DropdownMenu>
-              <Button variant="ghost" size="icon" aria-label="Export as CSV" onClick={exportCsv}>
-                <Download className="size-4" aria-hidden="true" />
-              </Button>
+              <UtilityIconButton
+                label="Export as CSV"
+                icon={<Download className="size-4" aria-hidden="true" />}
+                onClick={exportCsv}
+              />
             </div>
           </div>
 

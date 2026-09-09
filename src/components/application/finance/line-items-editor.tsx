@@ -1,4 +1,5 @@
 import { Plus, Trash2 } from "lucide-react";
+import { UtilityIconButton } from "@/components/application/shell/utility-icon-button";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -82,15 +83,12 @@ export function LineItemsEditor({
             <span className="type-meta w-24 text-right text-muted-foreground">
               {currency.format(item.quantity * item.unitPrice)}
             </span>
-            <Button
-              type="button"
-              size="icon"
-              variant="ghost"
+            <UtilityIconButton
+              label="Remove line"
+              danger
+              icon={<Trash2 className="size-4" aria-hidden="true" />}
               onClick={() => remove(index)}
-              aria-label="Remove line"
-            >
-              <Trash2 className="size-4" aria-hidden="true" />
-            </Button>
+            />
           </div>
         ))}
         {items.length === 0 && (
