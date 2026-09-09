@@ -12,13 +12,7 @@ import {
 } from "@/components/ui/select";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
-import {
-  useInvoices,
-  useInvoiceLineItems,
-  useUpdateInvoiceStatus,
-  type Invoice,
-} from "@/hooks/use-invoices";
-import { usePayments } from "@/hooks/use-payments";
+import { useInvoices, useUpdateInvoiceStatus, type Invoice } from "@/hooks/use-invoices";
 import { NewInvoiceDialog } from "@/components/application/finance/new-invoice-dialog";
 import { RecordPaymentDialog } from "@/components/application/finance/record-payment-dialog";
 import { downloadDocumentPdf } from "@/lib/pdf/document-pdf";
@@ -89,8 +83,8 @@ function InvoiceRow({
   onStatusChange: (status: InvoiceStatus) => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const { data: lineItems } = useInvoiceLineItems(invoice.id);
-  const { data: payments } = usePayments(invoice.id);
+  const lineItems = [...invoice.invoice_line_items].sort((a, b) => a.sort_order - b.sort_order);
+  const payments = [...invoice.payments].sort((a, b) => (a.paid_at < b.paid_at ? 1 : -1));
   const total = (lineItems ?? []).reduce((sum, item) => sum + item.quantity * item.unit_price, 0);
   const totalPaid = (payments ?? []).reduce((sum, payment) => sum + payment.amount, 0);
 
@@ -158,7 +152,10 @@ function InvoiceRow({
               <Download className="size-4" aria-hidden="true" />
               PDF
             </Button>
-            <RecordPaymentDialog invoiceId={invoice.id} />
+            <RecordPaymentDialog
+              invoiceId={invoice.id}
+              outstanding={Math.max(total - totalPaid, 0)}
+            />
           </div>
 
           <div>

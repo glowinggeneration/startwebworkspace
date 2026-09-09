@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Copy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { useProfile, useUpdateProfileName } from "@/hooks/use-profile";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
@@ -37,6 +41,8 @@ function SettingsPage() {
           Workspace members and pending invitations.
         </p>
       </div>
+
+      <ProfileCard />
 
       <div className="card-surface p-5">
         <h2 className="type-section mb-3">Team</h2>
@@ -93,6 +99,67 @@ function SettingsPage() {
             ))}
           </ul>
         </div>
+      )}
+    </div>
+  );
+}
+
+function ProfileCard() {
+  const { data: profile, isLoading } = useProfile();
+  const updateName = useUpdateProfileName();
+  const [fullName, setFullName] = useState("");
+
+  useEffect(() => {
+    if (profile?.full_name) setFullName(profile.full_name);
+  }, [profile?.full_name]);
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const trimmed = fullName.trim();
+    if (!trimmed) {
+      toast.error("Enter your name");
+      return;
+    }
+    try {
+      await updateName.mutateAsync(trimmed);
+      toast.success("Name updated");
+    } catch (error) {
+      toast.error("Couldn't save your name", {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    }
+  }
+
+  return (
+    <div className="card-surface p-5">
+      <h2 className="type-section mb-3">Your profile</h2>
+      {isLoading ? (
+        <div className="h-10 animate-pulse rounded-lg bg-muted" />
+      ) : (
+        <form onSubmit={handleSubmit} className="flex flex-wrap items-end gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="profile-name">Display name</Label>
+            <Input
+              id="profile-name"
+              className="w-64"
+              value={fullName}
+              onChange={(event) => setFullName(event.target.value)}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="profile-email">Email</Label>
+            <Input
+              id="profile-email"
+              className="w-64"
+              value={profile?.email ?? ""}
+              readOnly
+              disabled
+            />
+          </div>
+          <Button type="submit" variant="outline" disabled={updateName.isPending}>
+            {updateName.isPending ? "Saving…" : "Save"}
+          </Button>
+        </form>
       )}
     </div>
   );

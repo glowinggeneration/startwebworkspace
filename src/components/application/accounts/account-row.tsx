@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useContacts, useCreateContact } from "@/hooks/use-contacts";
+import { currency } from "@/lib/sales/currency";
+import { invoiceBalance } from "@/lib/finance/balance";
 
 interface AccountRowProps {
   account: {
@@ -17,13 +19,22 @@ interface AccountRowProps {
     website: string | null;
     country: string | null;
     is_reference_client: boolean;
+    deals: { id: string; status: string; value: number }[];
+    projects: { id: string; name: string; status: string }[];
+    invoices: {
+      id: string;
+      invoice_number: string;
+      status: string;
+      invoice_line_items: { quantity: number; unit_price: number }[];
+      payments: { amount: number }[];
+    }[];
   };
   industryName: string | null;
 }
 
 const contactSchema = z.object({
   name: z.string().trim().min(1, "Enter a name"),
-  email: z.string().optional(),
+  email: z.union([z.literal(""), z.string().trim().email("Enter a valid email")]).optional(),
   roleTitle: z.string().optional(),
 });
 type ContactFormValues = z.infer<typeof contactSchema>;
@@ -33,6 +44,7 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
   const { workspaceId } = useActiveWorkspace();
   const { data: contacts } = useContacts(workspaceId, account.id);
   const createContact = useCreateContact(workspaceId, account.id);
+  const outstanding = account.invoices.reduce((sum, invoice) => sum + invoiceBalance(invoice), 0);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -99,6 +111,34 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
 
       {isExpanded && (
         <div className="border-t border-border p-4">
+          <dl className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div>
+              <dt className="type-meta text-muted-foreground">Open deals</dt>
+              <dd className="type-body font-medium">
+                {account.deals.filter((deal) => deal.status === "open").length}
+              </dd>
+            </div>
+            <div>
+              <dt className="type-meta text-muted-foreground">Won value</dt>
+              <dd className="type-body font-medium">
+                {currency.format(
+                  account.deals
+                    .filter((deal) => deal.status === "won")
+                    .reduce((sum, deal) => sum + deal.value, 0),
+                )}
+              </dd>
+            </div>
+            <div>
+              <dt className="type-meta text-muted-foreground">Active projects</dt>
+              <dd className="type-body font-medium">
+                {account.projects.filter((project) => project.status !== "completed").length}
+              </dd>
+            </div>
+            <div>
+              <dt className="type-meta text-muted-foreground">Outstanding</dt>
+              <dd className="type-body font-medium">{currency.format(outstanding)}</dd>
+            </div>
+          </dl>
           <p className="type-meta mb-2 text-muted-foreground">Contacts</p>
           <ul className="mb-3 space-y-1">
             {contacts && contacts.length === 0 && (

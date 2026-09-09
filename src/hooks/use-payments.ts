@@ -53,8 +53,11 @@ export function useRecordPayment(workspaceId: string, invoiceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["payments", invoiceId] });
-      // The DB trigger may flip the invoice to 'paid' as part of this write.
+      // The DB trigger may flip the invoice to 'paid' as part of this write,
+      // and statements/workspace payment rollups read the same rows.
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["payments-workspace", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
 }

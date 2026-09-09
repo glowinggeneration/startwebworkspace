@@ -10,7 +10,9 @@ export function useAccounts(workspaceId: string) {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("accounts")
-        .select("id, name, industry_id, website, country, is_reference_client")
+        .select(
+          "id, name, industry_id, website, country, is_reference_client, deals(id, status, value), projects(id, name, status), invoices(id, invoice_number, status, invoice_line_items(quantity, unit_price), payments(amount))",
+        )
         .eq("workspace_id", workspaceId)
         .order("name");
       if (error) throw error;

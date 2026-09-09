@@ -7,10 +7,13 @@ export function useQuotes(workspaceId: string) {
   return useQuery({
     queryKey: ["quotes", workspaceId],
     queryFn: async () => {
+      // Line items and any invoice already raised from the quote come back
+      // nested, so the list renders totals from one request instead of one
+      // request per row.
       const { data, error } = await supabase
         .from("quotes")
         .select(
-          "id, account_id, deal_id, quote_number, status, issue_date, expiry_date, notes, created_at",
+          "id, account_id, deal_id, quote_number, status, issue_date, expiry_date, notes, created_at, quote_line_items(id, package_id, description, quantity, unit_price, sort_order), invoices(id, invoice_number)",
         )
         .eq("workspace_id", workspaceId)
         .order("created_at", { ascending: false });

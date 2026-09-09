@@ -18,36 +18,51 @@ export const Route = createFileRoute("/_authenticated")({
       throw redirect({ to: "/auth", search: { next } });
     }
 
+    // Memberships and workspace names in one round trip, so the gate does
+    // not stack two waits before the first paint.
     const { data: memberRows } = await supabase
       .from("workspace_members")
-      .select("workspace_id, role")
+      .select("workspace_id, role, workspaces(name)")
       .eq("user_id", data.user.id);
 
     if (!memberRows || memberRows.length === 0) {
       throw redirect({ to: "/onboarding" });
     }
 
-    const { data: workspaceRows } = await supabase
-      .from("workspaces")
-      .select("id, name")
-      .in(
-        "id",
-        memberRows.map((m) => m.workspace_id),
-      );
-    const namesById = new Map((workspaceRows ?? []).map((w) => [w.id, w.name]));
-
     return {
       user: data.user,
       memberships: memberRows.map((m): WorkspaceMembership => ({
         workspaceId: m.workspace_id,
-        workspaceName: namesById.get(m.workspace_id) ?? "",
+        workspaceName: m.workspaces?.name ?? "",
         role: m.role,
       })),
     };
   },
+  pendingMs: 0,
+  pendingComponent: AuthenticatedSkeleton,
   component: () => (
     <StartwebShell>
       <Outlet />
     </StartwebShell>
   ),
 });
+
+/** Stable placeholder while the session and membership check resolve, so a
+ * cold load shows the shell instead of a blank page. */
+function AuthenticatedSkeleton() {
+  return (
+    <div className="flex min-h-screen" aria-busy="true" aria-label="Loading your workspace">
+      <div className="hidden w-[15.5rem] shrink-0 bg-sidebar md:block" />
+      <div className="flex-1 space-y-4 p-8">
+        <div className="h-8 w-56 animate-pulse rounded bg-muted" />
+        <div className="h-4 w-80 animate-pulse rounded bg-muted" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div key={i} className="h-28 animate-pulse rounded-xl bg-muted" />
+          ))}
+        </div>
+        <div className="h-64 animate-pulse rounded-xl bg-muted" />
+      </div>
+    </div>
+  );
+}
