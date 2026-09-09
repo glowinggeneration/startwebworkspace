@@ -1,0 +1,106 @@
+import * as React from "react";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+export type ComboboxOption = {
+  value: string;
+  label: string;
+};
+
+/**
+ * Searchable single-select filter: a quiet trigger showing the current choice,
+ * opening a type-to-filter list. Replaces plain selects where a workspace can
+ * grow past a handful of options.
+ */
+export function FilterCombobox({
+  value,
+  onValueChange,
+  options,
+  icon: Icon,
+  ariaLabel,
+  placeholder,
+  searchPlaceholder = "Search...",
+  emptyLabel = "Nothing found.",
+  className,
+}: {
+  value: string;
+  onValueChange: (value: string) => void;
+  options: ComboboxOption[];
+  icon?: React.ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
+  ariaLabel: string;
+  placeholder: string;
+  searchPlaceholder?: string;
+  emptyLabel?: string;
+  className?: string;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const selected = options.find((option) => option.value === value);
+
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          type="button"
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          aria-label={ariaLabel}
+          className={cn(
+            "h-11 w-56 justify-between gap-2 bg-card font-normal tracking-[-0.006em]",
+            className,
+          )}
+        >
+          <span className="flex min-w-0 items-center gap-2">
+            {Icon ? (
+              <Icon className="size-4 shrink-0 text-muted-foreground" aria-hidden={true} />
+            ) : null}
+            <span className={cn("truncate", !selected && "text-muted-foreground")}>
+              {selected?.label ?? placeholder}
+            </span>
+          </span>
+          <ChevronsUpDown className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="w-56 p-0">
+        <Command>
+          <CommandInput placeholder={searchPlaceholder} className="h-10" />
+          <CommandList>
+            <CommandEmpty>{emptyLabel}</CommandEmpty>
+            <CommandGroup>
+              {options.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  value={option.label}
+                  onSelect={() => {
+                    onValueChange(option.value);
+                    setOpen(false);
+                  }}
+                  className="gap-2"
+                >
+                  <Check
+                    className={cn(
+                      "size-4 shrink-0",
+                      option.value === value ? "opacity-100" : "opacity-0",
+                    )}
+                    aria-hidden="true"
+                  />
+                  <span className="truncate">{option.label}</span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  );
+}
