@@ -19,7 +19,7 @@ export function useWorkspaceMembers(workspaceId: string) {
 
       const { data: profiles, error: profilesError } = await supabase
         .from("profiles")
-        .select("id, full_name, email")
+        .select("id, full_name, email, avatar_url, job_title")
         .in(
           "id",
           members.map((m) => m.user_id),
@@ -33,6 +33,8 @@ export function useWorkspaceMembers(workspaceId: string) {
           role: member.role,
           name: profile?.full_name || profile?.email || "Unknown",
           email: profile?.email ?? null,
+          jobTitle: profile?.job_title ?? null,
+          avatarUrl: profile?.avatar_url ?? null,
         };
       });
     },
