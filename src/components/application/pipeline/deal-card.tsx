@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { currency } from "@/lib/sales/currency";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Calendar,
@@ -24,12 +25,6 @@ interface DealCardProps {
   packageName: string | null;
   onStatusChange: (status: DealStatus) => void;
 }
-
-const currency = new Intl.NumberFormat("en-ZA", {
-  style: "currency",
-  currency: "ZAR",
-  maximumFractionDigits: 0,
-});
 
 /**
  * Adapted from the supplied Expandable Profile Card component (see
@@ -66,7 +61,7 @@ export function DealCard({
         </div>
         <div className="flex shrink-0 items-center gap-2">
           {industryName && (
-            <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
+            <span className="max-w-24 truncate rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
               {industryName}
             </span>
           )}
