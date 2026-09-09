@@ -29,15 +29,11 @@ export interface NavGroup {
  */
 export const NAV_GROUPS: NavGroup[] = [
   {
-    label: "Overview",
-    items: [{ to: "/dashboard", label: "Dashboard", icon: LayoutDashboard }],
-  },
-  {
-    label: "Sales",
+    label: "Workspace",
     items: [
+      { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
       { to: "/pipeline", label: "Pipeline", icon: Kanban },
       { to: "/accounts", label: "Accounts", icon: Users },
-      { to: "/activity", label: "Activity", icon: CalendarCheck },
     ],
   },
   {
@@ -45,6 +41,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/projects", label: "Projects", icon: FolderKanban },
       { to: "/workload", label: "Workload", icon: Gauge },
+      { to: "/activity", label: "Activity", icon: CalendarCheck },
     ],
   },
   {
