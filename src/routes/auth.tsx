@@ -82,7 +82,7 @@ function AuthPage() {
 
   return (
     <SplitAuthLayout
-      headline="Welcome back."
+      headline="Sign in to your"
       subhead="Pick up your pipeline, projects and invoices right where you left off."
     >
       <p className="mb-6 text-center text-sm font-medium text-muted-foreground">Sign in</p>
