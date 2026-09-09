@@ -1,7 +1,7 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import type { WorkspaceRole } from "@/integrations/supabase/app-types";
-import { KineticTextLoader } from "@/components/core/kinetic-loader";
+
 import { StartwebShell } from "@/components/application/shell/startweb-shell";
 
 export interface WorkspaceMembership {
