@@ -74,7 +74,7 @@ function RegisterPage() {
 
   return (
     <SplitAuthLayout
-      headline="Run your whole agency in one workspace."
+      headline="Create your"
       subhead="Pipeline, delivery and invoicing in one source of truth, from first call to final invoice."
     >
       <p className="mb-6 text-center text-sm font-medium text-muted-foreground">
