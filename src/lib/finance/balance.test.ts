@@ -3,9 +3,12 @@ import { invoiceBalance, lineItemsTotal, paymentsTotal } from "./balance";
 
 describe("finance balances", () => {
   it("totals line items by quantity and price", () => {
-    expect(lineItemsTotal([{ quantity: 2, unit_price: 1500 }, { quantity: 1, unit_price: 500 }])).toBe(
-      3500,
-    );
+    expect(
+      lineItemsTotal([
+        { quantity: 2, unit_price: 1500 },
+        { quantity: 1, unit_price: 500 },
+      ]),
+    ).toBe(3500);
   });
 
   it("totals payments", () => {

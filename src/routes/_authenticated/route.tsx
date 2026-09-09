@@ -31,13 +31,11 @@ export const Route = createFileRoute("/_authenticated")({
 
     return {
       user: data.user,
-      memberships: memberRows.map(
-        (m): WorkspaceMembership => ({
-          workspaceId: m.workspace_id,
-          workspaceName: m.workspaces?.name ?? "",
-          role: m.role,
-        }),
-      ),
+      memberships: memberRows.map((m): WorkspaceMembership => ({
+        workspaceId: m.workspace_id,
+        workspaceName: m.workspaces?.name ?? "",
+        role: m.role,
+      })),
     };
   },
   pendingMs: 0,

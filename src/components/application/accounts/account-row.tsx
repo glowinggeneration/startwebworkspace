@@ -44,10 +44,7 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
   const { workspaceId } = useActiveWorkspace();
   const { data: contacts } = useContacts(workspaceId, account.id);
   const createContact = useCreateContact(workspaceId, account.id);
-  const outstanding = account.invoices.reduce(
-    (sum, invoice) => sum + invoiceBalance(invoice),
-    0,
-  );
+  const outstanding = account.invoices.reduce((sum, invoice) => sum + invoiceBalance(invoice), 0);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),

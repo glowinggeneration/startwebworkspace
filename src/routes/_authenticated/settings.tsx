@@ -148,7 +148,13 @@ function ProfileCard() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="profile-email">Email</Label>
-            <Input id="profile-email" className="w-64" value={profile?.email ?? ""} readOnly disabled />
+            <Input
+              id="profile-email"
+              className="w-64"
+              value={profile?.email ?? ""}
+              readOnly
+              disabled
+            />
           </div>
           <Button type="submit" variant="outline" disabled={updateName.isPending}>
             {updateName.isPending ? "Saving…" : "Save"}
