@@ -30,6 +30,7 @@ interface AccountRowProps {
     }[];
   };
   industryName: string | null;
+  ownerName?: string | null;
 }
 
 const contactSchema = z.object({
@@ -39,7 +40,7 @@ const contactSchema = z.object({
 });
 type ContactFormValues = z.infer<typeof contactSchema>;
 
-export function AccountRow({ account, industryName }: AccountRowProps) {
+export function AccountRow({ account, industryName, ownerName }: AccountRowProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: contacts } = useContacts(workspaceId, account.id);
@@ -67,50 +68,54 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
     }
   }
 
+  const openDeals = account.deals.filter((deal) => deal.status === "open").length;
+  const primaryContact = contacts?.[0];
+
   return (
-    <div className="card-surface overflow-hidden">
-      <button
-        type="button"
-        className="flex w-full items-center justify-between gap-3 p-4 text-left"
-        onClick={() => setIsExpanded((prev) => !prev)}
-        aria-expanded={isExpanded}
-      >
-        <div className="flex min-w-0 items-center gap-2">
-          {account.is_reference_client && (
-            <Star className="size-4 shrink-0 text-warning" aria-label="Reference client" />
-          )}
-          <p className="type-card truncate">{account.name}</p>
-        </div>
-        <div className="flex shrink-0 items-center gap-3">
-          {industryName && (
-            <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium text-secondary-foreground">
-              {industryName}
-            </span>
-          )}
-          {account.website && (
+    <>
+      <tr className="border-b border-border last:border-0 hover:bg-muted/40">
+        <td className="px-5 py-4">
+          <button
+            type="button"
+            onClick={() => setIsExpanded((prev) => !prev)}
+            aria-expanded={isExpanded}
+            className="flex items-center gap-2 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            <ChevronDown
+              className={cn(
+                "size-4 shrink-0 text-muted-foreground transition-transform",
+                isExpanded && "rotate-180",
+              )}
+              aria-hidden="true"
+            />
+            {account.is_reference_client && (
+              <Star className="size-4 shrink-0 text-warning" aria-label="Reference client" />
+            )}
+            <span className="font-medium text-foreground">{account.name}</span>
+          </button>
+        </td>
+        <td className="px-5 py-4 text-muted-foreground">{primaryContact?.name ?? "Not set"}</td>
+        <td className="px-5 py-4 text-muted-foreground">{industryName ?? "Not set"}</td>
+        <td className="px-5 py-4 text-muted-foreground">{openDeals}</td>
+        <td className="px-5 py-4 text-muted-foreground">
+          {account.website ? (
             <a
               href={account.website}
               target="_blank"
               rel="noreferrer"
-              onClick={(event) => event.stopPropagation()}
-              className="text-muted-foreground hover:text-foreground"
-              aria-label={`Open ${account.name}'s website`}
+              className="inline-flex items-center gap-1 text-primary hover:underline"
             >
-              <Globe className="size-4" />
+              <Globe className="size-4" aria-hidden="true" />
+              Website
             </a>
+          ) : (
+            ownerName ?? "Unassigned"
           )}
-          <ChevronDown
-            className={cn(
-              "size-4 text-muted-foreground transition-transform",
-              isExpanded && "rotate-180",
-            )}
-            aria-hidden="true"
-          />
-        </div>
-      </button>
-
+        </td>
+      </tr>
       {isExpanded && (
-        <div className="border-t border-border p-4">
+        <tr className="border-b border-border bg-muted/30">
+          <td colSpan={5} className="p-5">
           <dl className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
             <div>
               <dt className="type-meta text-muted-foreground">Open deals</dt>
@@ -163,8 +168,9 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
               Add
             </Button>
           </form>
-        </div>
+          </td>
+        </tr>
       )}
-    </div>
+    </>
   );
 }
