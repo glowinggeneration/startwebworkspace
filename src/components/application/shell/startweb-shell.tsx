@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LogOut, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -7,7 +7,11 @@ import { initialsOf } from "@/lib/initials";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/core/theme-toggle";
 import { GlobalCommandPalette } from "@/components/core/global-command";
-import { NAV_ITEMS, SETTINGS_NAV_ITEM } from "@/components/application/shell/nav-items";
+import {
+  NAV_GROUPS,
+  NAV_ITEMS,
+  SETTINGS_NAV_ITEM,
+} from "@/components/application/shell/nav-items";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +28,7 @@ import {
   SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarInset,
   SidebarMenu,
@@ -34,16 +39,18 @@ import {
 } from "@/components/ui/sidebar";
 
 /**
- * Authenticated app chrome — adapted from the sibling SMAIT project's
- * workspace-shell.tsx structure (sidebar + top bar + user menu), trimmed
- * for Phase 0 and rewired for workspace-scoped RBAC instead of a hardcoded
- * admin email. Command palette and a notifications surface are wired in
- * (the latter is a placeholder until a notifications table exists).
+ * Authenticated app chrome, per the approved Startweb design language:
+ * a solid blue 248px navigation rail with a text only STARTWEB wordmark,
+ * a 72px top bar carrying the current page name, and a light canvas below.
  */
 export function StartwebShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { data: profile } = useProfile();
+
+  const currentPage =
+    NAV_ITEMS.find((item) => pathname.startsWith(item.to)) ??
+    (pathname.startsWith(SETTINGS_NAV_ITEM.to) ? SETTINGS_NAV_ITEM : undefined);
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -51,45 +58,60 @@ export function StartwebShell({ children }: { children: ReactNode }) {
   }
 
   return (
-    <SidebarProvider>
+    <SidebarProvider style={{ "--sidebar-width": "15.5rem" } as CSSProperties}>
       <GlobalCommandPalette items={NAV_ITEMS} />
-      <Sidebar collapsible="icon">
-        <SidebarHeader>
-          <Link to="/dashboard" className="flex items-center gap-2 px-2 py-1.5">
-            <img src="/brand/startweb-blue.svg" alt="" aria-hidden="true" className="h-5 w-auto" />
-            <span className="type-card font-semibold group-data-[collapsible=icon]:hidden">
-              Startweb
-            </span>
+      <Sidebar collapsible="offcanvas" className="border-r-0">
+        <SidebarHeader className="h-18 justify-center px-5">
+          <Link
+            to="/dashboard"
+            className="text-base font-bold tracking-[0.18em] text-sidebar-foreground uppercase"
+          >
+            Startweb
           </Link>
         </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {NAV_ITEMS.map((item) => {
-                  const isActive = pathname.startsWith(item.to);
-                  return (
-                    <SidebarMenuItem key={item.to}>
-                      <SidebarMenuButton asChild isActive={isActive} tooltip={item.label}>
-                        <Link to={item.to} aria-current={isActive ? "page" : undefined}>
-                          <item.icon className="size-4" aria-hidden="true" />
-                          <span>{item.label}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
+
+        <SidebarContent className="px-2">
+          {NAV_GROUPS.map((group) => (
+            <SidebarGroup key={group.label}>
+              <SidebarGroupLabel className="text-[0.6875rem] font-semibold tracking-[0.1em] text-sidebar-section uppercase">
+                {group.label}
+              </SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {group.items.map((item) => {
+                    const isActive = pathname.startsWith(item.to);
+                    return (
+                      <SidebarMenuItem key={item.to}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={isActive}
+                          className="h-11 gap-3 rounded-md text-sidebar-foreground/85 hover:bg-sidebar-accent hover:text-sidebar-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:font-semibold data-[active=true]:text-sidebar-foreground"
+                        >
+                          <Link to={item.to} aria-current={isActive ? "page" : undefined}>
+                            <item.icon className="size-4.5" aria-hidden="true" />
+                            <span className="type-label">{item.label}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  })}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          ))}
         </SidebarContent>
-        <SidebarFooter>
+
+        <SidebarFooter className="px-4 pb-4">
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild tooltip={SETTINGS_NAV_ITEM.label}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(SETTINGS_NAV_ITEM.to)}
+                className="h-11 gap-3 rounded-md text-sidebar-foreground/85 hover:bg-sidebar-accent hover:text-sidebar-foreground data-[active=true]:bg-sidebar-accent data-[active=true]:text-sidebar-foreground"
+              >
                 <Link to={SETTINGS_NAV_ITEM.to}>
-                  <SETTINGS_NAV_ITEM.icon className="size-4" aria-hidden="true" />
-                  <span>{SETTINGS_NAV_ITEM.label}</span>
+                  <SETTINGS_NAV_ITEM.icon className="size-4.5" aria-hidden="true" />
+                  <span className="type-label">{SETTINGS_NAV_ITEM.label}</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -97,9 +119,12 @@ export function StartwebShell({ children }: { children: ReactNode }) {
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset>
-        <header className="flex h-14 shrink-0 items-center justify-between border-b border-border px-4">
-          <SidebarTrigger />
+      <SidebarInset className="bg-background">
+        <header className="flex h-18 shrink-0 items-center justify-between border-b border-divider bg-card px-8">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger className="md:hidden" />
+            <span className="type-section">{currentPage?.label ?? "Workspace"}</span>
+          </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <DropdownMenu>
@@ -110,7 +135,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                   className="rounded-full"
                   aria-label="Account menu"
                 >
-                  <Avatar className="size-8">
+                  <Avatar className="size-9">
                     <AvatarFallback>{initialsOf(profile?.full_name)}</AvatarFallback>
                   </Avatar>
                 </Button>
