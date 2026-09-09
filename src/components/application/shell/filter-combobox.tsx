@@ -15,7 +15,43 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 export type ComboboxOption = {
   value: string;
   label: string;
+  /** Optional leading icon for this option. */
+  icon?: React.ComponentType<{ className?: string; "aria-hidden"?: boolean | "true" }>;
+  /** When set, the option shows an initials avatar instead of an icon. */
+  avatarName?: string;
+  /** Optional second line, for example an email address or a count. */
+  description?: string;
 };
+
+function initialsOf(name: string) {
+  return (
+    name
+      .split(" ")
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "?"
+  );
+}
+
+function OptionMark({ option }: { option: ComboboxOption }) {
+  if (option.avatarName) {
+    return (
+      <span
+        aria-hidden="true"
+        className="flex size-6 shrink-0 items-center justify-center rounded-full bg-secondary text-[0.625rem] font-semibold text-secondary-foreground"
+      >
+        {initialsOf(option.avatarName)}
+      </span>
+    );
+  }
+  if (option.icon) {
+    const Leading = option.icon;
+    return <Leading className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />;
+  }
+  return null;
+}
 
 /**
  * Searchable single-select filter: a quiet trigger showing the current choice,
