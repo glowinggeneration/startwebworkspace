@@ -7,11 +7,7 @@ import { initialsOf } from "@/lib/initials";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/core/theme-toggle";
 import { GlobalCommandPalette, openCommandPalette } from "@/components/core/global-command";
-import {
-  NAV_GROUPS,
-  NAV_ITEMS,
-  SETTINGS_NAV_ITEM,
-} from "@/components/application/shell/nav-items";
+import { NAV_GROUPS, NAV_ITEMS, SETTINGS_NAV_ITEM } from "@/components/application/shell/nav-items";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,7 +81,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                         <SidebarMenuButton
                           asChild
                           isActive={isActive}
-                          className="h-11 gap-3 rounded-md text-sidebar-foreground/85 hover:bg-white/10 hover:text-sidebar-foreground data-[active=true]:bg-white/15 data-[active=true]:font-semibold data-[active=true]:text-sidebar-foreground"
+                          className="h-10 gap-3 rounded-[0.625rem] tracking-[-0.006em] text-sidebar-foreground/80 hover:bg-white/10 hover:text-sidebar-foreground data-[active=true]:bg-white/15 data-[active=true]:font-semibold data-[active=true]:text-sidebar-foreground"
                         >
                           <Link to={item.to} aria-current={isActive ? "page" : undefined}>
                             <item.icon className="size-4.5" aria-hidden="true" />
@@ -107,7 +103,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
               <SidebarMenuButton
                 asChild
                 isActive={pathname.startsWith(SETTINGS_NAV_ITEM.to)}
-                className="h-11 gap-3 rounded-md text-sidebar-foreground/85 hover:bg-white/10 hover:text-sidebar-foreground data-[active=true]:bg-white/15 data-[active=true]:text-sidebar-foreground"
+                className="h-10 gap-3 rounded-[0.625rem] tracking-[-0.006em] text-sidebar-foreground/80 hover:bg-white/10 hover:text-sidebar-foreground data-[active=true]:bg-white/15 data-[active=true]:text-sidebar-foreground"
               >
                 <Link to={SETTINGS_NAV_ITEM.to}>
                   <SETTINGS_NAV_ITEM.icon className="size-4.5" aria-hidden="true" />
@@ -130,19 +126,21 @@ export function StartwebShell({ children }: { children: ReactNode }) {
       </Sidebar>
 
       <SidebarInset className="bg-background">
-        <header className="flex h-16 shrink-0 items-center justify-between border-b border-divider bg-card px-6">
+        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-divider bg-card/80 px-6 backdrop-blur-xl backdrop-saturate-150">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="md:hidden" />
             <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-muted-foreground">
               <Home className="size-4" aria-hidden="true" />
-              <span className="type-label text-foreground">{currentPage?.label ?? "Workspace"}</span>
+              <span className="type-label text-foreground">
+                {currentPage?.label ?? "Workspace"}
+              </span>
             </nav>
           </div>
           <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={openCommandPalette}
-              className="hidden h-9 w-64 items-center gap-2 rounded-md border border-border bg-background px-3 text-left text-muted-foreground transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:flex"
+              className="hidden h-9 w-64 items-center gap-2 rounded-[0.625rem] border border-border bg-background/70 px-3 text-left text-muted-foreground transition-colors hover:border-primary/40 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none sm:flex"
             >
               <Search className="size-4" aria-hidden="true" />
               <span className="type-body">Search...</span>

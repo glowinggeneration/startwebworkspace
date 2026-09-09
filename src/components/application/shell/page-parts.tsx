@@ -17,11 +17,13 @@ export function PageHeader({
   return (
     <div className="flex flex-wrap items-start justify-between gap-4">
       <div>
-        <h1 className="text-[2.25rem] font-bold leading-tight tracking-tight text-foreground">
+        <h1 className="text-[2.25rem] font-semibold leading-[1.1] tracking-[-0.032em] text-foreground">
           {title}
         </h1>
         {description ? (
-          <p className="mt-1 text-[0.9375rem] text-muted-foreground">{description}</p>
+          <p className="mt-1.5 text-[0.9375rem] leading-relaxed tracking-[-0.006em] text-muted-foreground">
+            {description}
+          </p>
         ) : null}
       </div>
       {actions || aside ? (
@@ -53,7 +55,7 @@ export function SegmentedControl<T extends string>({
       role="tablist"
       aria-label={ariaLabel}
       className={cn(
-        "inline-flex items-center gap-1 rounded-lg border border-border bg-muted/60 p-1",
+        "inline-flex items-center gap-1 rounded-[0.75rem] border border-border/70 bg-muted/70 p-1",
         className,
       )}
     >
@@ -67,10 +69,10 @@ export function SegmentedControl<T extends string>({
             aria-selected={selected}
             onClick={() => onValueChange(option.value)}
             className={cn(
-              "inline-flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors",
+              "inline-flex items-center gap-2 rounded-[0.5rem] px-4 py-1.5 text-sm font-medium tracking-[-0.006em] transition-all duration-200",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1",
               selected
-                ? "bg-card text-foreground shadow-sm"
+                ? "bg-card text-foreground shadow-xs"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -144,11 +146,7 @@ export function UnderlineTabs<T extends string>({
 
 /** White panel used for tables, forms and side cards. */
 export function Panel({ className, children }: { className?: string; children: React.ReactNode }) {
-  return (
-    <div className={cn("rounded-xl border border-border bg-card shadow-sm", className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn("card-surface", className)}>{children}</div>;
 }
 
 /** Centred empty state with an outline icon, message and optional action. */
@@ -169,8 +167,8 @@ export function EmptyState({
     <div
       className={cn("flex flex-col items-center justify-center px-6 py-16 text-center", className)}
     >
-      <Icon className="mb-5 size-12 stroke-[1.25] text-muted-foreground/60" aria-hidden={true} />
-      <p className="text-lg font-semibold text-foreground">{title}</p>
+      <Icon className="mb-5 size-11 stroke-[1.1] text-muted-foreground/55" aria-hidden={true} />
+      <p className="text-[1.0625rem] font-semibold tracking-[-0.016em] text-foreground">{title}</p>
       {description ? (
         <p className="mt-1 max-w-md text-sm text-muted-foreground">{description}</p>
       ) : null}
@@ -194,7 +192,7 @@ export function MetricTile({
   return (
     <Panel className={cn("p-5", className)}>
       <p className="text-sm text-muted-foreground">{label}</p>
-      <p className="mt-2 text-[2rem] font-bold leading-none tracking-tight text-foreground">
+      <p className="mt-2 text-[2rem] font-semibold leading-none tracking-[-0.03em] tabular-nums text-foreground">
         {value}
       </p>
       {hint ? <p className="mt-2 text-xs text-muted-foreground">{hint}</p> : null}
@@ -222,7 +220,9 @@ export function HintBar({
         <Icon className="size-5 text-primary" aria-hidden={true} />
       </span>
       <div className="min-w-48 flex-1">
-        <p className="text-base font-semibold text-foreground">{title}</p>
+        <p className="text-[0.9375rem] font-semibold tracking-[-0.012em] text-foreground">
+          {title}
+        </p>
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
       {action}
@@ -259,7 +259,7 @@ export function ExplainerPanel({
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         aria-expanded={open}
-        className="flex w-full items-center gap-3 rounded-xl p-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex w-full items-center gap-3 rounded-[0.875rem] p-5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         {Icon ? (
           <Icon className="size-5 text-muted-foreground" aria-hidden={true} />
@@ -270,7 +270,9 @@ export function ExplainerPanel({
           />
         )}
         <span className="flex-1">
-          <span className="block text-base font-semibold text-foreground">{title}</span>
+          <span className="block text-[0.9375rem] font-semibold tracking-[-0.012em] text-foreground">
+            {title}
+          </span>
           {description ? (
             <span className="block text-sm text-muted-foreground">{description}</span>
           ) : null}
