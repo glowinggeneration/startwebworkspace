@@ -17,6 +17,7 @@ import { Route as ProfileSetupRouteImport } from './routes/profile-setup'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AuthenticatedAccountsRouteImport } from './routes/_authenticated/accounts'
 import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
+import { Route as AuthenticatedCampaignsRouteImport } from './routes/_authenticated/campaigns'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedImportReviewRouteImport } from './routes/_authenticated/import-review'
 import { Route as AuthenticatedInvoicingRouteImport } from './routes/_authenticated/invoicing'
@@ -66,6 +67,11 @@ const AuthenticatedAccountsRoute = AuthenticatedAccountsRouteImport.update({
 const AuthenticatedActivityRoute = AuthenticatedActivityRouteImport.update({
   id: '/activity',
   path: '/activity',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedCampaignsRoute = AuthenticatedCampaignsRouteImport.update({
+  id: '/campaigns',
+  path: '/campaigns',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/accounts': typeof AuthenticatedAccountsRoute
   '/activity': typeof AuthenticatedActivityRoute
+  '/campaigns': typeof AuthenticatedCampaignsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/import-review': typeof AuthenticatedImportReviewRoute
   '/invoicing': typeof AuthenticatedInvoicingRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/accounts': typeof AuthenticatedAccountsRoute
   '/activity': typeof AuthenticatedActivityRoute
+  '/campaigns': typeof AuthenticatedCampaignsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/import-review': typeof AuthenticatedImportReviewRoute
   '/invoicing': typeof AuthenticatedInvoicingRoute
@@ -176,6 +184,7 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/_authenticated/accounts': typeof AuthenticatedAccountsRoute
   '/_authenticated/activity': typeof AuthenticatedActivityRoute
+  '/_authenticated/campaigns': typeof AuthenticatedCampaignsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/import-review': typeof AuthenticatedImportReviewRoute
   '/_authenticated/invoicing': typeof AuthenticatedInvoicingRoute
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/accounts'
     | '/activity'
+    | '/campaigns'
     | '/dashboard'
     | '/import-review'
     | '/invoicing'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/accounts'
     | '/activity'
+    | '/campaigns'
     | '/dashboard'
     | '/import-review'
     | '/invoicing'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/register'
     | '/_authenticated/accounts'
     | '/_authenticated/activity'
+    | '/_authenticated/campaigns'
     | '/_authenticated/dashboard'
     | '/_authenticated/import-review'
     | '/_authenticated/invoicing'
@@ -318,6 +330,13 @@ declare module '@tanstack/react-router' {
       path: '/activity'
       fullPath: '/activity'
       preLoaderRoute: typeof AuthenticatedActivityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/campaigns': {
+      id: '/_authenticated/campaigns'
+      path: '/campaigns'
+      fullPath: '/campaigns'
+      preLoaderRoute: typeof AuthenticatedCampaignsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/dashboard': {
@@ -416,6 +435,7 @@ const AuthenticatedProjectsRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountsRoute: typeof AuthenticatedAccountsRoute
   AuthenticatedActivityRoute: typeof AuthenticatedActivityRoute
+  AuthenticatedCampaignsRoute: typeof AuthenticatedCampaignsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedImportReviewRoute: typeof AuthenticatedImportReviewRoute
   AuthenticatedInvoicingRoute: typeof AuthenticatedInvoicingRoute
@@ -430,6 +450,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAccountsRoute: AuthenticatedAccountsRoute,
   AuthenticatedActivityRoute: AuthenticatedActivityRoute,
+  AuthenticatedCampaignsRoute: AuthenticatedCampaignsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedImportReviewRoute: AuthenticatedImportReviewRoute,
   AuthenticatedInvoicingRoute: AuthenticatedInvoicingRoute,
