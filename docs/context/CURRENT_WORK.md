@@ -5,6 +5,7 @@ Last updated 9 September 2026. Keep this short and true.
 ## In progress
 
 **Campaign tracker with budgets** — `/campaigns`
+
 - Done: `campaigns` table with RLS and grants, `tasks.campaign_id` link,
   `src/hooks/use-campaigns.ts`, `src/routes/_authenticated/campaigns.tsx`
   with tracker and budget views, sidebar link under Delivery.

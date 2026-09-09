@@ -631,7 +631,9 @@ function CampaignsPage() {
                   <Label htmlFor="campaign-owner">Assigned to</Label>
                   <Select
                     value={form.watch("ownerId") || "none"}
-                    onValueChange={(value) => form.setValue("ownerId", value, { shouldDirty: true })}
+                    onValueChange={(value) =>
+                      form.setValue("ownerId", value, { shouldDirty: true })
+                    }
                   >
                     <SelectTrigger id="campaign-owner">
                       <SelectValue placeholder="Unassigned" />

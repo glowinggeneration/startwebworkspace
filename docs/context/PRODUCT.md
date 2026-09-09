@@ -12,12 +12,12 @@ Live at `workspace.startweb.co.za`.
 
 ## Who uses it
 
-| Person | Role | Uses it mainly for |
-| --- | --- | --- |
-| Thabo Ledimo | CEO | Targets, pipeline, revenue coverage |
-| Dodi Maleka | Head of Business Development | Accounts, deals, quotes, daily calling |
-| Ntokozo Hlatshwayo | Head of Operations and Delivery | Projects, tasks, workload |
-| Ndumiso Yedwa | CTO | Delivery, platform |
+| Person             | Role                            | Uses it mainly for                     |
+| ------------------ | ------------------------------- | -------------------------------------- |
+| Thabo Ledimo       | CEO                             | Targets, pipeline, revenue coverage    |
+| Dodi Maleka        | Head of Business Development    | Accounts, deals, quotes, daily calling |
+| Ntokozo Hlatshwayo | Head of Operations and Delivery | Projects, tasks, workload              |
+| Ndumiso Yedwa      | CTO                             | Delivery, platform                     |
 
 Roles are workspace roles: owner, admin, sales, pm, member, client. A client
 role sees only their own account.
@@ -32,20 +32,20 @@ role sees only their own account.
 
 ## Surfaces
 
-| Screen | Path | Purpose |
-| --- | --- | --- |
-| Dashboard | `/dashboard` | Monthly target, planned mix, won this month, coverage, activity table, calling block |
-| Pipeline | `/pipeline` | Deals by status, board and list |
-| Accounts | `/accounts` | Client directory, contacts, notes |
-| Projects | `/projects`, `/projects/$projectId` | Delivery work, phases, tasks |
-| Campaigns | `/campaigns` | Campaign status, dates, owner, next action, linked tasks, planned vs spent budget |
-| Workload | `/workload` | Weekly hours allocated per person |
-| Activity | `/activity` | Daily activity log and weekly review |
-| Quotes | `/quotes` | Quotes and line items |
-| Invoicing | `/invoicing` | Invoices, outstanding, overdue, paid |
-| Statements | `/statements` | Account statements |
-| Import review | `/import-review` | Decisions needed from the conversation import |
-| Settings | `/settings` | Team, invitations, packages, import |
+| Screen        | Path                                | Purpose                                                                              |
+| ------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| Dashboard     | `/dashboard`                        | Monthly target, planned mix, won this month, coverage, activity table, calling block |
+| Pipeline      | `/pipeline`                         | Deals by status, board and list                                                      |
+| Accounts      | `/accounts`                         | Client directory, contacts, notes                                                    |
+| Projects      | `/projects`, `/projects/$projectId` | Delivery work, phases, tasks                                                         |
+| Campaigns     | `/campaigns`                        | Campaign status, dates, owner, next action, linked tasks, planned vs spent budget    |
+| Workload      | `/workload`                         | Weekly hours allocated per person                                                    |
+| Activity      | `/activity`                         | Daily activity log and weekly review                                                 |
+| Quotes        | `/quotes`                           | Quotes and line items                                                                |
+| Invoicing     | `/invoicing`                        | Invoices, outstanding, overdue, paid                                                 |
+| Statements    | `/statements`                       | Account statements                                                                   |
+| Import review | `/import-review`                    | Decisions needed from the conversation import                                        |
+| Settings      | `/settings`                         | Team, invitations, packages, import                                                  |
 
 ## Rules of the business
 
