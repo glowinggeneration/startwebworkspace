@@ -67,8 +67,7 @@ function AuthenticatedSkeleton() {
     <div className="flex min-h-screen" aria-busy="true" aria-label="Loading your workspace">
       <div className="hidden w-[15.5rem] shrink-0 bg-sidebar md:block" />
       <div className="flex-1 space-y-4 p-8">
-        <div className="h-8 w-56 animate-pulse rounded bg-muted" />
-        <div className="h-4 w-80 animate-pulse rounded bg-muted" />
+        <KineticTextLoader text="Loading" className="py-6" />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="h-28 animate-pulse rounded-xl bg-muted" />

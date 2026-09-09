@@ -177,7 +177,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                   className="rounded-full"
                   aria-label="Account menu"
                 >
-                  <Avatar className="size-9">
+                  <Avatar className="size-9 ring-2 ring-primary/25 ring-offset-2 ring-offset-card">
                     <AvatarFallback>{initialsOf(profile?.full_name)}</AvatarFallback>
                   </Avatar>
                 </Button>
