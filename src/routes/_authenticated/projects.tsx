@@ -5,6 +5,7 @@ import { CheckCircle2, Clock, FolderKanban, LayoutGrid, List, Search, Users } fr
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { FilterCombobox } from "@/components/application/shell/filter-combobox";
 import {
   Select,
   SelectContent,
@@ -202,20 +203,22 @@ function ProjectsPage() {
                 className="h-11 bg-card pl-9"
               />
             </div>
-            <Select value={ownerFilter} onValueChange={setOwnerFilter}>
-              <SelectTrigger className="h-11 w-56 bg-card" aria-label="Filter by owner">
-                <Users className="size-4 text-muted-foreground" aria-hidden="true" />
-                <SelectValue placeholder="All owners" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All owners</SelectItem>
-                {members?.map((member) => (
-                  <SelectItem key={member.userId} value={member.userId}>
-                    {member.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <FilterCombobox
+              value={ownerFilter}
+              onValueChange={setOwnerFilter}
+              icon={Users}
+              ariaLabel="Filter by owner"
+              placeholder="All owners"
+              searchPlaceholder="Search people..."
+              emptyLabel="No one found."
+              options={[
+                { value: "all", label: "All owners" },
+                ...(members ?? []).map((member) => ({
+                  value: member.userId,
+                  label: member.name,
+                })),
+              ]}
+            />
             <div className="inline-flex items-center gap-1 rounded-lg border border-border bg-card p-1">
               {[
                 { value: "list" as const, label: "List view", icon: List },
