@@ -16,7 +16,7 @@ import { useConvertQuoteToInvoice } from "@/hooks/use-invoices";
 import { NewQuoteDialog } from "@/components/application/finance/new-quote-dialog";
 import { downloadDocumentPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
-import type { QuoteStatus } from "@/integrations/supabase/types";
+import type { QuoteStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/quotes")({
   component: QuotesPage,

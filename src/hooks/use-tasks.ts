@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { Database, TaskStatus } from "@/integrations/supabase/types";
+import type { Database, TaskStatus } from "@/integrations/supabase/app-types";
 
 type TaskInsert = Database["public"]["Tables"]["tasks"]["Insert"];
 

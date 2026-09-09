@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { WorkspaceRole } from "@/integrations/supabase/types";
+import type { WorkspaceRole } from "@/integrations/supabase/app-types";
 import { logAuditEvent } from "@/lib/audit/log-event";
 
 export function useInvitations(workspaceId: string) {

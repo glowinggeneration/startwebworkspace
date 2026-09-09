@@ -22,7 +22,7 @@ import {
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useCreateInvitation } from "@/hooks/use-invitations";
-import type { WorkspaceRole } from "@/integrations/supabase/types";
+import type { WorkspaceRole } from "@/integrations/supabase/app-types";
 
 const ASSIGNABLE_ROLES: WorkspaceRole[] = ["admin", "sales", "pm", "member", "client"];
 

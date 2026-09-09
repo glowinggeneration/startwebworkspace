@@ -16,6 +16,7 @@ import {
 } from "@/components/application/projects/phase-accordion";
 import { TaskRow } from "@/components/application/projects/task-row";
 import { AddTaskForm } from "@/components/application/projects/add-task-form";
+import type { TaskStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/projects/$projectId")({
   component: ProjectDetailPage,
@@ -62,7 +63,7 @@ function ProjectDetailPage() {
     return {
       id: phase.id,
       title: phase.name,
-      status: phase.status,
+      status: phase.status as PhaseAccordionItem["status"],
       content: (
         <div>
           {phaseTasks.length === 0 && (
@@ -73,7 +74,7 @@ function ProjectDetailPage() {
               <TaskRow
                 key={task.id}
                 title={task.title}
-                status={task.status}
+                status={task.status as TaskStatus}
                 dueDate={task.due_date}
                 assignedUserIds={(assignments ?? [])
                   .filter((a) => a.task_id === task.id)

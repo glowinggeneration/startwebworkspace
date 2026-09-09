@@ -15,7 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useIndustryPlaybooks } from "@/hooks/use-industry-playbooks";
 import type { Deal } from "@/hooks/use-deals";
-import type { DealStatus } from "@/integrations/supabase/types";
+import type { DealStatus } from "@/integrations/supabase/app-types";
 
 interface DealCardProps {
   deal: Deal;

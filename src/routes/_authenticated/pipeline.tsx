@@ -9,7 +9,7 @@ import { useDeals, useTransitionDealStatus, type Deal } from "@/hooks/use-deals"
 import { DealCard } from "@/components/application/pipeline/deal-card";
 import { NewDealDialog } from "@/components/application/pipeline/new-deal-dialog";
 import { HandoffDialog } from "@/components/application/pipeline/handoff-dialog";
-import type { DealStatus } from "@/integrations/supabase/types";
+import type { DealStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
   component: PipelinePage,

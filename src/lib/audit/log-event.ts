@@ -19,12 +19,13 @@ export async function logAuditEvent(input: {
   resourceId?: string;
   metadata?: Record<string, unknown>;
 }): Promise<void> {
-  const { error } = await supabase.rpc("log_audit_event", {
+  const args: LogAuditEventArgs = {
     _action: input.action,
     _resource_table: input.resourceTable,
-    _resource_id: input.resourceId ?? null,
-    _metadata: input.metadata ?? {},
-  });
+    _metadata: (input.metadata ?? {}) as NonNullable<LogAuditEventArgs["_metadata"]>,
+    ...(input.resourceId ? { _resource_id: input.resourceId } : {}),
+  };
+  const { error } = await supabase.rpc("log_audit_event", args);
   if (error) {
     // Best-effort: a failed audit write shouldn't block the action it's
     // describing, but it should be visible somewhere.

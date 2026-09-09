@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
-import type { WorkspaceRole } from "@/integrations/supabase/types";
+import type { WorkspaceRole } from "@/integrations/supabase/app-types";
 import { StartwebShell } from "@/components/application/shell/startweb-shell";
 
 export interface WorkspaceMembership {

@@ -8,7 +8,7 @@ import { useProfile } from "@/hooks/use-profile";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useProjects, useProjectPhases, useHandoffsByProject } from "@/hooks/use-projects";
 import { useAcknowledgeHandoff } from "@/hooks/use-deal-handoffs";
-import type { ProjectPhaseStatus } from "@/integrations/supabase/types";
+import type { ProjectPhaseStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/projects")({
   component: ProjectsPage,
@@ -94,7 +94,7 @@ function ProjectsPage() {
                       key={phase.id}
                       className={cn(
                         "rounded-full border px-3 py-1 text-xs font-medium",
-                        phaseToneClass(phase.status),
+                        phaseToneClass(phase.status as ProjectPhaseStatus),
                       )}
                     >
                       {phase.name}

@@ -23,7 +23,7 @@ import { NewInvoiceDialog } from "@/components/application/finance/new-invoice-d
 import { RecordPaymentDialog } from "@/components/application/finance/record-payment-dialog";
 import { downloadDocumentPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
-import type { InvoiceStatus } from "@/integrations/supabase/types";
+import type { InvoiceStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/invoicing")({
   component: InvoicingPage,
