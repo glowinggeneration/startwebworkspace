@@ -29,6 +29,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { InfoPopover } from "@/components/application/shell/info-popover";
 import {
   Dialog,
   DialogContent,
@@ -197,14 +198,11 @@ export function CommandBoard({
           value={`${coverage.coverage.toFixed(2)}×`}
           info={
             <InfoPopover title="Target coverage">
-              <p>
-                Planned pipeline value for the month divided by the monthly revenue target.
-              </p>
+              <p>Planned pipeline value for the month divided by the monthly revenue target.</p>
               <p>Anything under 1.00× means the plan does not yet cover the target.</p>
             </InfoPopover>
           }
         >
-
           {coverage.status === "on-track" ? (
             <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5 text-success">
               On track
@@ -358,9 +356,7 @@ export function CommandBoard({
                 />
               ))}
             </div>
-            <p className="type-meta mt-2 text-muted-foreground">
-              {Math.round(achieved)}% achieved
-            </p>
+            <p className="type-meta mt-2 text-muted-foreground">{Math.round(achieved)}% achieved</p>
 
             <div className="mt-4 flex items-center justify-between border-t border-divider pt-4">
               <span className="type-body text-muted-foreground">Remaining</span>
@@ -399,7 +395,6 @@ function MetricCard({
     </div>
   );
 }
-
 
 function EditTargetDialog({
   workspaceId,

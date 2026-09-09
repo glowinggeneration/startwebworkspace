@@ -21,7 +21,6 @@ import {
 } from "@/components/application/shell/page-parts";
 import { InfoPopover } from "@/components/application/shell/info-popover";
 
-
 // A fixed weekly-capacity assumption, not yet a per-user setting — see
 // docs/build-standards/EXCEPTION_REGISTER.md if this needs to vary by
 // contract/part-time status before more than a couple of people use it.
@@ -150,8 +149,8 @@ function WorkloadPage() {
           info={
             <InfoPopover title="How capacity is worked out">
               <p>
-                Each person counts as {WEEKLY_CAPACITY_HOURS} hours a week, multiplied by the
-                number of people in the workspace and the period shown.
+                Each person counts as {WEEKLY_CAPACITY_HOURS} hours a week, multiplied by the number
+                of people in the workspace and the period shown.
               </p>
               <p>Per person hours are not yet configurable.</p>
             </InfoPopover>
@@ -168,7 +167,6 @@ function WorkloadPage() {
           }
         />
         <MetricTile label="Utilisation" value={`${totals.utilisation}%`} />
-
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">

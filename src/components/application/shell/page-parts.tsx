@@ -213,7 +213,6 @@ export function MetricTile({
   );
 }
 
-
 /** Dismissible prompt bar shown under the main content of a page. */
 export function HintBar({
   icon: Icon,
