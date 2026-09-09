@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ChevronRight, Home, LogOut, Search, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,6 +55,14 @@ export function StartwebShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { data: profile } = useProfile();
   const [isSignOutOpen, setIsSignOutOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 4);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const currentPage =
     NAV_ITEMS.find((item) => pathname.startsWith(item.to)) ??
