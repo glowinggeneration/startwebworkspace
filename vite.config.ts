@@ -8,6 +8,20 @@ import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 // that package only exists inside Lovable projects). Each plugin below is
 // something that preset would otherwise supply implicitly.
 export default defineConfig({
+  // The Worker runtime has no module resolution: every dependency must be
+  // bundled into the server output instead of left as a bare import.
+  ssr: { noExternal: true },
+  environments: {
+    // The Worker loads a single module: emit one server bundle so nothing has
+    // to be resolved at runtime.
+    ssr: {
+      build: {
+        rollupOptions: {
+          output: { inlineDynamicImports: true },
+        },
+      },
+    },
+  },
   plugins: [
     tsConfigPaths(),
     tailwindcss(),
