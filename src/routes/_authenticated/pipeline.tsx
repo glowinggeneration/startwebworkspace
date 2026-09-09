@@ -217,6 +217,7 @@ function PipelinePage() {
             ...(members ?? []).map((member) => ({
               value: member.userId,
               label: member.name,
+              avatarName: member.name,
             })),
           ]}
         />
