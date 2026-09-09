@@ -29,12 +29,15 @@ import { useSetAllocation } from "@/hooks/use-resource-allocations";
  * docs/ui-components/COMPONENT_MAP.md) for the 0-40h allocation input —
  * its colour-by-load gradient reads naturally as "how full is this week."
  */
-export function AllocationDialog() {
+export function AllocationDialog({
+  trigger,
+  weekStart,
+}: { trigger?: React.ReactNode; weekStart?: string } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: members } = useWorkspaceMembers(workspaceId);
   const { data: projects } = useProjects(workspaceId);
-  const setAllocation = useSetAllocation(workspaceId);
+  const setAllocation = useSetAllocation(workspaceId, weekStart);
 
   const [userId, setUserId] = useState("");
   const [projectId, setProjectId] = useState("");
@@ -59,10 +62,12 @@ export function AllocationDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="size-4" aria-hidden="true" />
-          Allocate hours
-        </Button>
+        {trigger ?? (
+          <Button>
+            <Plus className="size-4" aria-hidden="true" />
+            Allocate hours
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

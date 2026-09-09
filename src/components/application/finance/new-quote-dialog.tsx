@@ -27,7 +27,7 @@ import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useCreateQuote } from "@/hooks/use-quotes";
 
-export function NewQuoteDialog() {
+export function NewQuoteDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: accounts } = useAccounts(workspaceId);
@@ -63,10 +63,12 @@ export function NewQuoteDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>
-          <Plus className="size-4" aria-hidden="true" />
-          New quote
-        </Button>
+        {trigger ?? (
+          <Button>
+            <Plus className="size-4" aria-hidden="true" />
+            New quote
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
