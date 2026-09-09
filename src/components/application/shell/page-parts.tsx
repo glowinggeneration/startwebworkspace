@@ -3,7 +3,6 @@ import { ChevronDown, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { TextAnimate } from "@/components/vendor/magicui/text-animate";
 
-
 /** Page title block with an optional right-hand action area. */
 export function PageHeader({
   title,

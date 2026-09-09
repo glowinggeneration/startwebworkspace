@@ -35,12 +35,7 @@ function initialsOf(name: string) {
  * semantic tokens instead of hardcoded black/white, initials fallback for
  * people without a photo, and real links only when a target is provided.
  */
-export function AvatarCircles({
-  numPeople,
-  className,
-  avatars,
-  size = "md",
-}: AvatarCirclesProps) {
+export function AvatarCircles({ numPeople, className, avatars, size = "md" }: AvatarCirclesProps) {
   const dimension = size === "sm" ? "size-7 text-[0.625rem]" : "size-9 text-xs";
 
   return (
@@ -51,10 +46,7 @@ export function AvatarCircles({
             src={avatar.imageUrl}
             alt={avatar.name}
             loading="lazy"
-            className={cn(
-              dimension,
-              "rounded-full border-2 border-card object-cover shadow-xs",
-            )}
+            className={cn(dimension, "rounded-full border-2 border-card object-cover shadow-xs")}
           />
         ) : (
           <span

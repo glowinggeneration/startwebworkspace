@@ -287,7 +287,6 @@ function PipelinePage() {
                     />
                   ) : null}
                 </div>
-
               </Panel>
             );
           })}

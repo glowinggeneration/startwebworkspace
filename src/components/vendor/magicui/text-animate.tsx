@@ -66,7 +66,9 @@ export function TextAnimate({
   const segments = split(children, by);
   const container: Variants = {
     hidden: {},
-    show: { transition: { delayChildren: delay, staggerChildren: by === "character" ? 0.015 : 0.05 } },
+    show: {
+      transition: { delayChildren: delay, staggerChildren: by === "character" ? 0.015 : 0.05 },
+    },
   };
   const item: Variants = {
     hidden: hidden[animation],

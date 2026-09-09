@@ -21,11 +21,7 @@ export type AuroraTextProps = {
 export function AuroraText({
   children,
   className,
-  colors = [
-    "var(--color-primary)",
-    "var(--color-accent-warm, #F59E0B)",
-    "var(--color-primary)",
-  ],
+  colors = ["var(--color-primary)", "var(--color-accent-warm, #F59E0B)", "var(--color-primary)"],
   speed = 12,
 }: AuroraTextProps) {
   return (

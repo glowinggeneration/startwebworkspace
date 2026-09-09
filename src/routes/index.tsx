@@ -44,8 +44,8 @@ function LandingPage() {
         delay={0.1}
         className="type-body max-w-md text-muted-foreground"
       >
-        Startweb Workspace turns closed-won deals straight into tracked projects, one place for
-        your team, your clients, and everything you bill them.
+        Startweb Workspace turns closed-won deals straight into tracked projects, one place for your
+        team, your clients, and everything you bill them.
       </TextAnimate>
       <p className="type-body max-w-md text-muted-foreground">
         Built for teams who want <Highlighter>fewer spreadsheets</Highlighter> and a clearer month.
