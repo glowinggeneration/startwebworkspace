@@ -5,6 +5,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -137,7 +138,11 @@ function RegisterPage() {
             )}
           />
           <Button type="submit" className="mt-2" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Creating account…" : "Sign up"}
+            {form.formState.isSubmitting ? (
+              <LoadingIndicator size="sm" label="Creating account" />
+            ) : (
+              "Sign up"
+            )}
           </Button>
         </form>
       </Form>

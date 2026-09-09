@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -104,7 +105,11 @@ export function NewInvoiceDialog({ trigger }: { trigger?: React.ReactNode } = {}
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={createInvoice.isPending}>
-            {createInvoice.isPending ? "Creating…" : "Create invoice"}
+            {createInvoice.isPending ? (
+              <LoadingIndicator size="sm" label="Creating" />
+            ) : (
+              "Create invoice"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

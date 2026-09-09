@@ -7,6 +7,7 @@ import { CheckCircle2 } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
 import { Input } from "@/components/ui/input";
 import {
   Form,
@@ -91,13 +92,11 @@ function OnboardingPage() {
     setStepIndex(1);
   }
 
-
   async function handleProfileSubmit(values: ProfileValues) {
     const { error } = await supabase
       .from("profiles")
       .update({ full_name: values.fullName, profile_completed: true })
       .eq("id", user.id);
-
 
     if (error) {
       toast.error("Couldn't save your profile", { description: error.message });
@@ -137,7 +136,11 @@ function OnboardingPage() {
                   )}
                 />
                 <Button type="submit" disabled={accountForm.formState.isSubmitting}>
-                  {accountForm.formState.isSubmitting ? "Creating…" : "Continue"}
+                  {accountForm.formState.isSubmitting ? (
+                    <LoadingIndicator size="sm" label="Creating" />
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </form>
             </Form>
@@ -170,7 +173,11 @@ function OnboardingPage() {
                   )}
                 />
                 <Button type="submit" disabled={profileForm.formState.isSubmitting}>
-                  {profileForm.formState.isSubmitting ? "Saving…" : "Continue"}
+                  {profileForm.formState.isSubmitting ? (
+                    <LoadingIndicator size="sm" label="Saving" />
+                  ) : (
+                    "Continue"
+                  )}
                 </Button>
               </form>
             </Form>
