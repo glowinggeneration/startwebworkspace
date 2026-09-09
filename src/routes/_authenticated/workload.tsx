@@ -8,6 +8,7 @@ import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useProjects } from "@/hooks/use-projects";
 import { useResourceAllocationsRange } from "@/hooks/use-resource-allocations";
 import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
+import { AvatarLabelGroup } from "@/components/application/shell/avatar-label-group";
 import { AllocationDialog } from "@/components/application/workload/allocation-dialog";
 import { currentWeekStart } from "@/lib/sales/week";
 import { cn } from "@/lib/utils";
@@ -178,22 +179,25 @@ function WorkloadPage() {
 
           return (
             <Panel key={member.userId} className="p-5">
-              <div className="flex items-center gap-3">
-                <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
-                  {member.name.slice(0, 2).toUpperCase()}
+              <AvatarLabelGroup
+                title={member.name}
+                subtitle={member.email ?? undefined}
+                status={isOverCapacity ? "bg-danger" : totalHours > 0 ? "bg-success" : "bg-muted"}
+              />
+              <div className="mt-4 flex items-baseline justify-between">
+                <span
+                  className={cn(
+                    "text-sm font-medium tabular-nums",
+                    isOverCapacity ? "text-danger" : "text-muted-foreground",
+                  )}
+                >
+                  {totalHours}h of {capacityPerPerson}h
                 </span>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-base font-semibold text-foreground">{member.name}</p>
-                  <p
-                    className={cn(
-                      "text-sm",
-                      isOverCapacity ? "text-danger" : "text-muted-foreground",
-                    )}
-                  >
-                    {totalHours}h of {capacityPerPerson}h
-                  </p>
-                </div>
+                <span className="text-sm font-semibold tabular-nums text-foreground">
+                  {Math.round(percent)}%
+                </span>
               </div>
+
               <Progress
                 value={percent}
                 className={cn("mt-4", isOverCapacity && "[&>div]:bg-danger")}
