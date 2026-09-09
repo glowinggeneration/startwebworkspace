@@ -18,6 +18,7 @@ import { useStatement } from "@/hooks/use-statement";
 import { downloadStatementPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
 import { EmptyState, PageHeader, Panel, Toolbar } from "@/components/application/shell/page-parts";
+import { PanelHeader } from "@/components/application/shell/panel-parts";
 
 export const Route = createFileRoute("/_authenticated/statements")({
   component: StatementsPage,
