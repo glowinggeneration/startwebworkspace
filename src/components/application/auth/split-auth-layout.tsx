@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
+import { Monitor } from "lucide-react";
 
 /**
  * Adapted from the supplied Split-Screen Registration Page component
@@ -31,7 +32,22 @@ export function SplitAuthLayout({
       </div>
 
       <div className="flex w-full flex-col items-center justify-center p-6 sm:p-12 lg:w-1/2">
-        <div className="w-full max-w-sm">{children}</div>
+        <div className="w-full max-w-sm">
+          <div
+            role="status"
+            className="rounded-2xl border border-border bg-muted/50 p-6 text-center md:hidden"
+          >
+            <Monitor className="mx-auto mb-3 size-8 text-muted-foreground" aria-hidden />
+            <h2 className="text-base font-semibold tracking-tight">
+              Use a desktop or tablet
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Startweb is designed for larger screens. Please sign in from a
+              desktop or tablet to continue.
+            </p>
+          </div>
+          <div className="hidden md:block">{children}</div>
+        </div>
       </div>
     </div>
   );
