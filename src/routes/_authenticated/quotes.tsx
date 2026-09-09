@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/select";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
-import { useQuotes, useQuoteLineItems, useUpdateQuoteStatus, type Quote } from "@/hooks/use-quotes";
+import { useQuotes, useUpdateQuoteStatus, type Quote } from "@/hooks/use-quotes";
 import { useConvertQuoteToInvoice } from "@/hooks/use-invoices";
 import { NewQuoteDialog } from "@/components/application/finance/new-quote-dialog";
 import { downloadDocumentPdf } from "@/lib/pdf/document-pdf";
@@ -105,7 +105,8 @@ function QuoteRow({
   onConvert: () => void;
   converting: boolean;
 }) {
-  const { data: lineItems } = useQuoteLineItems(quote.id);
+  const lineItems = [...quote.quote_line_items].sort((a, b) => a.sort_order - b.sort_order);
+  const invoicedAs = quote.invoices?.[0]?.invoice_number ?? null;
   const total = (lineItems ?? []).reduce((sum, item) => sum + item.quantity * item.unit_price, 0);
 
   function handleDownload() {
@@ -152,7 +153,10 @@ function QuoteRow({
           <Download className="size-4" aria-hidden="true" />
           PDF
         </Button>
-        {quote.status === "accepted" && (
+        {invoicedAs && (
+          <span className="type-meta text-muted-foreground">Invoiced as {invoicedAs}</span>
+        )}
+        {quote.status === "accepted" && !invoicedAs && (
           <Button size="sm" onClick={onConvert} disabled={converting}>
             {converting ? "Converting…" : "Convert to invoice"}
           </Button>
