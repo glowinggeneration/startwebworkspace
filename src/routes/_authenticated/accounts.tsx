@@ -51,9 +51,7 @@ const accountSchema = z.object({
   name: z.string().trim().min(1, "Enter a company name"),
   website: z.union([z.literal(""), z.string().trim().url("Enter a valid web address")]).optional(),
   contactName: z.string().trim().optional(),
-  contactEmail: z
-    .union([z.literal(""), z.string().trim().email("Enter a valid email")])
-    .optional(),
+  contactEmail: z.union([z.literal(""), z.string().trim().email("Enter a valid email")]).optional(),
   industryId: z.string().optional(),
 });
 type AccountFormValues = z.infer<typeof accountSchema>;
@@ -170,12 +168,10 @@ function AccountsPage() {
               </SelectContent>
             </Select>
             <div className="inline-flex items-center gap-1 rounded-lg border border-border bg-card p-1">
-              {(
-                [
-                  { value: "list" as const, label: "List view", icon: List },
-                  { value: "grid" as const, label: "Grid view", icon: LayoutGrid },
-                ]
-              ).map((option) => (
+              {[
+                { value: "list" as const, label: "List view", icon: List },
+                { value: "grid" as const, label: "Grid view", icon: LayoutGrid },
+              ].map((option) => (
                 <button
                   key={option.value}
                   type="button"
@@ -211,11 +207,21 @@ function AccountsPage() {
               <table className="w-full min-w-[42rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                    <th scope="col" className="px-5 py-3">Company</th>
-                    <th scope="col" className="px-5 py-3">Primary contact</th>
-                    <th scope="col" className="px-5 py-3">Industry</th>
-                    <th scope="col" className="px-5 py-3">Open deals</th>
-                    <th scope="col" className="px-5 py-3">Website</th>
+                    <th scope="col" className="px-5 py-3">
+                      Company
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Primary contact
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Industry
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Open deals
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Website
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

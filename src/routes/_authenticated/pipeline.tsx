@@ -1,7 +1,17 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { toast } from "sonner";
-import { Building2, Clock, FolderOpen, Info, Search, Tag, Trophy, Users, XCircle } from "lucide-react";
+import {
+  Building2,
+  Clock,
+  FolderOpen,
+  Info,
+  Search,
+  Tag,
+  Trophy,
+  Users,
+  XCircle,
+} from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -10,7 +20,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useIndustries } from "@/hooks/use-industries";
@@ -38,7 +55,10 @@ export const Route = createFileRoute("/_authenticated/pipeline")({
   head: () => ({
     meta: [
       { title: "Pipeline | Startweb" },
-      { name: "description", content: "Manage deals and their next steps in your Startweb workspace." },
+      {
+        name: "description",
+        content: "Manage deals and their next steps in your Startweb workspace.",
+      },
       { property: "og:title", content: "Pipeline | Startweb" },
       { property: "og:description", content: "Manage deals and their next steps." },
       { property: "og:type", content: "website" },
@@ -296,9 +316,7 @@ function PipelinePage() {
           icon={Building2}
           title="Start with an account"
           description="Add a client company before creating its first deal."
-          action={
-            <NewAccountDialog trigger={<Button variant="outline">Add account</Button>} />
-          }
+          action={<NewAccountDialog trigger={<Button variant="outline">Add account</Button>} />}
         />
       )}
 

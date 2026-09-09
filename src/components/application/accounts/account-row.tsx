@@ -109,65 +109,65 @@ export function AccountRow({ account, industryName, ownerName }: AccountRowProps
               Website
             </a>
           ) : (
-            ownerName ?? "Unassigned"
+            (ownerName ?? "Unassigned")
           )}
         </td>
       </tr>
       {isExpanded && (
         <tr className="border-b border-border bg-muted/30">
           <td colSpan={5} className="p-5">
-          <dl className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <div>
-              <dt className="type-meta text-muted-foreground">Open deals</dt>
-              <dd className="type-body font-medium">
-                {account.deals.filter((deal) => deal.status === "open").length}
-              </dd>
-            </div>
-            <div>
-              <dt className="type-meta text-muted-foreground">Won value</dt>
-              <dd className="type-body font-medium">
-                {currency.format(
-                  account.deals
-                    .filter((deal) => deal.status === "won")
-                    .reduce((sum, deal) => sum + deal.value, 0),
-                )}
-              </dd>
-            </div>
-            <div>
-              <dt className="type-meta text-muted-foreground">Active projects</dt>
-              <dd className="type-body font-medium">
-                {account.projects.filter((project) => project.status !== "completed").length}
-              </dd>
-            </div>
-            <div>
-              <dt className="type-meta text-muted-foreground">Outstanding</dt>
-              <dd className="type-body font-medium">{currency.format(outstanding)}</dd>
-            </div>
-          </dl>
-          <p className="type-meta mb-2 text-muted-foreground">Contacts</p>
-          <ul className="mb-3 space-y-1">
-            {contacts && contacts.length === 0 && (
-              <li className="type-body text-muted-foreground">No contacts yet.</li>
-            )}
-            {contacts?.map((contact) => (
-              <li key={contact.id} className="type-body flex flex-wrap items-baseline gap-x-2">
-                <span className="font-medium">{contact.name}</span>
-                {contact.role_title && (
-                  <span className="text-muted-foreground">{contact.role_title}</span>
-                )}
-                {contact.email && <span className="text-muted-foreground">{contact.email}</span>}
-              </li>
-            ))}
-          </ul>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-2">
-            <Input placeholder="Name" className="w-36" {...form.register("name")} />
-            <Input placeholder="Role" className="w-32" {...form.register("roleTitle")} />
-            <Input placeholder="Email" className="w-44" {...form.register("email")} />
-            <Button type="submit" size="sm" variant="outline" disabled={createContact.isPending}>
-              <UserPlus className="size-4" aria-hidden="true" />
-              Add
-            </Button>
-          </form>
+            <dl className="mb-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              <div>
+                <dt className="type-meta text-muted-foreground">Open deals</dt>
+                <dd className="type-body font-medium">
+                  {account.deals.filter((deal) => deal.status === "open").length}
+                </dd>
+              </div>
+              <div>
+                <dt className="type-meta text-muted-foreground">Won value</dt>
+                <dd className="type-body font-medium">
+                  {currency.format(
+                    account.deals
+                      .filter((deal) => deal.status === "won")
+                      .reduce((sum, deal) => sum + deal.value, 0),
+                  )}
+                </dd>
+              </div>
+              <div>
+                <dt className="type-meta text-muted-foreground">Active projects</dt>
+                <dd className="type-body font-medium">
+                  {account.projects.filter((project) => project.status !== "completed").length}
+                </dd>
+              </div>
+              <div>
+                <dt className="type-meta text-muted-foreground">Outstanding</dt>
+                <dd className="type-body font-medium">{currency.format(outstanding)}</dd>
+              </div>
+            </dl>
+            <p className="type-meta mb-2 text-muted-foreground">Contacts</p>
+            <ul className="mb-3 space-y-1">
+              {contacts && contacts.length === 0 && (
+                <li className="type-body text-muted-foreground">No contacts yet.</li>
+              )}
+              {contacts?.map((contact) => (
+                <li key={contact.id} className="type-body flex flex-wrap items-baseline gap-x-2">
+                  <span className="font-medium">{contact.name}</span>
+                  {contact.role_title && (
+                    <span className="text-muted-foreground">{contact.role_title}</span>
+                  )}
+                  {contact.email && <span className="text-muted-foreground">{contact.email}</span>}
+                </li>
+              ))}
+            </ul>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-wrap items-end gap-2">
+              <Input placeholder="Name" className="w-36" {...form.register("name")} />
+              <Input placeholder="Role" className="w-32" {...form.register("roleTitle")} />
+              <Input placeholder="Email" className="w-44" {...form.register("email")} />
+              <Button type="submit" size="sm" variant="outline" disabled={createContact.isPending}>
+                <UserPlus className="size-4" aria-hidden="true" />
+                Add
+              </Button>
+            </form>
           </td>
         </tr>
       )}

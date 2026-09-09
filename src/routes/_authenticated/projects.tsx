@@ -276,9 +276,7 @@ function ProjectsPage() {
               <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
                 1
               </span>
-              <span className="text-muted-foreground">
-                Mark a deal won on the pipeline board.
-              </span>
+              <span className="text-muted-foreground">Mark a deal won on the pipeline board.</span>
             </li>
             <li className="flex gap-3">
               <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">
@@ -303,8 +301,8 @@ function ProjectsPage() {
             </Button>
           </div>
           <p className="mt-4 text-xs text-muted-foreground">
-            Owners shown here come from the team members in your workspace: {memberName(profile?.id)}{" "}
-            is signed in.
+            Owners shown here come from the team members in your workspace:{" "}
+            {memberName(profile?.id)} is signed in.
           </p>
         </Panel>
       </div>

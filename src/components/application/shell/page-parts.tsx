@@ -143,13 +143,7 @@ export function UnderlineTabs<T extends string>({
 }
 
 /** White panel used for tables, forms and side cards. */
-export function Panel({
-  className,
-  children,
-}: {
-  className?: string;
-  children: React.ReactNode;
-}) {
+export function Panel({ className, children }: { className?: string; children: React.ReactNode }) {
   return (
     <div className={cn("rounded-xl border border-border bg-card shadow-sm", className)}>
       {children}
@@ -172,7 +166,9 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div className={cn("flex flex-col items-center justify-center px-6 py-16 text-center", className)}>
+    <div
+      className={cn("flex flex-col items-center justify-center px-6 py-16 text-center", className)}
+    >
       <Icon className="mb-5 size-12 stroke-[1.25] text-muted-foreground/60" aria-hidden={true} />
       <p className="text-lg font-semibold text-foreground">{title}</p>
       {description ? (
@@ -281,7 +277,10 @@ export function ExplainerPanel({
         </span>
         {Icon ? (
           <ChevronDown
-            className={cn("size-5 text-muted-foreground transition-transform", open && "rotate-180")}
+            className={cn(
+              "size-5 text-muted-foreground transition-transform",
+              open && "rotate-180",
+            )}
             aria-hidden={true}
           />
         ) : null}
@@ -299,7 +298,5 @@ export function Toolbar({
   className?: string;
   children: React.ReactNode;
 }) {
-  return (
-    <div className={cn("flex flex-wrap items-center gap-3", className)}>{children}</div>
-  );
+  return <div className={cn("flex flex-wrap items-center gap-3", className)}>{children}</div>;
 }

@@ -16,12 +16,7 @@ import { useAccounts } from "@/hooks/use-accounts";
 import { useStatement } from "@/hooks/use-statement";
 import { downloadStatementPdf } from "@/lib/pdf/document-pdf";
 import { currency } from "@/lib/sales/currency";
-import {
-  EmptyState,
-  PageHeader,
-  Panel,
-  Toolbar,
-} from "@/components/application/shell/page-parts";
+import { EmptyState, PageHeader, Panel, Toolbar } from "@/components/application/shell/page-parts";
 
 export const Route = createFileRoute("/_authenticated/statements")({
   component: StatementsPage,
@@ -136,10 +131,7 @@ function StatementsPage() {
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="statement-activity">Activity</Label>
-          <Select
-            value={activity}
-            onValueChange={(value) => setActivity(value as typeof activity)}
-          >
+          <Select value={activity} onValueChange={(value) => setActivity(value as typeof activity)}>
             <SelectTrigger id="statement-activity" className="h-11 w-48 bg-card">
               <SelectValue />
             </SelectTrigger>
@@ -173,11 +165,21 @@ function StatementsPage() {
           <table className="w-full min-w-[42rem] text-left text-sm">
             <thead className="border-b border-border bg-muted/40">
               <tr className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-                <th scope="col" className="p-3">Invoice</th>
-                <th scope="col" className="p-3">Issued</th>
-                <th scope="col" className="p-3">Total</th>
-                <th scope="col" className="p-3">Paid</th>
-                <th scope="col" className="p-3">Balance</th>
+                <th scope="col" className="p-3">
+                  Invoice
+                </th>
+                <th scope="col" className="p-3">
+                  Issued
+                </th>
+                <th scope="col" className="p-3">
+                  Total
+                </th>
+                <th scope="col" className="p-3">
+                  Paid
+                </th>
+                <th scope="col" className="p-3">
+                  Balance
+                </th>
               </tr>
             </thead>
             <tbody>
