@@ -6,13 +6,17 @@ import type { LineItemDraft } from "@/components/application/finance/line-items-
 const INVOICE_COLUMNS =
   "id, account_id, deal_id, project_id, quote_id, invoice_number, status, issue_date, due_date, notes, created_at";
 
+// Nested line items and payments keep the list to a single request instead
+// of two extra requests per invoice row.
+const INVOICE_LIST_COLUMNS = `${INVOICE_COLUMNS}, invoice_line_items(id, package_id, description, quantity, unit_price, sort_order), payments(id, amount, paid_at, method, notes)`;
+
 export function useInvoices(workspaceId: string) {
   return useQuery({
     queryKey: ["invoices", workspaceId],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("invoices")
-        .select(INVOICE_COLUMNS)
+        .select(INVOICE_LIST_COLUMNS)
         .eq("workspace_id", workspaceId)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -103,6 +107,7 @@ export function useCreateInvoice(workspaceId: string) {
     }) => insertInvoice(workspaceId, input, input.lineItems),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
 }
@@ -121,6 +126,19 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
       accountId: string;
       dealId?: string | null;
     }) => {
+      // One invoice per quote. The unique index enforces this on the
+      // server; this check turns a retry into a clear message instead of a
+      // constraint error.
+      const { data: existing, error: existingError } = await supabase
+        .from("invoices")
+        .select("invoice_number")
+        .eq("quote_id", quoteId)
+        .maybeSingle();
+      if (existingError) throw existingError;
+      if (existing) {
+        throw new Error(`This quote is already invoiced as ${existing.invoice_number}`);
+      }
+
       const { data: lines, error: linesError } = await supabase
         .from("quote_line_items")
         .select("package_id, description, quantity, unit_price")
@@ -139,6 +157,8 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
 }
@@ -152,6 +172,7 @@ export function useUpdateInvoiceStatus(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
 }
