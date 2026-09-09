@@ -180,7 +180,7 @@ function OnboardingPage() {
           <section className="card-surface p-6">
             <h1 className="type-title mb-1">Billing</h1>
             <p className="type-body mb-6 text-muted-foreground">
-              Quotes and invoicing aren't set up yet — you'll configure this when that part of
+              Quotes and invoicing aren't set up yet. You'll configure this when that part of
               Startweb Workspace ships. Nothing to do here for now.
             </p>
             <Button onClick={() => setStepIndex(3)}>Continue</Button>

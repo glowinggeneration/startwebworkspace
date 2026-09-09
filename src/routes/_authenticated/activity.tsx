@@ -13,7 +13,7 @@ function ActivityPage() {
       <div>
         <h1 className="type-display">Activity</h1>
         <p className="type-body text-muted-foreground">
-          Fill this in before you leave the desk — it's what the Command Board's pace numbers come
+          Fill this in before you leave the desk. It's what the pace numbers come
           from.
         </p>
       </div>

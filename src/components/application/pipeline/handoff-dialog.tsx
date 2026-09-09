@@ -76,7 +76,7 @@ export function HandoffDialog({
           <DialogTitle>Hand off to delivery</DialogTitle>
           <DialogDescription>
             A project was created automatically. Give delivery what they need for a same-day
-            acknowledgement — you can always come back and fill this in later.
+            acknowledgement. You can always come back and fill this in later.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">

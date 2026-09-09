@@ -56,7 +56,7 @@ function StatementsPage() {
         <div>
           <h1 className="type-display">Statements</h1>
           <p className="type-body text-muted-foreground">
-            Every invoice and payment for one account, rolled up — always derived from the live
+            Every invoice and payment for one account, rolled up and always derived from the live
             data, never a separate record to keep in sync.
           </p>
         </div>

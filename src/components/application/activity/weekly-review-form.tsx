@@ -82,7 +82,7 @@ export function WeeklyReviewForm() {
       <div>
         <h2 className="type-section">Week ending {weekEnding}</h2>
         <p className="type-meta text-muted-foreground">
-          Argue with the numbers, not the weather — one sentence each.
+          Argue with the numbers, not the weather. One sentence each.
         </p>
       </div>
 

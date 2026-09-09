@@ -124,7 +124,7 @@ export function DailyLogForm() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="card-surface space-y-4 p-5">
         <div className="flex items-center justify-between">
-          <h2 className="type-section">Today — {today()}</h2>
+          <h2 className="type-section">Today, {today()}</h2>
           <FormField
             control={form.control}
             name="industryFocusId"

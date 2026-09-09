@@ -13,7 +13,7 @@ function LandingPage() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-4 text-center">
       <h1 className="type-display max-w-xl">Pipeline, delivery and invoicing in one workspace.</h1>
       <p className="type-body max-w-md text-muted-foreground">
-        Startweb Workspace turns closed-won deals straight into tracked projects — one place for
+        Startweb Workspace turns closed-won deals straight into tracked projects, one place for
         your team, your clients, and everything you bill them.
       </p>
       <div className="flex gap-3">

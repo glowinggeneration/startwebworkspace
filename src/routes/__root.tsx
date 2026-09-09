@@ -78,12 +78,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: "Startweb Workspace" },
       {
         name: "description",
-        content: "Startweb Workspace — pipeline, delivery and invoicing for one agency workspace.",
+        content: "Pipeline, delivery and invoicing for one agency workspace.",
       },
       { property: "og:title", content: "Startweb Workspace" },
       {
         property: "og:description",
-        content: "Startweb Workspace — pipeline, delivery and invoicing for one agency workspace.",
+        content: "Pipeline, delivery and invoicing for one agency workspace.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },

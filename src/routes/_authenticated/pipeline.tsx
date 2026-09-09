@@ -45,7 +45,7 @@ function PipelinePage() {
     try {
       await transitionStatus.mutateAsync(deal.id, status);
       if (status === "won") {
-        toast.success("Deal marked won — a project was created");
+        toast.success("Deal marked won, a project was created");
         // The status-update transaction runs the won-deal trigger
         // synchronously, so the handoff row already exists by the time
         // this dialog's query fires.
@@ -66,7 +66,7 @@ function PipelinePage() {
         <div>
           <h1 className="type-display">Pipeline</h1>
           <p className="type-body text-muted-foreground">
-            Every open row needs a next step and a next date — that's what makes it a real deal.
+            Every open row needs a next step and a next date. That's what makes it a real deal.
           </p>
         </div>
         <NewDealDialog />
