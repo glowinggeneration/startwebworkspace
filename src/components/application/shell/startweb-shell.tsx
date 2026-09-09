@@ -185,19 +185,53 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuLabel className={cn("truncate")}>
-                  {profile?.full_name || profile?.email}
+              <DropdownMenuContent align="end" className="w-64">
+                <DropdownMenuLabel className="flex items-center gap-3 py-2.5">
+                  <Avatar className="size-9">
+                    <AvatarFallback>{initialsOf(profile?.full_name)}</AvatarFallback>
+                  </Avatar>
+                  <span className="min-w-0">
+                    <span className="type-card block truncate">
+                      {profile?.full_name || "Your account"}
+                    </span>
+                    <span className="type-meta block truncate font-normal text-muted-foreground">
+                      {profile?.email}
+                    </span>
+                  </span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem
+                  className="group gap-2"
+                  onSelect={() => setIsCommandOpen(true)}
+                >
+                  <Search
+                    className="size-4 text-muted-foreground transition-transform duration-200 group-focus:scale-110"
+                    aria-hidden="true"
+                  />
+                  Search workspace
+                  <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="group gap-2">
                   <Link to={SETTINGS_NAV_ITEM.to}>
-                    <Settings className="mr-2 size-4" aria-hidden="true" />
+                    <Settings
+                      className="size-4 text-muted-foreground transition-transform duration-300 group-focus:rotate-45"
+                      aria-hidden="true"
+                    />
                     Settings
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onSelect={handleSignOut}>
-                  <LogOut className="mr-2 size-4" aria-hidden="true" />
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="group gap-2"
+                  onSelect={(event) => {
+                    event.preventDefault();
+                    setIsSignOutOpen(true);
+                  }}
+                >
+                  <LogOut
+                    className="size-4 text-muted-foreground transition-transform duration-200 group-focus:translate-x-0.5"
+                    aria-hidden="true"
+                  />
                   Sign out
                 </DropdownMenuItem>
               </DropdownMenuContent>
