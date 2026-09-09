@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useContacts, useCreateContact } from "@/hooks/use-contacts";
 import { currency } from "@/lib/sales/currency";
+import { invoiceBalance } from "@/lib/finance/balance";
 
 interface AccountRowProps {
   account: {
@@ -43,16 +44,10 @@ export function AccountRow({ account, industryName }: AccountRowProps) {
   const { workspaceId } = useActiveWorkspace();
   const { data: contacts } = useContacts(workspaceId, account.id);
   const createContact = useCreateContact(workspaceId, account.id);
-  const outstanding = account.invoices
-    .filter((invoice) => invoice.status !== "void")
-    .reduce((sum, invoice) => {
-      const total = invoice.invoice_line_items.reduce(
-        (lineSum, item) => lineSum + item.quantity * item.unit_price,
-        0,
-      );
-      const paid = invoice.payments.reduce((paidSum, payment) => paidSum + payment.amount, 0);
-      return sum + Math.max(total - paid, 0);
-    }, 0);
+  const outstanding = account.invoices.reduce(
+    (sum, invoice) => sum + invoiceBalance(invoice),
+    0,
+  );
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
