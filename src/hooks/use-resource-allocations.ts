@@ -17,6 +17,23 @@ export function useResourceAllocations(workspaceId: string, weekStart = currentW
   });
 }
 
+/** Allocations across every week starting inside the given inclusive range. */
+export function useResourceAllocationsRange(workspaceId: string, from: string, to: string) {
+  return useQuery({
+    queryKey: ["resource-allocations-range", workspaceId, from, to],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("resource_allocations")
+        .select("id, user_id, project_id, allocated_hours, week_start")
+        .eq("workspace_id", workspaceId)
+        .gte("week_start", from)
+        .lte("week_start", to);
+      if (error) throw error;
+      return data;
+    },
+  });
+}
+
 export function useSetAllocation(workspaceId: string, weekStart = currentWeekStart()) {
   const queryClient = useQueryClient();
   return useMutation({
@@ -45,6 +62,7 @@ export function useSetAllocation(workspaceId: string, weekStart = currentWeekSta
       void queryClient.invalidateQueries({
         queryKey: ["resource-allocations", workspaceId, weekStart],
       });
+      void queryClient.invalidateQueries({ queryKey: ["resource-allocations-range", workspaceId] });
     },
   });
 }
