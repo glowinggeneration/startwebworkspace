@@ -743,9 +743,9 @@ function CampaignsPage() {
                             </p>
                           </div>
                           <UtilityIconButton
-                            icon={Trash2}
+                            icon={<Trash2 className="size-4" />}
                             label={`Unlink ${task.title}`}
-                            tone="danger"
+                            danger
                             onClick={() => handleUnlinkTask(task.id)}
                           />
                         </li>
