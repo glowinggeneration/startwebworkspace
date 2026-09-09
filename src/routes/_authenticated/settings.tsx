@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useProfile, useUpdateProfileName } from "@/hooks/use-profile";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
+import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useInvitations, useRevokeInvitation } from "@/hooks/use-invitations";
 import { InviteDialog } from "@/components/application/settings/invite-dialog";
@@ -45,12 +46,24 @@ function SettingsPage() {
       <ProfileCard />
 
       <div className="card-surface p-5">
-        <h2 className="type-section mb-3">Team</h2>
+        <div className="mb-3 flex items-center justify-between gap-4">
+          <h2 className="type-section">Team</h2>
+          {members && members.length > 0 ? (
+            <AvatarCircles
+              size="sm"
+              avatars={members.slice(0, 5).map((member) => ({ name: member.name }))}
+              numPeople={Math.max(members.length - 5, 0)}
+            />
+          ) : null}
+        </div>
         {membersLoading && <div className="h-16 animate-pulse rounded-xl bg-muted" />}
         <ul className="space-y-2">
           {members?.map((member) => (
             <li key={member.userId} className="flex items-center justify-between">
-              <span className="type-body">{member.name}</span>
+              <span className="flex items-center gap-3">
+                <AvatarCircles size="sm" avatars={[{ name: member.name }]} />
+                <span className="type-body">{member.name}</span>
+              </span>
               <span className="type-meta rounded-full bg-secondary px-2 py-0.5 capitalize text-secondary-foreground">
                 {member.role}
               </span>

@@ -67,6 +67,7 @@
   --color-warning: var(--warning);
   --color-warning-foreground: var(--warning-foreground);
   --color-warning-surface: var(--warning-surface);
+  --color-accent-warm: var(--accent-warm);
   --color-info: var(--info);
   --color-info-foreground: var(--info-foreground);
   --color-info-surface: var(--info-surface);
@@ -140,6 +141,7 @@
   --success: oklch(0.4987 0.1168 157.07);
   --success-foreground: oklch(1 0 0);
   --success-surface: oklch(0.9788 0.0221 160.24);
+  --accent-warm: oklch(0.7686 0.1647 70.08);
   --warning: oklch(0.4705 0.1047 59.08);
   --warning-foreground: oklch(1 0 0);
   --warning-surface: oklch(0.9849 0.0204 91.58);
@@ -194,6 +196,7 @@
   --success: oklch(0.7 0.14 157);
   --success-foreground: oklch(0.16 0.03 264);
   --success-surface: oklch(0.3 0.05 157);
+  --accent-warm: oklch(0.8 0.14 72);
   --warning: oklch(0.78 0.13 75);
   --warning-foreground: oklch(0.16 0.03 264);
   --warning-surface: oklch(0.32 0.05 75);
@@ -525,4 +528,77 @@
 }
 .sidebar-peek > .peer > div:nth-child(2) {
   box-shadow: 0 12px 32px rgb(0 0 0 / 12%);
+}
+
+/* --- Accent + reveal treatments used by the shared visual components ------ */
+
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes highlight-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes shine {
+  0% {
+    background-position: 0% 0%;
+  }
+  50% {
+    background-position: 100% 100%;
+  }
+  100% {
+    background-position: 0% 0%;
+  }
+}
+
+.animate-aurora {
+  animation-name: aurora;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
+}
+
+.animate-shine {
+  animation: shine var(--duration, 14s) infinite linear;
+}
+
+.highlight-sweep::before,
+.underline-sweep::before {
+  content: "";
+  position: absolute;
+  inset-inline: -0.15em;
+  background-color: color-mix(in oklab, var(--highlight-color) 30%, transparent);
+  transform-origin: left center;
+  animation: highlight-grow 600ms var(--ease-out-apple) both;
+  z-index: 0;
+}
+
+.highlight-sweep::before {
+  inset-block: 0.08em 0.05em;
+  border-radius: 0.25em;
+}
+
+.underline-sweep::before {
+  bottom: -0.05em;
+  height: 0.16em;
+  border-radius: 999px;
+  background-color: var(--highlight-color);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .highlight-sweep::before,
+  .underline-sweep::before {
+    animation: none;
+  }
 }

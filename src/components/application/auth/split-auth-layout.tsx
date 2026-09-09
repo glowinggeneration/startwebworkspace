@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Monitor } from "lucide-react";
+import { ShineBorder } from "@/components/vendor/magicui/shine-border";
+import { TextAnimate } from "@/components/vendor/magicui/text-animate";
 
 /**
  * Adapted from the supplied Split-Screen Registration Page component
@@ -24,9 +26,14 @@ export function SplitAuthLayout({
           <img src="/brand/startweb-white.svg" alt="Startweb" className="h-6 w-auto" />
         </div>
         <div className="relative z-10 p-8 pb-16 lg:p-10 lg:pb-20">
-          <h1 className="mb-4 max-w-md text-4xl font-semibold leading-tight tracking-tight xl:text-5xl">
+          <TextAnimate
+            as="h1"
+            by="word"
+            animation="blurInUp"
+            className="mb-4 max-w-md text-4xl font-semibold leading-tight tracking-tight xl:text-5xl"
+          >
             {headline}
-          </h1>
+          </TextAnimate>
           <p className="max-w-md text-base text-primary-foreground/85">{subhead}</p>
         </div>
       </div>
@@ -38,15 +45,20 @@ export function SplitAuthLayout({
             className="rounded-2xl border border-border bg-muted/50 p-6 text-center md:hidden"
           >
             <Monitor className="mx-auto mb-3 size-8 text-muted-foreground" aria-hidden />
-            <h2 className="text-base font-semibold tracking-tight">
-              Use a desktop or tablet
-            </h2>
+            <h2 className="text-base font-semibold tracking-tight">Use a desktop or tablet</h2>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              Startweb is designed for larger screens. Please sign in from a
-              desktop or tablet to continue.
+              Startweb is designed for larger screens. Please sign in from a desktop or tablet to
+              continue.
             </p>
           </div>
-          <div className="hidden md:block">{children}</div>
+          <div className="relative hidden overflow-hidden rounded-3xl border border-border/70 bg-card p-8 shadow-xs md:block">
+            <ShineBorder
+              borderWidth={1}
+              duration={16}
+              shineColor={["var(--color-primary)", "var(--color-accent-warm)"]}
+            />
+            <div className="relative">{children}</div>
+          </div>
         </div>
       </div>
     </div>

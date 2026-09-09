@@ -7,6 +7,7 @@ import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useProjects } from "@/hooks/use-projects";
 import { useResourceAllocationsRange } from "@/hooks/use-resource-allocations";
+import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
 import { AllocationDialog } from "@/components/application/workload/allocation-dialog";
 import { currentWeekStart } from "@/lib/sales/week";
 import { cn } from "@/lib/utils";
@@ -85,6 +86,20 @@ function WorkloadPage() {
         title="Workload"
         description="Hours allocated against the team's capacity."
         actions={<AllocationDialog weekStart={weekStart} />}
+        aside={
+          members && members.length > 0 ? (
+            <div className="flex items-center gap-2">
+              <AvatarCircles
+                size="sm"
+                avatars={members.slice(0, 5).map((member) => ({ name: member.name }))}
+                numPeople={Math.max(members.length - 5, 0)}
+              />
+              <span className="text-sm text-muted-foreground">
+                {members.length} {members.length === 1 ? "person" : "people"}
+              </span>
+            </div>
+          ) : undefined
+        }
       />
 
       <Toolbar>
