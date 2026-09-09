@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
+import { Monitor } from "lucide-react";
 
 /**
  * Adapted from the supplied Split-Screen Registration Page component
