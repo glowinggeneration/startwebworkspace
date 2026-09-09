@@ -204,6 +204,10 @@ function AccountsPage() {
             </Panel>
           ) : view === "list" ? (
             <Panel className="overflow-x-auto">
+              <PanelHeader
+                title="Client directory"
+                description={`${filtered.length} ${filtered.length === 1 ? "company" : "companies"} in this workspace.`}
+              />
               <table className="w-full min-w-[42rem] text-left text-sm">
                 <thead>
                   <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wide text-muted-foreground">

@@ -193,14 +193,20 @@ function WorkloadPage() {
                 >
                   {totalHours}h of {capacityPerPerson}h
                 </span>
-                <span className="text-sm font-semibold tabular-nums text-foreground">
-                  {Math.round(percent)}%
-                </span>
+                {isOverCapacity ? (
+                  <StatusPill label="Over capacity" tone="critical" />
+                ) : totalHours > 0 ? (
+                  <StatusPill label="Allocated" tone="positive" />
+                ) : (
+                  <StatusPill label="Available" tone="neutral" />
+                )}
               </div>
 
-              <Progress
+              <ProgressMeter
                 value={percent}
-                className={cn("mt-4", isOverCapacity && "[&>div]:bg-danger")}
+                label={`${member.name} capacity used`}
+                tone={isOverCapacity ? "critical" : "info"}
+                className="mt-4"
               />
               <ul className="mt-3 space-y-1">
                 {memberAllocations.length === 0 && (

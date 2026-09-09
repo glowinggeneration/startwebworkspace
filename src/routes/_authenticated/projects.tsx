@@ -103,9 +103,16 @@ function ProjectsPage() {
             </Link>
             <p className="text-sm text-muted-foreground">{accountName(project.account_id)}</p>
           </div>
-          <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-medium capitalize text-secondary-foreground">
-            {project.status.replace("_", " ")}
-          </span>
+          <StatusPill
+            label={project.status.replace("_", " ")}
+            tone={
+              project.status === "completed"
+                ? "positive"
+                : project.status === "in_progress"
+                  ? "info"
+                  : "neutral"
+            }
+          />
         </div>
 
         {projectPhases.length > 0 && (
