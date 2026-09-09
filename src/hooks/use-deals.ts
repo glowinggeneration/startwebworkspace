@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { Database, DealStatus } from "@/integrations/supabase/types";
+import type { Database, DealStatus } from "@/integrations/supabase/app-types";
 
 type DealInsert = Database["public"]["Tables"]["deals"]["Insert"];
 type DealUpdate = Database["public"]["Tables"]["deals"]["Update"];

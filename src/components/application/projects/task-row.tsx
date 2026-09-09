@@ -1,7 +1,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
 import { TaskAssigneePicker } from "@/components/application/projects/task-assignee-picker";
-import type { TaskStatus } from "@/integrations/supabase/types";
+import type { TaskStatus } from "@/integrations/supabase/app-types";
 
 interface TaskRowProps {
   title: string;

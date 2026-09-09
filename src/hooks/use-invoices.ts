@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import type { InvoiceStatus } from "@/integrations/supabase/types";
+import type { InvoiceStatus } from "@/integrations/supabase/app-types";
 import type { LineItemDraft } from "@/components/application/finance/line-items-editor";
 
 const INVOICE_COLUMNS =

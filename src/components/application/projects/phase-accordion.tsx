@@ -3,7 +3,7 @@ import { motion, MotionConfig, type Transition } from "motion/react";
 import useMeasure from "react-use-measure";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { ProjectPhaseStatus } from "@/integrations/supabase/types";
+import type { ProjectPhaseStatus } from "@/integrations/supabase/app-types";
 
 export interface PhaseAccordionItem {
   id: string;

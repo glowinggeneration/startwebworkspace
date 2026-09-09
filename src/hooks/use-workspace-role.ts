@@ -1,5 +1,5 @@
 import { useRouteContext } from "@tanstack/react-router";
-import type { WorkspaceRole } from "@/integrations/supabase/types";
+import type { WorkspaceRole } from "@/integrations/supabase/app-types";
 import type { WorkspaceMembership } from "@/routes/_authenticated/route";
 
 /**
