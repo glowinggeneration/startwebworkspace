@@ -29,6 +29,19 @@ export const Route = createFileRoute("/_authenticated")({
       throw redirect({ to: "/onboarding" });
     }
 
+    // First login for an invited teammate: collect their profile details
+    // before letting them into the workspace.
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("profile_completed")
+      .eq("id", data.user.id)
+      .maybeSingle();
+
+    if (profile && !profile.profile_completed) {
+      throw redirect({ to: "/profile-setup" });
+    }
+
+
     return {
       user: data.user,
       memberships: memberRows.map((m): WorkspaceMembership => ({
