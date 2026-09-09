@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { Download, ScrollText } from "lucide-react";
+import { Building2, Download, ScrollText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FilterCombobox } from "@/components/application/shell/filter-combobox";
@@ -96,7 +96,7 @@ function StatementsPage() {
 
       <Toolbar>
         <div className="min-w-56 flex-1 space-y-1.5">
-          <Label htmlFor="statement-account">Account</Label>
+          <Label>Account</Label>
           <FilterCombobox
             value={accountId}
             onValueChange={setAccountId}
