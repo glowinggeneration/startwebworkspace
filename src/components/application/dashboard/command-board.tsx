@@ -217,17 +217,20 @@ export function CommandBoard({
       </div>
 
       {behindOutreach && (
-        <div className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-warning/40 bg-warning/10 px-5 py-4">
-          <div className="flex items-start gap-3">
-            <AlertTriangle className="mt-0.5 size-5 shrink-0 text-warning" aria-hidden="true" />
+        <div className="relative flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-2xl border border-amber-200/60 bg-gradient-to-r from-amber-50 via-orange-50/50 to-amber-50 px-5 py-4 shadow-sm">
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/40 to-transparent" aria-hidden="true" />
+          <div className="relative z-10 flex items-start gap-4">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-amber-100 bg-white shadow-sm">
+              <AlertTriangle className="size-5 text-amber-700" aria-hidden="true" />
+            </div>
             <div>
-              <p className="type-label font-semibold">Outreach is behind plan.</p>
-              <p className="type-body text-muted-foreground">
+              <p className="type-label font-semibold text-amber-900">Outreach is behind plan.</p>
+              <p className="type-body text-amber-800/70">
                 Protect your 08:00 to 10:00 calling block.
               </p>
             </div>
           </div>
-          <Button variant="outline" asChild>
+          <Button variant="outline" asChild className="relative z-10 rounded-lg border-amber-300 bg-white/50 font-semibold text-amber-900 hover:bg-white hover:shadow-sm">
             <Link to="/activity">Open activity</Link>
           </Button>
         </div>
