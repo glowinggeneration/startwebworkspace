@@ -51,8 +51,10 @@ export const runConversationImport = createServerFn({ method: "POST" })
       .eq("user_id", userId)
       .in("role", ["owner", "admin"]);
     if (membershipError) throw new Error(membershipError.message);
-    const workspaceId = memberships?.[0]?.workspace_id;
-    if (!workspaceId) throw new Error("Only workspace owners and admins can run this import.");
+    const membershipWorkspaceId = memberships?.[0]?.workspace_id;
+    if (!membershipWorkspaceId)
+      throw new Error("Only workspace owners and admins can run this import.");
+    const workspaceId: string = membershipWorkspaceId;
 
     const source = conversationPack.namespace;
 
