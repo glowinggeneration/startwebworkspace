@@ -199,7 +199,7 @@ export function MetricTile({
   className?: string;
 }) {
   return (
-    <Panel className={cn("p-5", className)}>
+    <Panel className={cn("reveal lift-hover p-5", className)}>
       <p className="text-sm text-muted-foreground">{label}</p>
       <p className="mt-2 text-[2rem] font-semibold leading-none tracking-[-0.03em] tabular-nums text-foreground">
         {value}
