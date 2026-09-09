@@ -1512,6 +1512,10 @@ export type Database = {
         Args: { p_phase_id: string }
         Returns: undefined
       }
+      shares_workspace: {
+        Args: { _target: string; _viewer: string }
+        Returns: boolean
+      }
     }
     Enums: {
       workspace_role: "owner" | "admin" | "sales" | "pm" | "member" | "client"
