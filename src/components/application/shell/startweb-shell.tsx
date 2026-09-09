@@ -1,4 +1,4 @@
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { ChevronRight, Home, LogOut, Search, Settings } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
@@ -55,6 +55,14 @@ export function StartwebShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname });
   const { data: profile } = useProfile();
   const [isSignOutOpen, setIsSignOutOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 4);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const currentPage =
     NAV_ITEMS.find((item) => pathname.startsWith(item.to)) ??
@@ -67,6 +75,9 @@ export function StartwebShell({ children }: { children: ReactNode }) {
 
   return (
     <SidebarProvider style={{ "--sidebar-width": "15.5rem" } as CSSProperties}>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
       <GlobalCommandPalette items={NAV_ITEMS} />
       <Sidebar collapsible="offcanvas" className="border-r-0">
         <SidebarHeader className="h-16 justify-center px-5">
@@ -139,7 +150,10 @@ export function StartwebShell({ children }: { children: ReactNode }) {
       </Sidebar>
 
       <SidebarInset className="bg-background">
-        <header className="sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between border-b border-divider bg-card/80 px-6 backdrop-blur-xl backdrop-saturate-150">
+        <header
+          data-scrolled={isScrolled}
+          className="app-header sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between bg-card/80 px-6 backdrop-blur-xl backdrop-saturate-150"
+        >
           <div className="flex items-center gap-2">
             <SidebarTrigger className="md:hidden" />
             <nav aria-label="Breadcrumb">
@@ -258,7 +272,9 @@ export function StartwebShell({ children }: { children: ReactNode }) {
             </DropdownMenu>
           </div>
         </header>
-        <main className="flex flex-1 flex-col">{children}</main>
+        <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
+          {children}
+        </main>
         <AlertDialog open={isSignOutOpen} onOpenChange={setIsSignOutOpen}>
           <AlertDialogContent>
             <AlertDialogHeader className="text-left">

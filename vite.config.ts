@@ -27,10 +27,12 @@ function workerRequireShim(): Plugin {
   };
 }
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   // The Worker runtime has no module resolution: every dependency must be
-  // bundled into the server output instead of left as a bare import.
-  ssr: { noExternal: true },
+  // bundled into the server output instead of left as a bare import. In dev the
+  // module runner resolves from node_modules, and inlining CommonJS packages
+  // there breaks SSR, so this applies to the production build only.
+  ssr: command === "build" ? { noExternal: true } : {},
   plugins: [
     tsConfigPaths(),
     tailwindcss(),
@@ -40,4 +42,4 @@ export default defineConfig({
     viteReact(),
     workerRequireShim(),
   ],
-});
+}));

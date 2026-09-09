@@ -243,7 +243,7 @@ export function HintBar({
         type="button"
         onClick={() => setDismissed(true)}
         aria-label={`Dismiss ${title}`}
-        className="rounded-md p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="inline-flex size-9 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <X className="size-5" aria-hidden={true} />
       </button>
