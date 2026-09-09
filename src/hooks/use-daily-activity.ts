@@ -75,3 +75,23 @@ export function useLogDailyActivity(workspaceId: string) {
     },
   });
 }
+
+/** Activity rows across an arbitrary date range, for the dashboard period selector. */
+export function useActivityRange(workspaceId: string, from: string, to: string) {
+  return useQuery({
+    queryKey: ["daily-activity-range", workspaceId, from, to],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("daily_activity_log")
+        .select(
+          "id, user_id, log_date, touches, conversations, meetings_booked, meetings_held, offers_sent, wins, hours_calling",
+        )
+        .eq("workspace_id", workspaceId)
+        .gte("log_date", from)
+        .lte("log_date", to)
+        .order("log_date", { ascending: false });
+      if (error) throw error;
+      return data;
+    },
+  });
+}

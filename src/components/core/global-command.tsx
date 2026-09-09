@@ -10,6 +10,13 @@ import {
 } from "@/components/ui/command";
 import type { NavItem } from "@/components/application/shell/nav-items";
 
+const OPEN_EVENT = "startweb:open-command-palette";
+
+/** Lets the top bar search field open the same palette as Cmd/Ctrl+K. */
+export function openCommandPalette() {
+  document.dispatchEvent(new CustomEvent(OPEN_EVENT));
+}
+
 /** Cmd/Ctrl+K quick nav across the shell's own nav items. Search across
  * CRM/project/invoice records is wired in once those features exist. */
 export function GlobalCommandPalette({ items }: { items: NavItem[] }) {
@@ -23,9 +30,17 @@ export function GlobalCommandPalette({ items }: { items: NavItem[] }) {
         setOpen((prev) => !prev);
       }
     }
+    function handleOpen() {
+      setOpen(true);
+    }
     document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener(OPEN_EVENT, handleOpen);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener(OPEN_EVENT, handleOpen);
+    };
   }, []);
+
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
