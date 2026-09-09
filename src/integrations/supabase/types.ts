@@ -182,6 +182,78 @@ export type Database = {
         }
         Relationships: []
       }
+      campaigns: {
+        Row: {
+          account_id: string | null
+          channel: string | null
+          created_at: string
+          end_date: string | null
+          id: string
+          name: string
+          next_action: string | null
+          next_action_date: string | null
+          notes: string | null
+          owner_id: string | null
+          planned_cost: number
+          spent_cost: number
+          start_date: string | null
+          status: string
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          channel?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name: string
+          next_action?: string | null
+          next_action_date?: string | null
+          notes?: string | null
+          owner_id?: string | null
+          planned_cost?: number
+          spent_cost?: number
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          account_id?: string | null
+          channel?: string | null
+          created_at?: string
+          end_date?: string | null
+          id?: string
+          name?: string
+          next_action?: string | null
+          next_action_date?: string | null
+          notes?: string | null
+          owner_id?: string | null
+          planned_cost?: number
+          spent_cost?: number
+          start_date?: string | null
+          status?: string
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "campaigns_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       contacts: {
         Row: {
           account_id: string
@@ -1388,6 +1460,7 @@ export type Database = {
       }
       tasks: {
         Row: {
+          campaign_id: string | null
           created_at: string
           description: string | null
           due_date: string | null
@@ -1405,6 +1478,7 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          campaign_id?: string | null
           created_at?: string
           description?: string | null
           due_date?: string | null
@@ -1422,6 +1496,7 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          campaign_id?: string | null
           created_at?: string
           description?: string | null
           due_date?: string | null
@@ -1439,6 +1514,13 @@ export type Database = {
           workspace_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "tasks_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "tasks_phase_id_fkey"
             columns: ["phase_id"]
