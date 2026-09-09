@@ -16,6 +16,7 @@ import {
 } from "@/components/application/projects/phase-accordion";
 import { TaskRow } from "@/components/application/projects/task-row";
 import { AddTaskForm } from "@/components/application/projects/add-task-form";
+import type { TaskStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/projects/$projectId")({
   component: ProjectDetailPage,

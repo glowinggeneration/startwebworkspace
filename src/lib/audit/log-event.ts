@@ -23,9 +23,7 @@ export async function logAuditEvent(input: {
     _action: input.action,
     _resource_table: input.resourceTable,
     _resource_id: input.resourceId,
-    _metadata: (input.metadata ?? {}) as Database["public"]["Tables"] extends never
-      ? never
-      : LogAuditEventArgs["_metadata"],
+    _metadata: (input.metadata ?? {}) as LogAuditEventArgs["_metadata"] & object,
   });
   if (error) {
     // Best-effort: a failed audit write shouldn't block the action it's
