@@ -32,6 +32,7 @@ export function useWorkspaceMembers(workspaceId: string) {
           userId: member.user_id,
           role: member.role,
           name: profile?.full_name || profile?.email || "Unknown",
+          email: profile?.email ?? null,
         };
       });
     },
