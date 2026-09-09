@@ -40,7 +40,7 @@ export function AvatarCircles({ numPeople, className, avatars, size = "md" }: Av
 
   return (
     <div className={cn("z-10 flex -space-x-2.5", className)}>
-      {avatars.map((avatar) => {
+      {avatars.map((avatar, index) => {
         const content = avatar.imageUrl ? (
           <img
             src={avatar.imageUrl}
@@ -62,7 +62,7 @@ export function AvatarCircles({ numPeople, className, avatars, size = "md" }: Av
 
         return avatar.profileUrl ? (
           <a
-            key={avatar.name}
+            key={`${avatar.name}-${index}`}
             href={avatar.profileUrl}
             title={avatar.name}
             className="rounded-full transition-transform duration-200 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -71,7 +71,7 @@ export function AvatarCircles({ numPeople, className, avatars, size = "md" }: Av
             <span className="sr-only">{avatar.name}</span>
           </a>
         ) : (
-          <span key={avatar.name} title={avatar.name} className="rounded-full">
+          <span key={`${avatar.name}-${index}`} title={avatar.name} className="rounded-full">
             {content}
             <span className="sr-only">{avatar.name}</span>
           </span>
