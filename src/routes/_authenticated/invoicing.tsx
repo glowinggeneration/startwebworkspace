@@ -1,6 +1,17 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { ChevronDown, Download } from "lucide-react";
+import { ChevronDown, Download, Receipt, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import {
+  EmptyState,
+  ExplainerPanel,
+  MetricTile,
+  PageHeader,
+  Panel,
+  Toolbar,
+  UnderlineTabs,
+} from "@/components/application/shell/page-parts";
+import { invoiceBalance } from "@/lib/finance/balance";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -21,6 +32,19 @@ import type { InvoiceStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/invoicing")({
   component: InvoicingPage,
+  head: () => ({
+    meta: [
+      { title: "Invoicing | Startweb" },
+      {
+        name: "description",
+        content: "Raise invoices, record payments and watch outstanding balances.",
+      },
+      { property: "og:title", content: "Invoicing | Startweb" },
+      { property: "og:description", content: "Invoices and payments in one place." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
 });
 
 const STATUS_OPTIONS: InvoiceStatus[] = ["draft", "sent", "paid", "overdue", "void"];
@@ -33,42 +57,118 @@ function InvoicingPage() {
 
   const accountName = (id: string) => accounts?.find((a) => a.id === id)?.name ?? "Unknown account";
 
+  const [tab, setTab] = useState<"all" | InvoiceStatus>("all");
+  const [search, setSearch] = useState("");
+
+  const totals = useMemo(() => {
+    const all = invoices ?? [];
+    const monthStart = new Date();
+    monthStart.setDate(1);
+    const outstanding = all
+      .filter((invoice) => invoice.status !== "void")
+      .reduce((sum, invoice) => sum + invoiceBalance(invoice), 0);
+    const overdue = all
+      .filter((invoice) => invoice.status === "overdue")
+      .reduce((sum, invoice) => sum + invoiceBalance(invoice), 0);
+    const paidThisMonth = all
+      .flatMap((invoice) => invoice.payments)
+      .filter((payment) => new Date(payment.paid_at) >= monthStart)
+      .reduce((sum, payment) => sum + payment.amount, 0);
+    return { outstanding, overdue, paidThisMonth };
+  }, [invoices]);
+
+  const filtered = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    return (invoices ?? []).filter((invoice) => {
+      if (tab !== "all" && invoice.status !== tab) return false;
+      if (!term) return true;
+      return (
+        invoice.invoice_number.toLowerCase().includes(term) ||
+        accountName(invoice.account_id).toLowerCase().includes(term)
+      );
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [invoices, accounts, tab, search]);
+
   return (
-    <div className="section-stack p-8">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="type-display">Invoicing</h1>
-          <p className="type-body text-muted-foreground">
-            An invoice is marked paid automatically once its recorded payments reach the total.
-          </p>
-        </div>
-        <NewInvoiceDialog />
+    <div className="space-y-6 p-8">
+      <PageHeader
+        title="Invoicing"
+        description="An invoice is marked paid automatically once its recorded payments reach the total."
+        actions={<NewInvoiceDialog />}
+      />
+
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <MetricTile label="Outstanding" value={currency.format(totals.outstanding)} />
+        <MetricTile label="Overdue" value={currency.format(totals.overdue)} />
+        <MetricTile label="Paid this month" value={currency.format(totals.paidThisMonth)} />
       </div>
 
-      {isLoading && (
+      <UnderlineTabs
+        ariaLabel="Invoice status"
+        value={tab}
+        onValueChange={setTab}
+        options={[
+          { value: "all", label: "All invoices", count: invoices?.length ?? 0 },
+          ...STATUS_OPTIONS.map((status) => ({
+            value: status,
+            label: status.charAt(0).toUpperCase() + status.slice(1),
+            count: (invoices ?? []).filter((invoice) => invoice.status === status).length,
+          })),
+        ]}
+      />
+
+      <Toolbar>
+        <div className="relative min-w-56 flex-1">
+          <Search
+            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+            aria-hidden="true"
+          />
+          <Input
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+            placeholder="Search invoices..."
+            aria-label="Search invoices"
+            className="h-11 bg-card pl-9"
+          />
+        </div>
+      </Toolbar>
+
+      {isLoading ? (
+        <div className="h-64 animate-pulse rounded-xl bg-muted" />
+      ) : filtered.length === 0 ? (
+        <Panel>
+          <EmptyState
+            icon={Receipt}
+            title="No invoices yet"
+            description="Raise an invoice directly, or convert an accepted quote."
+            action={<NewInvoiceDialog />}
+          />
+        </Panel>
+      ) : (
         <div className="space-y-3">
-          {Array.from({ length: 2 }).map((_, i) => (
-            <div key={i} className="h-16 animate-pulse rounded-xl bg-muted" />
+          {filtered.map((invoice) => (
+            <InvoiceRow
+              key={invoice.id}
+              invoice={invoice}
+              accountName={accountName(invoice.account_id)}
+              onStatusChange={(status) => updateStatus.mutate({ id: invoice.id, status })}
+            />
           ))}
         </div>
       )}
 
-      {invoices && invoices.length === 0 && (
-        <p className="type-body rounded-lg border border-dashed border-border p-8 text-center text-muted-foreground">
-          No invoices yet.
-        </p>
-      )}
-
-      <div className="space-y-3">
-        {invoices?.map((invoice) => (
-          <InvoiceRow
-            key={invoice.id}
-            invoice={invoice}
-            accountName={accountName(invoice.account_id)}
-            onStatusChange={(status) => updateStatus.mutate({ id: invoice.id, status })}
-          />
-        ))}
-      </div>
+      <ExplainerPanel
+        icon={Receipt}
+        title="How payment status works"
+        description="Statuses follow the payments you record."
+      >
+        <ul className="space-y-2 text-sm text-muted-foreground">
+          <li>Recorded payments reduce the outstanding balance on the invoice.</li>
+          <li>An invoice flips to paid on its own once payments reach the total.</li>
+          <li>A payment larger than the outstanding balance is rejected.</li>
+        </ul>
+      </ExplainerPanel>
     </div>
   );
 }
