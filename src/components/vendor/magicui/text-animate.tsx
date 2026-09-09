@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { motion, useReducedMotion, type TargetAndTransition, type Variants } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -20,13 +20,13 @@ export type TextAnimateProps = {
   as?: "p" | "span" | "h1" | "h2" | "h3" | "div";
 };
 
-const hidden: Record<Animation, Record<string, unknown>> = {
+const hidden: Record<Animation, TargetAndTransition> = {
   blurInUp: { opacity: 0, y: 12, filter: "blur(8px)" },
   fadeIn: { opacity: 0 },
   slideUp: { opacity: 0, y: 8 },
 };
 
-const shown: Record<Animation, Record<string, unknown>> = {
+const shown: Record<Animation, TargetAndTransition> = {
   blurInUp: { opacity: 1, y: 0, filter: "blur(0px)" },
   fadeIn: { opacity: 1 },
   slideUp: { opacity: 1, y: 0 },
@@ -50,7 +50,7 @@ export function TextAnimate({
   segmentClassName,
   animation = "blurInUp",
   by = "word",
-  once = true,
+  once: _once = true,
   delay = 0,
   duration = 0.45,
   as = "p",
@@ -80,7 +80,6 @@ export function TextAnimate({
       variants={container}
       initial="hidden"
       animate="show"
-      viewport={once ? { once: true } : undefined}
     >
       {segments.map((segment, index) => (
         <motion.span
