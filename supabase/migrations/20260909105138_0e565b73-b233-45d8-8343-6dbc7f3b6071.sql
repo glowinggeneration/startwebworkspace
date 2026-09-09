@@ -1,0 +1,1 @@
+REVOKE ALL ON FUNCTION public.auto_join_invited_workspaces() FROM PUBLIC, anon, authenticated;
