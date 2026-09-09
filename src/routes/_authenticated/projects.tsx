@@ -6,13 +6,6 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FilterCombobox } from "@/components/application/shell/filter-combobox";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useProfile } from "@/hooks/use-profile";
 import { useAccounts } from "@/hooks/use-accounts";

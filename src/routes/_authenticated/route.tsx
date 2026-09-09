@@ -42,7 +42,6 @@ export const Route = createFileRoute("/_authenticated")({
       throw redirect({ to: "/profile-setup" });
     }
 
-
     return {
       user: data.user,
       memberships: memberRows.map((m): WorkspaceMembership => ({

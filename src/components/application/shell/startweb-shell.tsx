@@ -150,7 +150,10 @@ export function StartwebShell({ children }: { children: ReactNode }) {
                         aria-current="page"
                         className="flex items-center gap-1.5 px-1 py-0.5 text-foreground"
                       >
-                        <currentPage.icon className="size-3.5 text-foreground/80" aria-hidden="true" />
+                        <currentPage.icon
+                          className="size-3.5 text-foreground/80"
+                          aria-hidden="true"
+                        />
                         <span className="type-label">{currentPage.label}</span>
                       </span>
                     </li>
