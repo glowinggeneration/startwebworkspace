@@ -241,38 +241,51 @@ function PipelinePage() {
                     {columnDeals.length} · {currency.format(columnTotal)}
                   </span>
                 </div>
-                <div className="flex-1 space-y-3 p-4">
-                  {columnDeals.length === 0 ? (
-                    <EmptyState
-                      icon={column.icon}
-                      title={column.emptyTitle}
-                      description={column.emptyBody}
-                      className="py-14"
-                      action={
-                        column.status === "open" ? (
-                          <NewDealDialog
-                            trigger={
-                              <Button>
-                                <span aria-hidden="true">+</span> Add deal
-                              </Button>
-                            }
-                          />
-                        ) : undefined
-                      }
-                    />
-                  ) : (
-                    columnDeals.map((deal) => (
-                      <DealCard
-                        key={deal.id}
-                        deal={deal}
-                        accountName={accountName(deal.account_id)}
-                        industryName={industryName(deal.industry_id)}
-                        packageName={packageName(deal.package_id)}
-                        onStatusChange={(status) => handleStatusChange(deal, status)}
+                <div className="relative flex-1">
+                  <div className="max-h-[28rem] space-y-3 overflow-y-auto p-4">
+                    {columnDeals.length === 0 ? (
+                      <EmptyState
+                        icon={column.icon}
+                        title={column.emptyTitle}
+                        description={column.emptyBody}
+                        className="py-14"
+                        action={
+                          column.status === "open" ? (
+                            <NewDealDialog
+                              trigger={
+                                <Button>
+                                  <span aria-hidden="true">+</span> Add deal
+                                </Button>
+                              }
+                            />
+                          ) : undefined
+                        }
                       />
-                    ))
-                  )}
+                    ) : (
+                      <AnimatedList>
+                        {columnDeals.map((deal) => (
+                          <DealCard
+                            key={deal.id}
+                            deal={deal}
+                            accountName={accountName(deal.account_id)}
+                            industryName={industryName(deal.industry_id)}
+                            packageName={packageName(deal.package_id)}
+                            onStatusChange={(status) => handleStatusChange(deal, status)}
+                          />
+                        ))}
+                      </AnimatedList>
+                    )}
+                  </div>
+                  {columnDeals.length > 3 ? (
+                    <ProgressiveBlur
+                      position="bottom"
+                      height="2.5rem"
+                      backgroundColor="var(--card)"
+                      className="rounded-b-[inherit]"
+                    />
+                  ) : null}
                 </div>
+
               </Panel>
             );
           })}
