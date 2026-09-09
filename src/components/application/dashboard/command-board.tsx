@@ -192,7 +192,19 @@ export function CommandBoard({
           </p>
         </MetricCard>
 
-        <MetricCard label="Target coverage" value={`${coverage.coverage.toFixed(2)}×`}>
+        <MetricCard
+          label="Target coverage"
+          value={`${coverage.coverage.toFixed(2)}×`}
+          info={
+            <InfoPopover title="Target coverage">
+              <p>
+                Planned pipeline value for the month divided by the monthly revenue target.
+              </p>
+              <p>Anything under 1.00× means the plan does not yet cover the target.</p>
+            </InfoPopover>
+          }
+        >
+
           {coverage.status === "on-track" ? (
             <span className="type-label inline-flex items-center gap-1.5 rounded-md bg-success/10 px-2.5 py-1.5 text-success">
               On track

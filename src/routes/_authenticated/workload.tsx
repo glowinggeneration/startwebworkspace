@@ -19,6 +19,8 @@ import {
   SegmentedControl,
   Toolbar,
 } from "@/components/application/shell/page-parts";
+import { InfoPopover } from "@/components/application/shell/info-popover";
+
 
 // A fixed weekly-capacity assumption, not yet a per-user setting — see
 // docs/build-standards/EXCEPTION_REGISTER.md if this needs to vary by
