@@ -9,6 +9,7 @@ import { useProfile, useUpdateProfileName } from "@/hooks/use-profile";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
 import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
+import { AvatarLabelGroup } from "@/components/application/shell/avatar-label-group";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useInvitations, useRevokeInvitation } from "@/hooks/use-invitations";
 import { InviteDialog } from "@/components/application/settings/invite-dialog";

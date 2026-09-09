@@ -8,6 +8,7 @@ import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useProjects } from "@/hooks/use-projects";
 import { useResourceAllocationsRange } from "@/hooks/use-resource-allocations";
 import { AvatarCircles } from "@/components/vendor/magicui/avatar-circles";
+import { AvatarLabelGroup } from "@/components/application/shell/avatar-label-group";
 import { AllocationDialog } from "@/components/application/workload/allocation-dialog";
 import { currentWeekStart } from "@/lib/sales/week";
 import { cn } from "@/lib/utils";
