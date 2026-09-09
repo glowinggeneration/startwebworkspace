@@ -30,7 +30,7 @@ import {
   Toolbar,
 } from "@/components/application/shell/page-parts";
 import { Button } from "@/components/ui/button";
-import { formatZar } from "@/lib/sales/currency";
+import { currency } from "@/lib/sales/currency";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
@@ -218,7 +218,7 @@ function PipelinePage() {
                 <div className="flex items-center justify-between border-b border-border px-5 py-4">
                   <h2 className="text-base font-semibold text-foreground">{column.label}</h2>
                   <span className="text-sm text-muted-foreground">
-                    {columnDeals.length} · {formatZar(columnTotal)}
+                    {columnDeals.length} · {currency.format(columnTotal)}
                   </span>
                 </div>
                 <div className="flex-1 space-y-3 p-4">
@@ -275,7 +275,7 @@ function PipelinePage() {
                   <TableCell className="font-medium">{accountName(deal.account_id)}</TableCell>
                   <TableCell className="text-muted-foreground">{deal.next_step}</TableCell>
                   <TableCell className="text-muted-foreground">{deal.next_date}</TableCell>
-                  <TableCell className="text-right">{formatZar(deal.value)}</TableCell>
+                  <TableCell className="text-right">{currency.format(deal.value)}</TableCell>
                   <TableCell className="capitalize text-muted-foreground">{deal.status}</TableCell>
                 </TableRow>
               ))}
