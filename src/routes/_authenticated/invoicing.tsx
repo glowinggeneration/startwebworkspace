@@ -40,7 +40,7 @@ function InvoicingPage() {
   const accountName = (id: string) => accounts?.find((a) => a.id === id)?.name ?? "Unknown account";
 
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="type-display">Invoicing</h1>

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/_authenticated/activity")({
 
 function ActivityPage() {
   return (
-    <div className="section-stack p-6">
+    <div className="section-stack p-8">
       <div>
         <h1 className="type-display">Activity</h1>
         <p className="type-body text-muted-foreground">
