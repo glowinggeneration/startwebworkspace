@@ -20,6 +20,7 @@ import {
   UnderlineTabs,
 } from "@/components/application/shell/page-parts";
 import type { ProjectPhaseStatus } from "@/integrations/supabase/app-types";
+import { StatusPill } from "@/components/application/shell/panel-parts";
 
 export const Route = createFileRoute("/_authenticated/projects")({
   component: ProjectsPage,
