@@ -26,12 +26,12 @@ export function AvatarLabelGroup({
   className,
 }: {
   title: string;
-  subtitle?: string;
-  size?: keyof typeof sizes;
+  subtitle?: string | undefined;
+  size?: keyof typeof sizes | undefined;
   /** Optional presence-style dot colour class, e.g. "bg-success". */
-  status?: string;
-  trailing?: React.ReactNode;
-  className?: string;
+  status?: string | undefined;
+  trailing?: React.ReactNode | undefined;
+  className?: string | undefined;
 }) {
   const s = sizes[size];
   return (

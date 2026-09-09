@@ -74,7 +74,6 @@ function SettingsPage() {
               </span>
             </li>
           ))}
-
         </ul>
       </div>
 
