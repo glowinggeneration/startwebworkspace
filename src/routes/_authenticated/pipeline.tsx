@@ -174,7 +174,8 @@ function PipelinePage() {
           value={view}
           onValueChange={setView}
           options={[
-            { value: "board", label: "Board" },
+            { value: "clients", label: "Clients" },
+            { value: "board", label: "Deals" },
             { value: "list", label: "List" },
           ]}
         />
@@ -186,8 +187,8 @@ function PipelinePage() {
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search deals..."
-            aria-label="Search deals"
+            placeholder={view === "clients" ? "Search clients..." : "Search deals..."}
+            aria-label={view === "clients" ? "Search clients" : "Search deals"}
             className="h-11 bg-card pl-9"
           />
         </div>
