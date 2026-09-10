@@ -38,6 +38,8 @@ the next release and close anything new.
 - Internal tables (`audit_log`, `rate_limit_hits`, `numbering_counters`)
   and internal database functions locked away from the API.
 - Backend connection keys rebound twice after they went stale at sign-in.
+- Live builds now explicitly receive the generated browser client's public
+  backend connection values, preventing the sign-in page from losing them.
 
 ## Parked
 
