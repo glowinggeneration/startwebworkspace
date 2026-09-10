@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/application/shell/page-parts";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
-import { useImportReviewItems, useSetImportReviewStatus } from "@/hooks/use-import-review";
+import {
+  useImportReviewItems,
+  useSetImportReviewStatus,
+  type ImportReviewItem,
+  type ImportReviewStatus,
+} from "@/hooks/use-import-review";
 
 export const Route = createFileRoute("/_authenticated/import-review")({
   component: ImportReviewPage,
@@ -44,9 +49,9 @@ function ImportReviewPage() {
   }
 
   const open = items?.filter((item) => item.status === "open") ?? [];
-  const resolved = items?.filter((item) => item.status !== "open") ?? [];
+  const decided = items?.filter((item) => item.status !== "open") ?? [];
 
-  function update(id: string, status: "open" | "resolved") {
+  function update(id: string, status: ImportReviewStatus) {
     setStatus.mutate(
       { id, status },
       {
@@ -54,7 +59,10 @@ function ImportReviewPage() {
           toast.error("Couldn't update this item", {
             description: error instanceof Error ? error.message : undefined,
           }),
-        onSuccess: () => toast.success(status === "resolved" ? "Marked as decided" : "Reopened"),
+        onSuccess: () =>
+          toast.success(
+            status === "approved" ? "Approved" : status === "rejected" ? "Rejected" : "Reopened",
+          ),
       },
     );
   }
@@ -68,7 +76,7 @@ function ImportReviewPage() {
 
       {isLoading ? (
         <div className="h-24 animate-pulse rounded-xl bg-muted" />
-      ) : open.length === 0 && resolved.length === 0 ? (
+      ) : open.length === 0 && decided.length === 0 ? (
         <div className="card-surface p-5">
           <p className="type-body text-muted-foreground">
             Nothing to review. Run an import preview in Settings to see what needs checking.
@@ -79,16 +87,14 @@ function ImportReviewPage() {
           <ReviewList
             heading={`Needs a decision (${open.length})`}
             items={open}
-            actionLabel="Mark decided"
-            onAction={(id) => update(id, "resolved")}
+            onDecide={update}
             pending={setStatus.isPending}
           />
-          {resolved.length > 0 ? (
+          {decided.length > 0 ? (
             <ReviewList
-              heading={`Decided (${resolved.length})`}
-              items={resolved}
-              actionLabel="Reopen"
-              onAction={(id) => update(id, "open")}
+              heading={`Decided (${decided.length})`}
+              items={decided}
+              onDecide={update}
               pending={setStatus.isPending}
             />
           ) : null}
