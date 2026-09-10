@@ -24,7 +24,7 @@ type NextItem = {
   date: string | null;
   kind: "task" | "campaign";
   to: "/pipeline" | "/campaigns";
-  clientId?: string;
+  clientId?: string | undefined;
 };
 
 /**
@@ -33,8 +33,8 @@ type NextItem = {
  */
 export function WorkspaceOverview() {
   const workspace = useActiveWorkspace();
-  const clients = useClientBoard(workspace.workspace_id);
-  const campaigns = useCampaigns(workspace.workspace_id);
+  const clients = useClientBoard(workspace.workspaceId);
+  const campaigns = useCampaigns(workspace.workspaceId);
 
   const accounts = clients.data ?? [];
   const campaignRows = campaigns.data ?? [];
@@ -186,7 +186,7 @@ export function WorkspaceOverview() {
             <ProgressMeter
               value={Math.min(spendShare, 100)}
               label="Campaign budget used"
-              tone={spendShare > 100 ? "danger" : "info"}
+              tone={spendShare > 100 ? "critical" : "info"}
             />
             <p className="text-xs text-muted-foreground">
               {totals.planned === 0
@@ -250,7 +250,7 @@ export function WorkspaceOverview() {
                     {item.date ? (
                       <StatusPill
                         label={formatDate(item.date) ?? item.date}
-                        tone={item.date < today ? "danger" : "neutral"}
+                        tone={item.date < today ? "critical" : "neutral"}
                       />
                     ) : (
                       <span className="text-xs text-muted-foreground">No date</span>
