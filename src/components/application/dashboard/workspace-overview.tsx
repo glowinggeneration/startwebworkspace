@@ -127,6 +127,13 @@ export function WorkspaceOverview() {
   }
 
   if (clients.isError || campaigns.isError) {
+    // Logged, not shown: the message a user sees must stay generic (Master
+    // Rules §6.6), but a schema-mismatch error like "column ... does not
+    // exist" is exactly the kind of thing that's undiagnosable later
+    // without this — see docs/build-standards/EXCEPTION_REGISTER.md.
+    if (clients.error) console.error("[workspace-overview] clients query failed:", clients.error);
+    if (campaigns.error)
+      console.error("[workspace-overview] campaigns query failed:", campaigns.error);
     return (
       <Panel className="p-6">
         <p className="text-sm text-destructive">
