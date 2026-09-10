@@ -6,6 +6,7 @@ import {
   Clock,
   FolderOpen,
   Info,
+  Layers,
   Search,
   Tag,
   Trophy,
