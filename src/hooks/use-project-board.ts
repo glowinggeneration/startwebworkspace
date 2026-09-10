@@ -16,13 +16,6 @@ export interface ProjectBoardPhase {
   sort_order: number;
 }
 
-export interface ProjectBoardQuote {
-  id: string;
-  quote_number: string;
-  status: string;
-  issue_date: string;
-}
-
 export interface ProjectBoardInvoice {
   id: string;
   invoice_number: string;
@@ -39,10 +32,9 @@ export interface ProjectBoardProject {
   start_date: string | null;
   due_date: string | null;
   account_id: string;
-  account: { id: string; name: string } | null;
+  accounts: { id: string; name: string } | null;
   project_phases: ProjectBoardPhase[];
   tasks: ProjectBoardTask[];
-  quotes: ProjectBoardQuote[];
   invoices: ProjectBoardInvoice[];
 }
 
@@ -58,7 +50,7 @@ export function useProjectBoard(workspaceId: string) {
       const { data, error } = await supabase
         .from("projects")
         .select(
-          "id, name, status, status_label, start_date, due_date, account_id, accounts(id, name), project_phases(id, name, status, sort_order), tasks(id, title, status, status_label, due_date), quotes(id, quote_number, status, issue_date), invoices(id, invoice_number, status, issue_date, due_date)",
+          "id, name, status, status_label, start_date, due_date, account_id, accounts(id, name), project_phases(id, name, status, sort_order), tasks(id, title, status, status_label, due_date), invoices(id, invoice_number, status, issue_date, due_date)",
         )
         .eq("workspace_id", workspaceId)
         .order("name");

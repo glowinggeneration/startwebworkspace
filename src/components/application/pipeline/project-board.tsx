@@ -6,7 +6,6 @@ import { CSS } from "@dnd-kit/utilities";
 import {
   CalendarClock,
   CheckCircle2,
-  FileText,
   FolderOpen,
   Layers,
   MoreHorizontal,
@@ -161,7 +160,7 @@ function ProjectCard({
         <MoreHorizontal className="size-3.5 text-muted-foreground" aria-hidden="true" />
       </div>
       <p className="mt-1 truncate text-xs text-muted-foreground">
-        {project.account?.name ?? "No client"}
+        {project.accounts?.name ?? "No client"}
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -178,17 +177,6 @@ function ProjectCard({
       </div>
 
       <div className="mt-3 space-y-1.5 border-t border-border pt-3 text-xs">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <FileText className="size-3.5 shrink-0" aria-hidden="true" />
-          {quote ? (
-            <span className="flex items-center gap-1">
-              <CheckCircle2 className="size-3 text-emerald-500" aria-hidden="true" />
-              Quote {quote.quote_number} · {quote.status}
-            </span>
-          ) : (
-            <span>No quote yet</span>
-          )}
-        </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <Receipt className="size-3.5 shrink-0" aria-hidden="true" />
           {invoice ? (
