@@ -17,3 +17,6 @@ Settled choices. Do not reopen without a new decision recorded here.
 | 2026-09-09 | Campaigns link to tasks directly through `tasks.campaign_id`, not through projects                                    | A campaign is not always a project                  |
 | 2026-09-09 | Imported records keep `import_key`, `import_source` and `source_refs`; imports are idempotent and never invent values | Traceable back to the source conversation           |
 | 2026-09-09 | Adding functionality never authorises redesigning existing screens                                                    | Protects signed-off work                            |
+| 2026-09-10 | Pipeline opens on a Clients board derived from account relationship status; Deals and List views stay     | There are no deals yet, the real work is client based |
+| 2026-09-10 | Internal tables and maintenance functions are not reachable through the API                               | Workspace data stays inside the database |
+| 2026-09-10 | Project memory in `mem://` mirrors `docs/context/`; the documents stay the source of truth                | One place to correct, both stay true |
