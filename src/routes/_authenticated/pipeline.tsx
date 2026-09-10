@@ -129,6 +129,7 @@ function PipelinePage() {
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
+  const [stageFilter, setStageFilter] = useState<"all" | ClientStage>("all");
 
   const accountName = (id: string) => accounts?.find((a) => a.id === id)?.name ?? "Unknown account";
   const industryName = (id: string | null) => industries?.find((i) => i.id === id)?.name ?? null;
@@ -151,8 +152,12 @@ function PipelinePage() {
 
   const visibleClients = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return clientAccounts ?? [];
-    return (clientAccounts ?? []).filter((account) =>
+    const staged =
+      stageFilter === "all"
+        ? (clientAccounts ?? [])
+        : (clientAccounts ?? []).filter((account) => clientStage(account) === stageFilter);
+    if (!term) return staged;
+    return staged.filter((account) =>
       [
         account.name,
         account.primary_service ?? "",
