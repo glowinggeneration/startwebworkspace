@@ -71,7 +71,7 @@ function ImportReviewPage() {
 
       {isLoading ? (
         <div className="h-24 animate-pulse rounded-xl bg-muted" />
-      ) : open.length === 0 && resolved.length === 0 ? (
+      ) : open.length === 0 && decided.length === 0 ? (
         <div className="card-surface p-5">
           <p className="type-body text-muted-foreground">
             Nothing to review. Run an import preview in Settings to see what needs checking.
@@ -82,16 +82,14 @@ function ImportReviewPage() {
           <ReviewList
             heading={`Needs a decision (${open.length})`}
             items={open}
-            actionLabel="Mark decided"
-            onAction={(id) => update(id, "resolved")}
+            onDecide={update}
             pending={setStatus.isPending}
           />
-          {resolved.length > 0 ? (
+          {decided.length > 0 ? (
             <ReviewList
-              heading={`Decided (${resolved.length})`}
-              items={resolved}
-              actionLabel="Reopen"
-              onAction={(id) => update(id, "open")}
+              heading={`Decided (${decided.length})`}
+              items={decided}
+              onDecide={update}
               pending={setStatus.isPending}
             />
           ) : null}
