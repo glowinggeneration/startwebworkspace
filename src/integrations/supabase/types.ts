@@ -182,6 +182,41 @@ export type Database = {
         }
         Relationships: []
       }
+      calendar_feed_tokens: {
+        Row: {
+          created_at: string
+          id: string
+          last_accessed_at: string | null
+          token: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          token: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_accessed_at?: string | null
+          token?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calendar_feed_tokens_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       campaigns: {
         Row: {
           account_id: string | null
