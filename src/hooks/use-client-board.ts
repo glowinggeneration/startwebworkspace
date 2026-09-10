@@ -18,6 +18,14 @@ export interface ClientBoardProject {
   tasks: ClientBoardTask[];
 }
 
+export interface ClientBoardCampaign {
+  id: string;
+  name: string;
+  status: string;
+  next_action: string | null;
+  next_action_date: string | null;
+}
+
 export interface ClientBoardAccount {
   id: string;
   name: string;
@@ -28,6 +36,7 @@ export interface ClientBoardAccount {
   summary: string | null;
   contacts: { id: string; name: string; role_title: string | null }[];
   projects: ClientBoardProject[];
+  campaigns: ClientBoardCampaign[];
 }
 
 /**
