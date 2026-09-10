@@ -378,6 +378,23 @@ function CampaignsPage() {
                 })),
               ]}
             />
+            <FilterCombobox
+              value={accountFilter}
+              onValueChange={setAccountFilter}
+              icon={Building2}
+              ariaLabel="Filter by client"
+              placeholder="All clients"
+              searchPlaceholder="Search clients..."
+              emptyLabel="No client found."
+              options={[
+                { value: "all", label: "All clients" },
+                { value: "unassigned", label: "No client yet" },
+                ...(accounts ?? []).map((account) => ({
+                  value: account.id,
+                  label: account.name,
+                })),
+              ]}
+            />
           </Toolbar>
 
           {view === "budget" ? (
