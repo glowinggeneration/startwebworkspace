@@ -50,27 +50,27 @@ export default defineConfig(({ command, mode }) => {
   Object.assign(process.env, loadEnv(mode, process.cwd(), ""));
 
   return {
-  // The Worker runtime has no module resolution: every dependency must be
-  // bundled into the server output instead of left as a bare import. In dev the
-  // module runner resolves from node_modules, and inlining CommonJS packages
-  // there breaks SSR, so this applies to the production build only.
-  ssr: command === "build" ? { noExternal: true } : {},
-  // React Email's parser needs entities v4.5.0; a nested newer copy breaks SSR.
-  resolve: {
-    alias: {
-      "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
-      "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
-      entities: path.resolve(__dirname, "node_modules/entities"),
+    // The Worker runtime has no module resolution: every dependency must be
+    // bundled into the server output instead of left as a bare import. In dev the
+    // module runner resolves from node_modules, and inlining CommonJS packages
+    // there breaks SSR, so this applies to the production build only.
+    ssr: command === "build" ? { noExternal: true } : {},
+    // React Email's parser needs entities v4.5.0; a nested newer copy breaks SSR.
+    resolve: {
+      alias: {
+        "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
+        "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
+        entities: path.resolve(__dirname, "node_modules/entities"),
+      },
     },
-  },
-  plugins: [
-    tsConfigPaths(),
-    tailwindcss(),
-    tanstackStart({
-      server: { entry: "server" },
-    }),
-    viteReact(),
-    workerRequireShim(),
-  ],
-}};
+    plugins: [
+      tsConfigPaths(),
+      tailwindcss(),
+      tanstackStart({
+        server: { entry: "server" },
+      }),
+      viteReact(),
+      workerRequireShim(),
+    ],
+  };
 });
