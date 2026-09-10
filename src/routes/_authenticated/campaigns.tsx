@@ -54,6 +54,9 @@ import { currency } from "@/lib/sales/currency";
 
 export const Route = createFileRoute("/_authenticated/campaigns")({
   component: CampaignsPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    client: typeof search["client"] === "string" ? search["client"] : "all",
+  }),
   head: () => ({
     meta: [
       { title: "Campaigns | Startweb" },
