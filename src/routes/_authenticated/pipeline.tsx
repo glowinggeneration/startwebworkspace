@@ -44,7 +44,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedList } from "@/components/vendor/magicui/animated-list";
 import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
-import { useClientBoard } from "@/hooks/use-client-board";
+import {
+  CLIENT_STAGES,
+  clientStage,
+  useClientBoard,
+  type ClientStage,
+} from "@/hooks/use-client-board";
 import { ClientBoard } from "@/components/application/pipeline/client-board";
 import { ProjectBoard } from "@/components/application/pipeline/project-board";
 import { useProjectBoard } from "@/hooks/use-project-board";
