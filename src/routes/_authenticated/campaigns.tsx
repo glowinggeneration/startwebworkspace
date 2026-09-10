@@ -306,6 +306,15 @@ function CampaignsPage() {
     [channelRows],
   );
 
+  const leadSourceSuggestions = useMemo(() => {
+    const set = new Set<string>();
+    for (const campaign of campaigns ?? []) {
+      const source = campaign.lead_source?.trim();
+      if (source) set.add(source);
+    }
+    return [...set].sort((a, b) => a.localeCompare(b));
+  }, [campaigns]);
+
   const linkedTasks = useMemo(
     () => (tasks ?? []).filter((task) => editing && task.campaign_id === editing.id),
     [tasks, editing],
@@ -526,6 +535,7 @@ function CampaignsPage() {
                   <thead className="bg-muted/40 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th className="px-5 py-3">Campaign</th>
+                      <th className="px-5 py-3">Lead source</th>
                       <th className="px-5 py-3">Status</th>
                       <th className="px-5 py-3">Dates</th>
                       <th className="px-5 py-3">Assigned</th>
@@ -859,6 +869,46 @@ function CampaignsPage() {
                 <div className="space-y-1.5">
                   <Label htmlFor="campaign-next-date">Next action date</Label>
                   <Input id="campaign-next-date" type="date" {...form.register("nextActionDate")} />
+                </div>
+              </PanelSection>
+
+              <PanelSection>
+                <div className="space-y-1.5">
+                  <Label htmlFor="campaign-lead-source">Lead source</Label>
+                  <Input
+                    id="campaign-lead-source"
+                    list="campaign-lead-sources"
+                    placeholder="Referral, LinkedIn, Google, walk in"
+                    {...form.register("leadSource")}
+                  />
+                  <datalist id="campaign-lead-sources">
+                    {leadSourceSuggestions.map((source) => (
+                      <option key={source} value={source} />
+                    ))}
+                  </datalist>
+                  <p className="text-xs text-muted-foreground">
+                    Where the leads came from. The Channels view groups on this.
+                  </p>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="campaign-leads">Leads captured</Label>
+                  <Input
+                    id="campaign-leads"
+                    type="number"
+                    min={0}
+                    step="1"
+                    {...form.register("leadsCount")}
+                  />
+                  {form.formState.errors.leadsCount ? (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.leadsCount.message}
+                    </p>
+                  ) : null}
+                  {panel.mode === "edit" ? (
+                    <p className="text-xs text-muted-foreground">
+                      {quotesByCampaign.get(panel.id)?.count ?? 0} of these became a quote.
+                    </p>
+                  ) : null}
                 </div>
               </PanelSection>
 
