@@ -6,6 +6,7 @@ import {
   CommandBoard,
   type DashboardPeriod,
 } from "@/components/application/dashboard/command-board";
+import { WorkspaceOverview } from "@/components/application/dashboard/workspace-overview";
 import { DailyLogForm } from "@/components/application/activity/daily-log-form";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -129,6 +130,8 @@ function DashboardPage() {
       </Tabs>
 
       <CommandBoard month={month} period={period} periodLabel={PERIOD_LABEL[period]} />
+
+      <WorkspaceOverview />
     </div>
   );
 }
