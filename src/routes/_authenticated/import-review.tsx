@@ -107,16 +107,12 @@ function ImportReviewPage() {
 function ReviewList({
   heading,
   items,
-  actionLabel,
-  onAction,
+  onDecide,
   pending,
 }: {
   heading: string;
-  items: ReturnType<typeof useImportReviewItems>["data"] extends (infer T)[] | undefined
-    ? T[]
-    : never;
-  actionLabel: string;
-  onAction: (id: string) => void;
+  items: ImportReviewItem[];
+  onDecide: (id: string, status: ImportReviewStatus) => void;
   pending: boolean;
 }) {
   if (items.length === 0) {
