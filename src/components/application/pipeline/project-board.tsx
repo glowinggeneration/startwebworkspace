@@ -6,6 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import {
   CalendarClock,
   CheckCircle2,
+  FileText,
   FolderOpen,
   Layers,
   MoreHorizontal,
@@ -28,7 +29,6 @@ interface ProjectBoardProps {
 }
 
 export function ProjectBoard({ projects }: ProjectBoardProps) {
-  console.log("[ProjectBoard] projects count", projects.length, projects[0]);
   const { workspaceId } = useActiveWorkspace();
   const updatePhase = useUpdateProjectPhase(workspaceId);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -139,6 +139,7 @@ function ProjectCard({
   });
   const style = { transform: CSS.Translate.toString(transform) };
   const tasks = openTasks(project);
+  const quote = project.quotes[0];
   const invoice = project.invoices[0];
 
   return (
@@ -176,6 +177,17 @@ function ProjectCard({
       </div>
 
       <div className="mt-3 space-y-1.5 border-t border-border pt-3 text-xs">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <FileText className="size-3.5 shrink-0" aria-hidden="true" />
+          {quote ? (
+            <span className="flex items-center gap-1">
+              <CheckCircle2 className="size-3 text-emerald-500" aria-hidden="true" />
+              Quote {quote.quote_number} · {quote.status}
+            </span>
+          ) : (
+            <span>No quote yet</span>
+          )}
+        </div>
         <div className="flex items-center gap-2 text-muted-foreground">
           <Receipt className="size-3.5 shrink-0" aria-hidden="true" />
           {invoice ? (
