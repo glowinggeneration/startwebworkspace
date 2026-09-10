@@ -119,7 +119,7 @@ function PipelinePage() {
   const { data: boardProjects, isLoading: boardLoading } = useProjectBoard(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
   const [view, setView] = useState<"clients" | "projects" | "board" | "calendar" | "list">(
-    "clients",
+    "projects",
   );
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
