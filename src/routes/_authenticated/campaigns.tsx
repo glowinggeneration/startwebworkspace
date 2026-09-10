@@ -47,6 +47,7 @@ import {
   useSetTaskCampaign,
   useUpdateCampaign,
   useWorkspaceTasks,
+  useCampaignQuotes,
   type CampaignRow,
   type CampaignStatus,
 } from "@/hooks/use-campaigns";
@@ -96,6 +97,8 @@ const campaignSchema = z
     endDate: z.string().optional(),
     nextAction: z.string().trim().optional(),
     nextActionDate: z.string().optional(),
+    leadSource: z.string().trim().optional(),
+    leadsCount: z.coerce.number().int().min(0, "Leads cannot be negative"),
     plannedCost: z.coerce.number().min(0, "Planned cost cannot be negative"),
     spentCost: z.coerce.number().min(0, "Spent cost cannot be negative"),
     notes: z.string().trim().optional(),
@@ -117,6 +120,8 @@ const EMPTY_FORM: CampaignFormValues = {
   endDate: "",
   nextAction: "",
   nextActionDate: "",
+  leadSource: "",
+  leadsCount: 0,
   plannedCost: 0,
   spentCost: 0,
   notes: "",
@@ -137,13 +142,14 @@ function CampaignsPage() {
   const { data: tasks } = useWorkspaceTasks(workspaceId);
   const { data: accounts } = useAccounts(workspaceId);
   const { data: members } = useWorkspaceMembers(workspaceId);
+  const { data: campaignQuotes } = useCampaignQuotes(workspaceId);
 
   const createCampaign = useCreateCampaign(workspaceId);
   const updateCampaign = useUpdateCampaign(workspaceId);
   const deleteCampaign = useDeleteCampaign(workspaceId);
   const setTaskCampaign = useSetTaskCampaign(workspaceId);
 
-  const [view, setView] = useState<"tracker" | "budget">("tracker");
+  const [view, setView] = useState<"tracker" | "budget" | "channels">("tracker");
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -184,6 +190,8 @@ function CampaignsPage() {
       endDate: editing.end_date ?? "",
       nextAction: editing.next_action ?? "",
       nextActionDate: editing.next_action_date ?? "",
+      leadSource: editing.lead_source ?? "",
+      leadsCount: Number(editing.leads_count ?? 0),
       plannedCost: Number(editing.planned_cost ?? 0),
       spentCost: Number(editing.spent_cost ?? 0),
       notes: editing.notes ?? "",
@@ -224,6 +232,7 @@ function CampaignsPage() {
       return (
         campaign.name.toLowerCase().includes(term) ||
         (campaign.channel ?? "").toLowerCase().includes(term) ||
+        (campaign.lead_source ?? "").toLowerCase().includes(term) ||
         (campaign.next_action ?? "").toLowerCase().includes(term) ||
         (accountName(campaign.account_id) ?? "").toLowerCase().includes(term)
       );
@@ -240,6 +249,78 @@ function CampaignsPage() {
       { planned: 0, spent: 0 },
     );
   }, [filtered]);
+
+  const quotesByCampaign = useMemo(() => {
+    const map = new Map<string, { count: number; value: number }>();
+    for (const quote of campaignQuotes ?? []) {
+      if (!quote.campaign_id) continue;
+      const value = (quote.quote_line_items ?? []).reduce(
+        (sum, item) => sum + Number(item.quantity) * Number(item.unit_price),
+        0,
+      );
+      const entry = map.get(quote.campaign_id) ?? { count: 0, value: 0 };
+      entry.count += 1;
+      entry.value += value;
+      map.set(quote.campaign_id, entry);
+    }
+    return map;
+  }, [campaignQuotes]);
+
+  const channelRows = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        source: string;
+        campaigns: number;
+        leads: number;
+        quotes: number;
+        value: number;
+        spent: number;
+      }
+    >();
+    for (const campaign of filtered) {
+      const source = campaign.lead_source?.trim() || "No source set";
+      const row = map.get(source) ?? {
+        source,
+        campaigns: 0,
+        leads: 0,
+        quotes: 0,
+        value: 0,
+        spent: 0,
+      };
+      const quotes = quotesByCampaign.get(campaign.id);
+      row.campaigns += 1;
+      row.leads += Number(campaign.leads_count ?? 0);
+      row.quotes += quotes?.count ?? 0;
+      row.value += quotes?.value ?? 0;
+      row.spent += Number(campaign.spent_cost ?? 0);
+      map.set(source, row);
+    }
+    return [...map.values()].sort((a, b) => b.leads - a.leads || b.quotes - a.quotes);
+  }, [filtered, quotesByCampaign]);
+
+  const channelTotals = useMemo(
+    () =>
+      channelRows.reduce(
+        (sum, row) => ({
+          leads: sum.leads + row.leads,
+          quotes: sum.quotes + row.quotes,
+          value: sum.value + row.value,
+          spent: sum.spent + row.spent,
+        }),
+        { leads: 0, quotes: 0, value: 0, spent: 0 },
+      ),
+    [channelRows],
+  );
+
+  const leadSourceSuggestions = useMemo(() => {
+    const set = new Set<string>();
+    for (const campaign of campaigns ?? []) {
+      const source = campaign.lead_source?.trim();
+      if (source) set.add(source);
+    }
+    return [...set].sort((a, b) => a.localeCompare(b));
+  }, [campaigns]);
 
   const linkedTasks = useMemo(
     () => (tasks ?? []).filter((task) => editing && task.campaign_id === editing.id),
@@ -259,6 +340,8 @@ function CampaignsPage() {
       end_date: parsed.endDate || null,
       next_action: parsed.nextAction || null,
       next_action_date: parsed.nextActionDate || null,
+      lead_source: parsed.leadSource || null,
+      leads_count: parsed.leadsCount,
       planned_cost: parsed.plannedCost,
       spent_cost: parsed.spentCost,
       notes: parsed.notes || null,
@@ -331,6 +414,7 @@ function CampaignsPage() {
               options={[
                 { value: "tracker", label: "Tracker" },
                 { value: "budget", label: "Budget" },
+                { value: "channels", label: "Channels" },
               ]}
             />
             <Button onClick={() => setPanel({ mode: "create" })}>New campaign</Button>
@@ -420,6 +504,22 @@ function CampaignsPage() {
             </div>
           ) : null}
 
+          {view === "channels" ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <MetricTile label="Leads logged" value={String(channelTotals.leads)} />
+              <MetricTile label="Quotes from campaigns" value={String(channelTotals.quotes)} />
+              <MetricTile
+                label="Leads that became a quote"
+                value={
+                  channelTotals.leads > 0
+                    ? `${Math.round((channelTotals.quotes / channelTotals.leads) * 100)}%`
+                    : "0%"
+                }
+                hint="Link a quote to its campaign when you create it."
+              />
+            </div>
+          ) : null}
+
           {isLoading ? (
             <div className="h-72 animate-pulse rounded-xl bg-muted" />
           ) : filtered.length === 0 ? (
@@ -442,6 +542,7 @@ function CampaignsPage() {
                   <thead className="bg-muted/40 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
                     <tr>
                       <th className="px-5 py-3">Campaign</th>
+                      <th className="px-5 py-3">Lead source</th>
                       <th className="px-5 py-3">Status</th>
                       <th className="px-5 py-3">Dates</th>
                       <th className="px-5 py-3">Assigned</th>
@@ -476,6 +577,13 @@ function CampaignsPage() {
                             </p>
                           </td>
                           <td className="px-5 py-4">
+                            <p className="text-foreground">{campaign.lead_source ?? "Not set"}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {Number(campaign.leads_count ?? 0)} leads ·{" "}
+                              {quotesByCampaign.get(campaign.id)?.count ?? 0} quotes
+                            </p>
+                          </td>
+                          <td className="px-5 py-4">
                             <StatusPill
                               label={campaign.status}
                               tone={statusTone[campaign.status as CampaignStatus] ?? "neutral"}
@@ -501,6 +609,72 @@ function CampaignsPage() {
                       );
                     })}
                   </tbody>
+                </table>
+              </div>
+            </Panel>
+          ) : view === "channels" ? (
+            <Panel className="overflow-hidden">
+              <PanelHeader
+                title="Leads by source"
+                description="How many logged leads from each source turned into a quote."
+              />
+              <div className="overflow-x-auto border-t border-border">
+                <table className="w-full min-w-[52rem] text-sm">
+                  <thead className="bg-muted/40 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="px-5 py-3">Lead source</th>
+                      <th className="px-5 py-3 text-right">Campaigns</th>
+                      <th className="px-5 py-3 text-right">Leads</th>
+                      <th className="px-5 py-3 text-right">Quotes</th>
+                      <th className="px-5 py-3 text-right">Quote value</th>
+                      <th className="w-56 px-5 py-3">Leads to quotes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {channelRows.map((row) => {
+                      const rate = row.leads > 0 ? (row.quotes / row.leads) * 100 : 0;
+                      return (
+                        <tr key={row.source} className="border-t border-border/70">
+                          <td className="px-5 py-4 font-medium text-foreground">{row.source}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.campaigns}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.leads}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.quotes}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">
+                            {currency.format(row.value)}
+                          </td>
+                          <td className="px-5 py-4">
+                            {row.leads > 0 ? (
+                              <ProgressMeter
+                                value={Math.min(rate, 100)}
+                                label={`Leads that became a quote from ${row.source}`}
+                                tone="info"
+                              />
+                            ) : (
+                              <span className="text-xs text-muted-foreground">
+                                No leads logged yet
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t border-border bg-muted/30 font-medium">
+                      <td className="px-5 py-4">Total</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{filtered.length}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{channelTotals.leads}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{channelTotals.quotes}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">
+                        {currency.format(channelTotals.value)}
+                      </td>
+                      <td className="px-5 py-4 text-sm text-muted-foreground">
+                        {channelTotals.leads > 0
+                          ? `${Math.round((channelTotals.quotes / channelTotals.leads) * 100)}% overall`
+                          : "No leads logged yet"}
+                      </td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </Panel>
@@ -709,6 +883,46 @@ function CampaignsPage() {
                 <div className="space-y-1.5">
                   <Label htmlFor="campaign-next-date">Next action date</Label>
                   <Input id="campaign-next-date" type="date" {...form.register("nextActionDate")} />
+                </div>
+              </PanelSection>
+
+              <PanelSection>
+                <div className="space-y-1.5">
+                  <Label htmlFor="campaign-lead-source">Lead source</Label>
+                  <Input
+                    id="campaign-lead-source"
+                    list="campaign-lead-sources"
+                    placeholder="Referral, LinkedIn, Google, walk in"
+                    {...form.register("leadSource")}
+                  />
+                  <datalist id="campaign-lead-sources">
+                    {leadSourceSuggestions.map((source) => (
+                      <option key={source} value={source} />
+                    ))}
+                  </datalist>
+                  <p className="text-xs text-muted-foreground">
+                    Where the leads came from. The Channels view groups on this.
+                  </p>
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="campaign-leads">Leads captured</Label>
+                  <Input
+                    id="campaign-leads"
+                    type="number"
+                    min={0}
+                    step="1"
+                    {...form.register("leadsCount")}
+                  />
+                  {form.formState.errors.leadsCount ? (
+                    <p className="text-sm text-destructive">
+                      {form.formState.errors.leadsCount.message}
+                    </p>
+                  ) : null}
+                  {panel.mode === "edit" ? (
+                    <p className="text-xs text-muted-foreground">
+                      {quotesByCampaign.get(panel.id)?.count ?? 0} of these became a quote.
+                    </p>
+                  ) : null}
                 </div>
               </PanelSection>
 

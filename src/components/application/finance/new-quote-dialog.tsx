@@ -27,14 +27,17 @@ import {
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useCreateQuote } from "@/hooks/use-quotes";
+import { useCampaigns } from "@/hooks/use-campaigns";
 
 export function NewQuoteDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: accounts } = useAccounts(workspaceId);
   const createQuote = useCreateQuote(workspaceId);
+  const { data: campaigns } = useCampaigns(workspaceId);
 
   const [accountId, setAccountId] = useState("");
+  const [campaignId, setCampaignId] = useState("none");
   const [expiryDate, setExpiryDate] = useState("");
   const [lineItems, setLineItems] = useState<LineItemDraft[]>([]);
 
@@ -46,11 +49,13 @@ export function NewQuoteDialog({ trigger }: { trigger?: React.ReactNode } = {}) 
     try {
       const quote = await createQuote.mutateAsync({
         accountId,
+        campaignId: campaignId === "none" ? null : campaignId,
         expiryDate: expiryDate || null,
         lineItems,
       });
       toast.success(`Quote ${quote.quote_number} created`);
       setAccountId("");
+      setCampaignId("none");
       setExpiryDate("");
       setLineItems([]);
       setOpen(false);
@@ -100,6 +105,23 @@ export function NewQuoteDialog({ trigger }: { trigger?: React.ReactNode } = {}) 
                 onChange={(event) => setExpiryDate(event.target.value)}
               />
             </div>
+          </div>
+          <div className="space-y-2">
+            <Label>Campaign that brought this lead (optional)</Label>
+            <Select onValueChange={setCampaignId} value={campaignId}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="No campaign" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="none">No campaign</SelectItem>
+                {campaigns?.map((campaign) => (
+                  <SelectItem key={campaign.id} value={campaign.id}>
+                    {campaign.name}
+                    {campaign.lead_source ? ` — ${campaign.lead_source}` : ""}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           <LineItemsEditor items={lineItems} onChange={setLineItems} />
         </div>

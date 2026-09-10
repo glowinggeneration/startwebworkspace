@@ -9,7 +9,7 @@ type CampaignInsert = Database["public"]["Tables"]["campaigns"]["Insert"];
 type CampaignUpdate = Database["public"]["Tables"]["campaigns"]["Update"];
 
 const CAMPAIGN_COLUMNS =
-  "id, workspace_id, account_id, name, channel, status, start_date, end_date, owner_id, next_action, next_action_date, planned_cost, spent_cost, notes, created_at, updated_at";
+  "id, workspace_id, account_id, name, channel, status, start_date, end_date, owner_id, next_action, next_action_date, planned_cost, spent_cost, lead_source, leads_count, notes, created_at, updated_at";
 
 export function useCampaigns(workspaceId: string) {
   return useQuery({
@@ -102,6 +102,25 @@ export function useSetTaskCampaign(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["workspace-tasks", workspaceId] });
+    },
+  });
+}
+
+/**
+ * Quotes with the campaign they came from, so the channel view can count how
+ * many logged leads turned into a quote.
+ */
+export function useCampaignQuotes(workspaceId: string) {
+  return useQuery({
+    queryKey: ["campaign-quotes", workspaceId],
+    enabled: Boolean(workspaceId),
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("quotes")
+        .select("id, campaign_id, status, quote_line_items(quantity, unit_price)")
+        .eq("workspace_id", workspaceId);
+      if (error) throw error;
+      return data;
     },
   });
 }
