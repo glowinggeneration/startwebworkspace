@@ -169,7 +169,7 @@ function PipelinePage() {
         .toLowerCase()
         .includes(term),
     );
-  }, [clientAccounts, search]);
+  }, [clientAccounts, search, stageFilter]);
 
   const visibleScheduleProjects = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -265,6 +265,21 @@ function PipelinePage() {
             className="h-11 bg-card pl-9"
           />
         </div>
+        {view === "clients" ? (
+          <FilterCombobox
+            value={stageFilter}
+            onValueChange={(value) => setStageFilter(value as "all" | ClientStage)}
+            icon={Layers}
+            ariaLabel="Filter by status"
+            placeholder="All statuses"
+            searchPlaceholder="Search statuses..."
+            emptyLabel="No status found."
+            options={[
+              { value: "all", label: "All statuses" },
+              ...CLIENT_STAGES.map((stage) => ({ value: stage.value, label: stage.label })),
+            ]}
+          />
+        ) : null}
         <FilterCombobox
           value={industryFilter}
           onValueChange={setIndustryFilter}
