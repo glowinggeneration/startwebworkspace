@@ -13,7 +13,7 @@ export function useQuotes(workspaceId: string) {
       const { data, error } = await supabase
         .from("quotes")
         .select(
-          "id, account_id, deal_id, quote_number, status, issue_date, expiry_date, notes, created_at, quote_line_items(id, package_id, description, quantity, unit_price, sort_order), invoices(id, invoice_number)",
+          "id, account_id, deal_id, campaign_id, quote_number, status, issue_date, expiry_date, notes, created_at, quote_line_items(id, package_id, description, quantity, unit_price, sort_order), invoices(id, invoice_number)",
         )
         .eq("workspace_id", workspaceId)
         .order("created_at", { ascending: false });
@@ -47,12 +47,14 @@ export function useCreateQuote(workspaceId: string) {
     mutationFn: async ({
       accountId,
       dealId,
+      campaignId,
       expiryDate,
       notes,
       lineItems,
     }: {
       accountId: string;
       dealId?: string | null;
+      campaignId?: string | null;
       expiryDate?: string | null;
       notes?: string | null;
       lineItems: LineItemDraft[];
@@ -69,6 +71,7 @@ export function useCreateQuote(workspaceId: string) {
           workspace_id: workspaceId,
           account_id: accountId,
           deal_id: dealId ?? null,
+          campaign_id: campaignId ?? null,
           quote_number: quoteNumber,
           expiry_date: expiryDate ?? null,
           notes: notes ?? null,
@@ -95,6 +98,7 @@ export function useCreateQuote(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
     },
   });
 }
@@ -108,6 +112,7 @@ export function useUpdateQuoteStatus(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
     },
   });
 }
