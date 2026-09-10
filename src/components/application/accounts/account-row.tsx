@@ -2,13 +2,15 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { ChevronDown, Globe, Star, UserPlus } from "lucide-react";
+import { ChevronDown, Globe, Star, Trash2, UserPlus } from "lucide-react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { ConfirmDeleteDialog } from "@/components/application/shell/confirm-delete-dialog";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useContacts, useCreateContact } from "@/hooks/use-contacts";
+import { useDeleteAccount } from "@/hooks/use-accounts";
 import { currency } from "@/lib/sales/currency";
 import { invoiceBalance } from "@/lib/finance/balance";
 
@@ -45,7 +47,19 @@ export function AccountRow({ account, industryName, ownerName }: AccountRowProps
   const { workspaceId } = useActiveWorkspace();
   const { data: contacts } = useContacts(workspaceId, account.id);
   const createContact = useCreateContact(workspaceId, account.id);
+  const deleteAccount = useDeleteAccount(workspaceId);
   const outstanding = account.invoices.reduce((sum, invoice) => sum + invoiceBalance(invoice), 0);
+
+  async function handleDeleteAccount() {
+    try {
+      await deleteAccount.mutateAsync(account.id);
+      toast.success("Account deleted");
+    } catch (error) {
+      toast.error("Couldn't delete the account", {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    }
+  }
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -168,6 +182,26 @@ export function AccountRow({ account, industryName, ownerName }: AccountRowProps
                 Add
               </Button>
             </form>
+
+            <div className="mt-4 border-t border-border pt-4">
+              <ConfirmDeleteDialog
+                trigger={
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="text-destructive hover:text-destructive"
+                  >
+                    <Trash2 className="size-4" aria-hidden="true" />
+                    Delete account
+                  </Button>
+                }
+                title={`Delete ${account.name}?`}
+                description={`This also deletes ${account.deals.length} deal(s), ${account.projects.length} project(s) (and their phases/tasks), and ${account.invoices.length} invoice(s) with their line items and payments. This can't be undone.`}
+                confirmLabel="Delete account"
+                onConfirm={handleDeleteAccount}
+                isPending={deleteAccount.isPending}
+              />
+            </div>
           </td>
         </tr>
       )}

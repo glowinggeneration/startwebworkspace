@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { currency } from "@/lib/sales/currency";
 import { motion, AnimatePresence } from "motion/react";
 import {
@@ -9,13 +10,15 @@ import {
   NotebookText,
   Package,
   Tag,
+  Trash2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { ConfirmDeleteDialog } from "@/components/application/shell/confirm-delete-dialog";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useIndustryPlaybooks } from "@/hooks/use-industry-playbooks";
-import type { Deal } from "@/hooks/use-deals";
+import { useDeleteDeal, type Deal } from "@/hooks/use-deals";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
 interface DealCardProps {
@@ -46,6 +49,18 @@ export function DealCard({
   const playbook = deal.industry_id
     ? playbooks?.find((p) => p.industry_id === deal.industry_id)
     : undefined;
+  const deleteDeal = useDeleteDeal(workspaceId);
+
+  async function handleDelete() {
+    try {
+      await deleteDeal.mutateAsync(deal.id);
+      toast.success("Deal deleted");
+    } catch (error) {
+      toast.error("Couldn't delete the deal", {
+        description: error instanceof Error ? error.message : undefined,
+      });
+    }
+  }
 
   return (
     <motion.div layout transition={springConfig} className="card-surface overflow-hidden">
@@ -146,6 +161,21 @@ export function DealCard({
                     Reopen
                   </Button>
                 )}
+                <ConfirmDeleteDialog
+                  trigger={
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="ml-auto text-destructive hover:text-destructive"
+                    >
+                      <Trash2 className="size-4" aria-hidden="true" />
+                    </Button>
+                  }
+                  title="Delete this deal?"
+                  description="Any project, quote or invoice already created from it is kept, just unlinked. This can't be undone."
+                  onConfirm={handleDelete}
+                  isPending={deleteDeal.isPending}
+                />
               </div>
             </div>
           </motion.div>

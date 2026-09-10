@@ -21,6 +21,31 @@ export function useAccounts(workspaceId: string) {
   });
 }
 
+/** The most destructive delete in the app: cascades to that account's
+ * deals, projects (and by further cascade, their phases/tasks), quotes,
+ * invoices (and their line items/payments), and contacts. Callers should
+ * confirm with the counts already available from useAccounts before
+ * calling this. */
+export function useDeleteAccount(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("accounts").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["accounts", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["deals", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["projects", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["campaigns", workspaceId] });
+    },
+  });
+}
+
 export function useCreateAccount(workspaceId: string) {
   const queryClient = useQueryClient();
   return useMutation({

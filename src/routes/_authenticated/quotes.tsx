@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { toast } from "sonner";
 import { Download, FileText, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -207,7 +207,13 @@ function QuoteRow({
   return (
     <div className="card-surface flex flex-wrap items-center justify-between gap-3 p-4">
       <div>
-        <p className="type-card">{quote.quote_number}</p>
+        <Link
+          to="/quotes/$quoteId"
+          params={{ quoteId: quote.id }}
+          className="type-card hover:underline"
+        >
+          {quote.quote_number}
+        </Link>
         <p className="type-meta text-muted-foreground">
           {accountName} · {currency.format(total)}
         </p>

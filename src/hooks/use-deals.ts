@@ -62,6 +62,21 @@ export function useUpdateDeal(workspaceId: string) {
   });
 }
 
+/** Deleting a deal never cascades — projects/quotes/invoices already
+ * created from it keep existing, just with deal_id set to null. */
+export function useDeleteDeal(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("deals").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["deals", workspaceId] });
+    },
+  });
+}
+
 /** Status-change helper: stamps won_at automatically, matching the "Won
  * requires won_at" database constraint, so callers never forget it. */
 export function useTransitionDealStatus(workspaceId: string) {

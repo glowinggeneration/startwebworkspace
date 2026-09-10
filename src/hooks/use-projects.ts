@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
 export function useProjects(workspaceId: string) {
@@ -27,6 +27,24 @@ export function useProjectPhases(workspaceId: string) {
         .order("sort_order");
       if (error) throw error;
       return data;
+    },
+  });
+}
+
+/** Deletes a project and, by cascade, its phases and tasks. Quotes,
+ * invoices and payments already raised from it are kept, just unlinked
+ * (their project_id is set to null). */
+export function useDeleteProject(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("projects").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["projects", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-phases", workspaceId] });
     },
   });
 }

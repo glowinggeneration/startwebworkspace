@@ -27,6 +27,7 @@ import {
   UnderlineTabs,
 } from "@/components/application/shell/page-parts";
 import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
+import { ConfirmDeleteDialog } from "@/components/application/shell/confirm-delete-dialog";
 import {
   PanelFooter,
   PanelHeader,
@@ -94,6 +95,7 @@ const campaignSchema = z
     channel: z.string().trim().optional(),
     status: z.enum(["planned", "active", "paused", "completed"]),
     accountId: z.string().optional(),
+    projectId: z.string().optional(),
     ownerId: z.string().optional(),
     startDate: z.string().optional(),
     endDate: z.string().optional(),
@@ -117,6 +119,7 @@ const EMPTY_FORM: CampaignFormValues = {
   channel: "",
   status: "planned",
   accountId: "none",
+  projectId: "none",
   ownerId: "none",
   startDate: "",
   endDate: "",
@@ -187,6 +190,7 @@ function CampaignsPage() {
       channel: editing.channel ?? "",
       status: (editing.status as CampaignStatus) ?? "planned",
       accountId: editing.account_id ?? "none",
+      projectId: editing.project_id ?? "none",
       ownerId: editing.owner_id ?? "none",
       startDate: editing.start_date ?? "",
       endDate: editing.end_date ?? "",
@@ -337,6 +341,7 @@ function CampaignsPage() {
       channel: parsed.channel || null,
       status: parsed.status,
       account_id: parsed.accountId && parsed.accountId !== "none" ? parsed.accountId : null,
+      project_id: parsed.projectId && parsed.projectId !== "none" ? parsed.projectId : null,
       owner_id: parsed.ownerId && parsed.ownerId !== "none" ? parsed.ownerId : null,
       start_date: parsed.startDate || null,
       end_date: parsed.endDate || null,
@@ -841,6 +846,47 @@ function CampaignsPage() {
                     </SelectContent>
                   </Select>
                 </div>
+                {(() => {
+                  const selectedAccountId = form.watch("accountId");
+                  const projectsForAccount =
+                    selectedAccountId && selectedAccountId !== "none"
+                      ? (accounts?.find((account) => account.id === selectedAccountId)?.projects ??
+                        [])
+                      : [];
+                  return (
+                    <div className="space-y-1.5">
+                      <Label htmlFor="campaign-project">Project</Label>
+                      <Select
+                        value={form.watch("projectId") || "none"}
+                        onValueChange={(value) =>
+                          form.setValue("projectId", value, { shouldDirty: true })
+                        }
+                        disabled={projectsForAccount.length === 0}
+                      >
+                        <SelectTrigger id="campaign-project">
+                          <SelectValue
+                            placeholder={
+                              selectedAccountId && selectedAccountId !== "none"
+                                ? "No specific project"
+                                : "Pick a client first"
+                            }
+                          />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No specific project</SelectItem>
+                          {projectsForAccount.map((project) => (
+                            <SelectItem key={project.id} value={project.id}>
+                              {project.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <p className="text-xs text-muted-foreground">
+                        Shows this campaign's status and budget on that project's Pipeline card.
+                      </p>
+                    </div>
+                  );
+                })()}
               </PanelSection>
 
               <PanelSection>
@@ -1047,15 +1093,22 @@ function CampaignsPage() {
 
               <PanelFooter>
                 {panel.mode === "edit" ? (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="mr-auto text-destructive hover:text-destructive"
-                    onClick={() => handleDelete(panel.id)}
-                    disabled={deleteCampaign.isPending}
-                  >
-                    Remove
-                  </Button>
+                  <ConfirmDeleteDialog
+                    trigger={
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className="mr-auto text-destructive hover:text-destructive"
+                        disabled={deleteCampaign.isPending}
+                      >
+                        Remove
+                      </Button>
+                    }
+                    title="Remove this campaign?"
+                    description="Any tasks linked to it are unlinked, not deleted. This can't be undone."
+                    onConfirm={() => handleDelete(panel.id)}
+                    isPending={deleteCampaign.isPending}
+                  />
                 ) : null}
                 <Button type="button" variant="outline" onClick={() => setPanel(null)}>
                   Cancel

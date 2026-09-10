@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown, Download, Receipt, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import {
@@ -206,26 +206,35 @@ function InvoiceRow({
 
   return (
     <div className="card-surface overflow-hidden">
-      <button
-        type="button"
-        className="flex w-full flex-wrap items-center justify-between gap-3 p-4 text-left"
-        onClick={() => setIsExpanded((prev) => !prev)}
-        aria-expanded={isExpanded}
-      >
+      <div className="flex w-full flex-wrap items-center justify-between gap-3 p-4 text-left">
         <div>
-          <p className="type-card">{invoice.invoice_number}</p>
+          <Link
+            to="/invoicing/$invoiceId"
+            params={{ invoiceId: invoice.id }}
+            className="type-card hover:underline"
+          >
+            {invoice.invoice_number}
+          </Link>
           <p className="type-meta text-muted-foreground">
             {accountName} · {currency.format(total)}
             {totalPaid > 0 && totalPaid < total ? ` · ${currency.format(totalPaid)} paid` : ""}
           </p>
         </div>
-        <ChevronDown
-          className={cn(
-            "size-4 text-muted-foreground transition-transform",
-            isExpanded && "rotate-180",
-          )}
-        />
-      </button>
+        <button
+          type="button"
+          className="rounded-md p-1 hover:bg-accent"
+          onClick={() => setIsExpanded((prev) => !prev)}
+          aria-expanded={isExpanded}
+          aria-label={isExpanded ? "Collapse" : "Expand"}
+        >
+          <ChevronDown
+            className={cn(
+              "size-4 text-muted-foreground transition-transform",
+              isExpanded && "rotate-180",
+            )}
+          />
+        </button>
+      </div>
 
       {isExpanded && (
         <div className="space-y-3 border-t border-border p-4">

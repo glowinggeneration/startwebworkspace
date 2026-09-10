@@ -54,6 +54,7 @@ import {
 } from "@/hooks/use-client-board";
 import { ClientBoard } from "@/components/application/pipeline/client-board";
 import { ProjectBoard } from "@/components/application/pipeline/project-board";
+import { MobilePipelineView } from "@/components/application/pipeline/mobile-pipeline-view";
 import { useProjectBoard } from "@/hooks/use-project-board";
 import { ScheduleCalendar } from "@/components/application/pipeline/schedule-calendar";
 import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
@@ -260,226 +261,234 @@ function PipelinePage() {
         }
       />
 
-      <Toolbar>
-        <SegmentedControl
-          ariaLabel="Pipeline view"
-          value={view}
-          onValueChange={setView}
-          options={[
-            { value: "clients", label: "Clients" },
-            { value: "projects", label: "Projects" },
-            { value: "billing", label: "Billing" },
-            { value: "board", label: "Deals" },
-            { value: "calendar", label: "Calendar" },
-            { value: "list", label: "List" },
-          ]}
-        />
-        <div className="relative min-w-56 flex-1">
-          <Search
-            className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-            aria-hidden="true"
-          />
-          <Input
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-            placeholder={
-              view === "clients"
-                ? "Search clients..."
-                : view === "billing"
-                  ? "Search quotes and invoices..."
-                  : view === "calendar"
-                    ? "Search projects..."
-                    : "Search deals..."
-            }
-            aria-label={
-              view === "clients"
-                ? "Search clients"
-                : view === "billing"
-                  ? "Search quotes and invoices"
-                  : view === "calendar"
-                    ? "Search projects"
-                    : "Search deals"
-            }
-            className="h-11 bg-card pl-9"
-          />
-        </div>
-        {view === "clients" ? (
-          <FilterCombobox
-            value={stageFilter}
-            onValueChange={(value) => setStageFilter(value as "all" | ClientStage)}
-            icon={Layers}
-            ariaLabel="Filter by status"
-            placeholder="All statuses"
-            searchPlaceholder="Search statuses..."
-            emptyLabel="No status found."
+      <div className="md:hidden">
+        <MobilePipelineView projects={visibleBoardProjects} />
+      </div>
+
+      <div className="hidden space-y-6 md:block">
+        <Toolbar>
+          <SegmentedControl
+            ariaLabel="Pipeline view"
+            value={view}
+            onValueChange={setView}
             options={[
-              { value: "all", label: "All statuses" },
-              ...CLIENT_STAGES.map((stage) => ({ value: stage.value, label: stage.label })),
+              { value: "clients", label: "Clients" },
+              { value: "projects", label: "Projects" },
+              { value: "billing", label: "Billing" },
+              { value: "board", label: "Deals" },
+              { value: "calendar", label: "Calendar" },
+              { value: "list", label: "List" },
             ]}
           />
-        ) : null}
-        <FilterCombobox
-          value={industryFilter}
-          onValueChange={setIndustryFilter}
-          icon={Tag}
-          ariaLabel="Filter by industry"
-          placeholder="All industries"
-          searchPlaceholder="Search industries..."
-          emptyLabel="No industry found."
-          options={[
-            { value: "all", label: "All industries" },
-            ...(industries ?? []).map((industry) => ({
-              value: industry.id,
-              label: industry.name,
-            })),
-          ]}
-        />
-        <FilterCombobox
-          value={ownerFilter}
-          onValueChange={setOwnerFilter}
-          icon={Users}
-          ariaLabel="Filter by owner"
-          placeholder="All owners"
-          searchPlaceholder="Search people..."
-          emptyLabel="No one found."
-          options={[
-            { value: "all", label: "All owners" },
-            ...(members ?? []).map((member) => ({
-              value: member.userId,
-              label: member.name,
-              avatarName: member.name,
-            })),
-          ]}
-        />
-      </Toolbar>
-
-      {(
-        view === "clients"
-          ? clientsLoading
-          : view === "projects"
-            ? boardLoading
-            : view === "billing"
-              ? billingLoading
-              : view === "calendar"
-                ? scheduleLoading
-                : isLoading
-      ) ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {COLUMNS.map((column) => (
-            <div key={column.status} className="h-[32rem] animate-pulse rounded-xl bg-muted" />
-          ))}
-        </div>
-      ) : view === "clients" ? (
-        <ClientBoard accounts={visibleClients} />
-      ) : view === "projects" ? (
-        <ProjectBoard projects={visibleBoardProjects} />
-      ) : view === "billing" ? (
-        <BillingBoard flows={visibleBillingFlows} />
-      ) : view === "calendar" ? (
-        <ScheduleCalendar projects={visibleScheduleProjects} />
-      ) : view === "board" ? (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {COLUMNS.map((column) => {
-            const columnDeals = visibleDeals.filter((deal) => deal.status === column.status);
-            const columnTotal = columnDeals.reduce((sum, deal) => sum + deal.value, 0);
-            return (
-              <Panel key={column.status} className="flex min-h-[32rem] flex-col">
-                <div className="flex items-center justify-between border-b border-border px-5 py-4">
-                  <h2 className="text-base font-semibold text-foreground">{column.label}</h2>
-                  <span className="text-sm text-muted-foreground">
-                    {columnDeals.length} · {currency.format(columnTotal)}
-                  </span>
-                </div>
-                <div className="relative flex-1">
-                  <div className="max-h-[28rem] space-y-3 overflow-y-auto p-4">
-                    {columnDeals.length === 0 ? (
-                      <EmptyState
-                        icon={column.icon}
-                        title={column.emptyTitle}
-                        description={column.emptyBody}
-                        className="py-14"
-                        action={
-                          column.status === "open" ? (
-                            <NewDealDialog
-                              trigger={
-                                <Button>
-                                  <span aria-hidden="true">+</span> Add deal
-                                </Button>
-                              }
-                            />
-                          ) : undefined
-                        }
-                      />
-                    ) : (
-                      <AnimatedList>
-                        {columnDeals.map((deal) => (
-                          <DealCard
-                            key={deal.id}
-                            deal={deal}
-                            accountName={accountName(deal.account_id)}
-                            industryName={industryName(deal.industry_id)}
-                            packageName={packageName(deal.package_id)}
-                            onStatusChange={(status) => handleStatusChange(deal, status)}
-                          />
-                        ))}
-                      </AnimatedList>
-                    )}
-                  </div>
-                  {columnDeals.length > 3 ? (
-                    <ProgressiveBlur
-                      position="bottom"
-                      height="2.5rem"
-                      backgroundColor="var(--card)"
-                      className="rounded-b-[inherit]"
-                    />
-                  ) : null}
-                </div>
-              </Panel>
-            );
-          })}
-        </div>
-      ) : (
-        <Panel>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Account</TableHead>
-                <TableHead>Next step</TableHead>
-                <TableHead>Next date</TableHead>
-                <TableHead className="text-right">Value</TableHead>
-                <TableHead>Status</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {visibleDeals.map((deal) => (
-                <TableRow key={deal.id}>
-                  <TableCell className="font-medium">{accountName(deal.account_id)}</TableCell>
-                  <TableCell className="text-muted-foreground">{deal.next_step}</TableCell>
-                  <TableCell className="text-muted-foreground">{deal.next_date}</TableCell>
-                  <TableCell className="text-right">{currency.format(deal.value)}</TableCell>
-                  <TableCell className="capitalize text-muted-foreground">{deal.status}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          {visibleDeals.length === 0 ? (
-            <EmptyState
-              icon={FolderOpen}
-              title="No deals to show"
-              description="Add a deal or clear the filters above."
+          <div className="relative min-w-56 flex-1">
+            <Search
+              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+              aria-hidden="true"
+            />
+            <Input
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={
+                view === "clients"
+                  ? "Search clients..."
+                  : view === "billing"
+                    ? "Search quotes and invoices..."
+                    : view === "calendar"
+                      ? "Search projects..."
+                      : "Search deals..."
+              }
+              aria-label={
+                view === "clients"
+                  ? "Search clients"
+                  : view === "billing"
+                    ? "Search quotes and invoices"
+                    : view === "calendar"
+                      ? "Search projects"
+                      : "Search deals"
+              }
+              className="h-11 bg-card pl-9"
+            />
+          </div>
+          {view === "clients" ? (
+            <FilterCombobox
+              value={stageFilter}
+              onValueChange={(value) => setStageFilter(value as "all" | ClientStage)}
+              icon={Layers}
+              ariaLabel="Filter by status"
+              placeholder="All statuses"
+              searchPlaceholder="Search statuses..."
+              emptyLabel="No status found."
+              options={[
+                { value: "all", label: "All statuses" },
+                ...CLIENT_STAGES.map((stage) => ({ value: stage.value, label: stage.label })),
+              ]}
             />
           ) : null}
-        </Panel>
-      )}
+          <FilterCombobox
+            value={industryFilter}
+            onValueChange={setIndustryFilter}
+            icon={Tag}
+            ariaLabel="Filter by industry"
+            placeholder="All industries"
+            searchPlaceholder="Search industries..."
+            emptyLabel="No industry found."
+            options={[
+              { value: "all", label: "All industries" },
+              ...(industries ?? []).map((industry) => ({
+                value: industry.id,
+                label: industry.name,
+              })),
+            ]}
+          />
+          <FilterCombobox
+            value={ownerFilter}
+            onValueChange={setOwnerFilter}
+            icon={Users}
+            ariaLabel="Filter by owner"
+            placeholder="All owners"
+            searchPlaceholder="Search people..."
+            emptyLabel="No one found."
+            options={[
+              { value: "all", label: "All owners" },
+              ...(members ?? []).map((member) => ({
+                value: member.userId,
+                label: member.name,
+                avatarName: member.name,
+              })),
+            ]}
+          />
+        </Toolbar>
 
-      {hasAccounts ? null : (
-        <HintBar
-          icon={Building2}
-          title="Start with an account"
-          description="Add a client company before creating its first deal."
-          action={<NewAccountDialog trigger={<Button variant="outline">Add account</Button>} />}
-        />
-      )}
+        {(
+          view === "clients"
+            ? clientsLoading
+            : view === "projects"
+              ? boardLoading
+              : view === "billing"
+                ? billingLoading
+                : view === "calendar"
+                  ? scheduleLoading
+                  : isLoading
+        ) ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {COLUMNS.map((column) => (
+              <div key={column.status} className="h-[32rem] animate-pulse rounded-xl bg-muted" />
+            ))}
+          </div>
+        ) : view === "clients" ? (
+          <ClientBoard accounts={visibleClients} />
+        ) : view === "projects" ? (
+          <ProjectBoard projects={visibleBoardProjects} />
+        ) : view === "billing" ? (
+          <BillingBoard flows={visibleBillingFlows} />
+        ) : view === "calendar" ? (
+          <ScheduleCalendar projects={visibleScheduleProjects} />
+        ) : view === "board" ? (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {COLUMNS.map((column) => {
+              const columnDeals = visibleDeals.filter((deal) => deal.status === column.status);
+              const columnTotal = columnDeals.reduce((sum, deal) => sum + deal.value, 0);
+              return (
+                <Panel key={column.status} className="flex min-h-[32rem] flex-col">
+                  <div className="flex items-center justify-between border-b border-border px-5 py-4">
+                    <h2 className="text-base font-semibold text-foreground">{column.label}</h2>
+                    <span className="text-sm text-muted-foreground">
+                      {columnDeals.length} · {currency.format(columnTotal)}
+                    </span>
+                  </div>
+                  <div className="relative flex-1">
+                    <div className="max-h-[28rem] space-y-3 overflow-y-auto p-4">
+                      {columnDeals.length === 0 ? (
+                        <EmptyState
+                          icon={column.icon}
+                          title={column.emptyTitle}
+                          description={column.emptyBody}
+                          className="py-14"
+                          action={
+                            column.status === "open" ? (
+                              <NewDealDialog
+                                trigger={
+                                  <Button>
+                                    <span aria-hidden="true">+</span> Add deal
+                                  </Button>
+                                }
+                              />
+                            ) : undefined
+                          }
+                        />
+                      ) : (
+                        <AnimatedList>
+                          {columnDeals.map((deal) => (
+                            <DealCard
+                              key={deal.id}
+                              deal={deal}
+                              accountName={accountName(deal.account_id)}
+                              industryName={industryName(deal.industry_id)}
+                              packageName={packageName(deal.package_id)}
+                              onStatusChange={(status) => handleStatusChange(deal, status)}
+                            />
+                          ))}
+                        </AnimatedList>
+                      )}
+                    </div>
+                    {columnDeals.length > 3 ? (
+                      <ProgressiveBlur
+                        position="bottom"
+                        height="2.5rem"
+                        backgroundColor="var(--card)"
+                        className="rounded-b-[inherit]"
+                      />
+                    ) : null}
+                  </div>
+                </Panel>
+              );
+            })}
+          </div>
+        ) : (
+          <Panel>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Account</TableHead>
+                  <TableHead>Next step</TableHead>
+                  <TableHead>Next date</TableHead>
+                  <TableHead className="text-right">Value</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {visibleDeals.map((deal) => (
+                  <TableRow key={deal.id}>
+                    <TableCell className="font-medium">{accountName(deal.account_id)}</TableCell>
+                    <TableCell className="text-muted-foreground">{deal.next_step}</TableCell>
+                    <TableCell className="text-muted-foreground">{deal.next_date}</TableCell>
+                    <TableCell className="text-right">{currency.format(deal.value)}</TableCell>
+                    <TableCell className="capitalize text-muted-foreground">
+                      {deal.status}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            {visibleDeals.length === 0 ? (
+              <EmptyState
+                icon={FolderOpen}
+                title="No deals to show"
+                description="Add a deal or clear the filters above."
+              />
+            ) : null}
+          </Panel>
+        )}
+
+        {hasAccounts ? null : (
+          <HintBar
+            icon={Building2}
+            title="Start with an account"
+            description="Add a client company before creating its first deal."
+            action={<NewAccountDialog trigger={<Button variant="outline">Add account</Button>} />}
+          />
+        )}
+      </div>
 
       <HandoffDialog
         dealId={handoffDealId}

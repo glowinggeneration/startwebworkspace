@@ -29,7 +29,10 @@ import { Route as AuthenticatedStatementsRouteImport } from './routes/_authentic
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as AuthenticatedWorkloadRouteImport } from './routes/_authenticated/workload'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
+import { Route as AuthenticatedInvoicingInvoiceIdRouteImport } from './routes/_authenticated/invoicing.$invoiceId'
 import { Route as AuthenticatedProjectsProjectIdRouteImport } from './routes/_authenticated/projects.$projectId'
+import { Route as AuthenticatedQuotesQuoteIdRouteImport } from './routes/_authenticated/quotes.$quoteId'
+import { Route as ApiCronDeadlineRemindersRouteImport } from './routes/api/cron/deadline-reminders'
 import { Route as ApiPublicCalendarTokenRouteImport } from './routes/api/public/calendar.$token'
 import { Route as LovableEmailAuthPreviewRouteImport } from './routes/lovable/email/auth/preview'
 import { Route as LovableEmailAuthWebhookRouteImport } from './routes/lovable/email/auth/webhook'
@@ -134,11 +137,29 @@ const InviteTokenRoute = InviteTokenRouteImport.update({
   path: '/invite/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedInvoicingInvoiceIdRoute =
+  AuthenticatedInvoicingInvoiceIdRouteImport.update({
+    id: '/$invoiceId',
+    path: '/$invoiceId',
+    getParentRoute: () => AuthenticatedInvoicingRoute,
+  } as any)
 const AuthenticatedProjectsProjectIdRoute =
   AuthenticatedProjectsProjectIdRouteImport.update({
     id: '/$projectId',
     path: '/$projectId',
     getParentRoute: () => AuthenticatedProjectsRoute,
+  } as any)
+const AuthenticatedQuotesQuoteIdRoute =
+  AuthenticatedQuotesQuoteIdRouteImport.update({
+    id: '/$quoteId',
+    path: '/$quoteId',
+    getParentRoute: () => AuthenticatedQuotesRoute,
+  } as any)
+const ApiCronDeadlineRemindersRoute =
+  ApiCronDeadlineRemindersRouteImport.update({
+    id: '/api/cron/deadline-reminders',
+    path: '/api/cron/deadline-reminders',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const ApiPublicCalendarTokenRoute = ApiPublicCalendarTokenRouteImport.update({
   id: '/api/public/calendar/$token',
@@ -167,16 +188,19 @@ export interface FileRoutesByFullPath {
   '/campaigns': typeof AuthenticatedCampaignsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/import-review': typeof AuthenticatedImportReviewRoute
-  '/invoicing': typeof AuthenticatedInvoicingRoute
+  '/invoicing': typeof AuthenticatedInvoicingRouteWithChildren
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/projects': typeof AuthenticatedProjectsRouteWithChildren
-  '/quotes': typeof AuthenticatedQuotesRoute
+  '/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
+  '/quotes/$quoteId': typeof AuthenticatedQuotesQuoteIdRoute
+  '/api/cron/deadline-reminders': typeof ApiCronDeadlineRemindersRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -192,16 +216,19 @@ export interface FileRoutesByTo {
   '/campaigns': typeof AuthenticatedCampaignsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/import-review': typeof AuthenticatedImportReviewRoute
-  '/invoicing': typeof AuthenticatedInvoicingRoute
+  '/invoicing': typeof AuthenticatedInvoicingRouteWithChildren
   '/pipeline': typeof AuthenticatedPipelineRoute
   '/projects': typeof AuthenticatedProjectsRouteWithChildren
-  '/quotes': typeof AuthenticatedQuotesRoute
+  '/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
   '/team': typeof AuthenticatedTeamRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
+  '/quotes/$quoteId': typeof AuthenticatedQuotesQuoteIdRoute
+  '/api/cron/deadline-reminders': typeof ApiCronDeadlineRemindersRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -219,16 +246,19 @@ export interface FileRoutesById {
   '/_authenticated/campaigns': typeof AuthenticatedCampaignsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/import-review': typeof AuthenticatedImportReviewRoute
-  '/_authenticated/invoicing': typeof AuthenticatedInvoicingRoute
+  '/_authenticated/invoicing': typeof AuthenticatedInvoicingRouteWithChildren
   '/_authenticated/pipeline': typeof AuthenticatedPipelineRoute
   '/_authenticated/projects': typeof AuthenticatedProjectsRouteWithChildren
-  '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
+  '/_authenticated/quotes': typeof AuthenticatedQuotesRouteWithChildren
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/statements': typeof AuthenticatedStatementsRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
+  '/_authenticated/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
   '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
+  '/_authenticated/quotes/$quoteId': typeof AuthenticatedQuotesQuoteIdRoute
+  '/api/cron/deadline-reminders': typeof ApiCronDeadlineRemindersRoute
   '/api/public/calendar/$token': typeof ApiPublicCalendarTokenRoute
   '/lovable/email/auth/preview': typeof LovableEmailAuthPreviewRoute
   '/lovable/email/auth/webhook': typeof LovableEmailAuthWebhookRoute
@@ -255,7 +285,10 @@ export interface FileRouteTypes {
     | '/team'
     | '/workload'
     | '/invite/$token'
+    | '/invoicing/$invoiceId'
     | '/projects/$projectId'
+    | '/quotes/$quoteId'
+    | '/api/cron/deadline-reminders'
     | '/api/public/calendar/$token'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -280,7 +313,10 @@ export interface FileRouteTypes {
     | '/team'
     | '/workload'
     | '/invite/$token'
+    | '/invoicing/$invoiceId'
     | '/projects/$projectId'
+    | '/quotes/$quoteId'
+    | '/api/cron/deadline-reminders'
     | '/api/public/calendar/$token'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -306,7 +342,10 @@ export interface FileRouteTypes {
     | '/_authenticated/team'
     | '/_authenticated/workload'
     | '/invite/$token'
+    | '/_authenticated/invoicing/$invoiceId'
     | '/_authenticated/projects/$projectId'
+    | '/_authenticated/quotes/$quoteId'
+    | '/api/cron/deadline-reminders'
     | '/api/public/calendar/$token'
     | '/lovable/email/auth/preview'
     | '/lovable/email/auth/webhook'
@@ -320,6 +359,7 @@ export interface RootRouteChildren {
   ProfileSetupRoute: typeof ProfileSetupRoute
   RegisterRoute: typeof RegisterRoute
   InviteTokenRoute: typeof InviteTokenRoute
+  ApiCronDeadlineRemindersRoute: typeof ApiCronDeadlineRemindersRoute
   ApiPublicCalendarTokenRoute: typeof ApiPublicCalendarTokenRoute
   LovableEmailAuthPreviewRoute: typeof LovableEmailAuthPreviewRoute
   LovableEmailAuthWebhookRoute: typeof LovableEmailAuthWebhookRoute
@@ -467,12 +507,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InviteTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/invoicing/$invoiceId': {
+      id: '/_authenticated/invoicing/$invoiceId'
+      path: '/$invoiceId'
+      fullPath: '/invoicing/$invoiceId'
+      preLoaderRoute: typeof AuthenticatedInvoicingInvoiceIdRouteImport
+      parentRoute: typeof AuthenticatedInvoicingRoute
+    }
     '/_authenticated/projects/$projectId': {
       id: '/_authenticated/projects/$projectId'
       path: '/$projectId'
       fullPath: '/projects/$projectId'
       preLoaderRoute: typeof AuthenticatedProjectsProjectIdRouteImport
       parentRoute: typeof AuthenticatedProjectsRoute
+    }
+    '/_authenticated/quotes/$quoteId': {
+      id: '/_authenticated/quotes/$quoteId'
+      path: '/$quoteId'
+      fullPath: '/quotes/$quoteId'
+      preLoaderRoute: typeof AuthenticatedQuotesQuoteIdRouteImport
+      parentRoute: typeof AuthenticatedQuotesRoute
+    }
+    '/api/cron/deadline-reminders': {
+      id: '/api/cron/deadline-reminders'
+      path: '/api/cron/deadline-reminders'
+      fullPath: '/api/cron/deadline-reminders'
+      preLoaderRoute: typeof ApiCronDeadlineRemindersRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/calendar/$token': {
       id: '/api/public/calendar/$token'
@@ -498,6 +559,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedInvoicingRouteChildren {
+  AuthenticatedInvoicingInvoiceIdRoute: typeof AuthenticatedInvoicingInvoiceIdRoute
+}
+
+const AuthenticatedInvoicingRouteChildren: AuthenticatedInvoicingRouteChildren =
+  {
+    AuthenticatedInvoicingInvoiceIdRoute: AuthenticatedInvoicingInvoiceIdRoute,
+  }
+
+const AuthenticatedInvoicingRouteWithChildren =
+  AuthenticatedInvoicingRoute._addFileChildren(
+    AuthenticatedInvoicingRouteChildren,
+  )
+
 interface AuthenticatedProjectsRouteChildren {
   AuthenticatedProjectsProjectIdRoute: typeof AuthenticatedProjectsProjectIdRoute
 }
@@ -511,16 +586,27 @@ const AuthenticatedProjectsRouteWithChildren =
     AuthenticatedProjectsRouteChildren,
   )
 
+interface AuthenticatedQuotesRouteChildren {
+  AuthenticatedQuotesQuoteIdRoute: typeof AuthenticatedQuotesQuoteIdRoute
+}
+
+const AuthenticatedQuotesRouteChildren: AuthenticatedQuotesRouteChildren = {
+  AuthenticatedQuotesQuoteIdRoute: AuthenticatedQuotesQuoteIdRoute,
+}
+
+const AuthenticatedQuotesRouteWithChildren =
+  AuthenticatedQuotesRoute._addFileChildren(AuthenticatedQuotesRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAccountsRoute: typeof AuthenticatedAccountsRoute
   AuthenticatedActivityRoute: typeof AuthenticatedActivityRoute
   AuthenticatedCampaignsRoute: typeof AuthenticatedCampaignsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedImportReviewRoute: typeof AuthenticatedImportReviewRoute
-  AuthenticatedInvoicingRoute: typeof AuthenticatedInvoicingRoute
+  AuthenticatedInvoicingRoute: typeof AuthenticatedInvoicingRouteWithChildren
   AuthenticatedPipelineRoute: typeof AuthenticatedPipelineRoute
   AuthenticatedProjectsRoute: typeof AuthenticatedProjectsRouteWithChildren
-  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
+  AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRouteWithChildren
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatementsRoute: typeof AuthenticatedStatementsRoute
   AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
@@ -533,10 +619,10 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCampaignsRoute: AuthenticatedCampaignsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedImportReviewRoute: AuthenticatedImportReviewRoute,
-  AuthenticatedInvoicingRoute: AuthenticatedInvoicingRoute,
+  AuthenticatedInvoicingRoute: AuthenticatedInvoicingRouteWithChildren,
   AuthenticatedPipelineRoute: AuthenticatedPipelineRoute,
   AuthenticatedProjectsRoute: AuthenticatedProjectsRouteWithChildren,
-  AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
+  AuthenticatedQuotesRoute: AuthenticatedQuotesRouteWithChildren,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatementsRoute: AuthenticatedStatementsRoute,
   AuthenticatedTeamRoute: AuthenticatedTeamRoute,
@@ -554,6 +640,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileSetupRoute: ProfileSetupRoute,
   RegisterRoute: RegisterRoute,
   InviteTokenRoute: InviteTokenRoute,
+  ApiCronDeadlineRemindersRoute: ApiCronDeadlineRemindersRoute,
   ApiPublicCalendarTokenRoute: ApiPublicCalendarTokenRoute,
   LovableEmailAuthPreviewRoute: LovableEmailAuthPreviewRoute,
   LovableEmailAuthWebhookRoute: LovableEmailAuthWebhookRoute,

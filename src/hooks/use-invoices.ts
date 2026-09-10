@@ -140,6 +140,13 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
         throw new Error(`This quote is already invoiced as ${existing.invoice_number}`);
       }
 
+      const { data: quoteRow, error: quoteRowError } = await supabase
+        .from("quotes")
+        .select("project_id")
+        .eq("id", quoteId)
+        .single();
+      if (quoteRowError) throw quoteRowError;
+
       const { data: lines, error: linesError } = await supabase
         .from("quote_line_items")
         .select("package_id, description, quantity, unit_price")
@@ -154,7 +161,11 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
         unitPrice: line.unit_price,
       }));
 
-      return insertInvoice(workspaceId, { accountId, dealId, quoteId }, lineItems);
+      return insertInvoice(
+        workspaceId,
+        { accountId, dealId, quoteId, projectId: quoteRow.project_id },
+        lineItems,
+      );
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
@@ -162,6 +173,77 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
       void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
+    },
+  });
+}
+
+export function useInvoice(invoiceId: string) {
+  return useQuery({
+    queryKey: ["invoice", invoiceId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("invoices")
+        .select(INVOICE_COLUMNS)
+        .eq("id", invoiceId)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: Boolean(invoiceId),
+  });
+}
+
+/** Full edit: invoice fields plus a wholesale replace of its line items. */
+export function useUpdateInvoice(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      projectId,
+      dueDate,
+      notes,
+      lineItems,
+    }: {
+      id: string;
+      projectId?: string | null;
+      dueDate?: string | null;
+      notes?: string | null;
+      lineItems: LineItemDraft[];
+    }) => {
+      const { error: updateError } = await supabase
+        .from("invoices")
+        .update({ project_id: projectId ?? null, due_date: dueDate ?? null, notes: notes ?? null })
+        .eq("id", id);
+      if (updateError) throw updateError;
+
+      const { error: deleteError } = await supabase
+        .from("invoice_line_items")
+        .delete()
+        .eq("invoice_id", id);
+      if (deleteError) throw deleteError;
+
+      if (lineItems.length > 0) {
+        const { error: insertError } = await supabase.from("invoice_line_items").insert(
+          lineItems.map((item, index) => ({
+            invoice_id: id,
+            package_id: item.packageId,
+            description: item.description,
+            quantity: item.quantity,
+            unit_price: item.unitPrice,
+            sort_order: index,
+          })),
+        );
+        if (insertError) throw insertError;
+      }
+    },
+    onSuccess: (_data, variables) => {
+      void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["invoice", variables.id] });
+      void queryClient.invalidateQueries({ queryKey: ["invoice-line-items", variables.id] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
     },
   });
 }

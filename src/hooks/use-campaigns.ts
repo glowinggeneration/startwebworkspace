@@ -9,7 +9,7 @@ type CampaignInsert = Database["public"]["Tables"]["campaigns"]["Insert"];
 type CampaignUpdate = Database["public"]["Tables"]["campaigns"]["Update"];
 
 const CAMPAIGN_COLUMNS =
-  "id, workspace_id, account_id, name, channel, status, start_date, end_date, owner_id, next_action, next_action_date, planned_cost, spent_cost, lead_source, leads_count, notes, created_at, updated_at";
+  "id, workspace_id, account_id, project_id, name, channel, status, start_date, end_date, owner_id, next_action, next_action_date, planned_cost, spent_cost, lead_source, leads_count, notes, created_at, updated_at";
 
 export function useCampaigns(workspaceId: string) {
   return useQuery({

@@ -48,6 +48,7 @@ export function useCreateQuote(workspaceId: string) {
       accountId,
       dealId,
       campaignId,
+      projectId,
       expiryDate,
       notes,
       lineItems,
@@ -55,6 +56,7 @@ export function useCreateQuote(workspaceId: string) {
       accountId: string;
       dealId?: string | null;
       campaignId?: string | null;
+      projectId?: string | null;
       expiryDate?: string | null;
       notes?: string | null;
       lineItems: LineItemDraft[];
@@ -72,6 +74,7 @@ export function useCreateQuote(workspaceId: string) {
           account_id: accountId,
           deal_id: dealId ?? null,
           campaign_id: campaignId ?? null,
+          project_id: projectId ?? null,
           quote_number: quoteNumber,
           expiry_date: expiryDate ?? null,
           notes: notes ?? null,
@@ -101,6 +104,7 @@ export function useCreateQuote(workspaceId: string) {
       void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
     },
   });
 }
@@ -117,6 +121,82 @@ export function useUpdateQuoteStatus(workspaceId: string) {
       void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
+    },
+  });
+}
+
+export function useQuote(quoteId: string) {
+  return useQuery({
+    queryKey: ["quote", quoteId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("quotes")
+        .select(
+          "id, account_id, deal_id, campaign_id, project_id, quote_number, status, issue_date, expiry_date, notes",
+        )
+        .eq("id", quoteId)
+        .single();
+      if (error) throw error;
+      return data;
+    },
+    enabled: Boolean(quoteId),
+  });
+}
+
+/** Full edit: quote fields plus a wholesale replace of its line items —
+ * simplest reliable way to let someone reorder/add/remove rows on save. */
+export function useUpdateQuote(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      projectId,
+      expiryDate,
+      notes,
+      lineItems,
+    }: {
+      id: string;
+      projectId?: string | null;
+      expiryDate?: string | null;
+      notes?: string | null;
+      lineItems: LineItemDraft[];
+    }) => {
+      const { error: updateError } = await supabase
+        .from("quotes")
+        .update({
+          project_id: projectId ?? null,
+          expiry_date: expiryDate ?? null,
+          notes: notes ?? null,
+        })
+        .eq("id", id);
+      if (updateError) throw updateError;
+
+      const { error: deleteError } = await supabase
+        .from("quote_line_items")
+        .delete()
+        .eq("quote_id", id);
+      if (deleteError) throw deleteError;
+
+      if (lineItems.length > 0) {
+        const { error: insertError } = await supabase.from("quote_line_items").insert(
+          lineItems.map((item, index) => ({
+            quote_id: id,
+            package_id: item.packageId,
+            description: item.description,
+            quantity: item.quantity,
+            unit_price: item.unitPrice,
+            sort_order: index,
+          })),
+        );
+        if (insertError) throw insertError;
+      }
+    },
+    onSuccess: (_data, variables) => {
+      void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["quote", variables.id] });
+      void queryClient.invalidateQueries({ queryKey: ["quote-line-items", variables.id] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["project-board", workspaceId] });
     },
   });
 }
