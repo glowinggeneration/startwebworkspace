@@ -46,6 +46,8 @@ import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
 import { useClientBoard } from "@/hooks/use-client-board";
 import { ClientBoard } from "@/components/application/pipeline/client-board";
+import { ProjectBoard } from "@/components/application/pipeline/project-board";
+import { useProjectBoard } from "@/hooks/use-project-board";
 import { ScheduleCalendar } from "@/components/application/pipeline/schedule-calendar";
 import { useSchedule } from "@/hooks/use-schedule";
 import type { DealStatus } from "@/integrations/supabase/app-types";
@@ -114,8 +116,11 @@ function PipelinePage() {
   const transitionStatus = useTransitionDealStatus(workspaceId);
   const { data: clientAccounts, isLoading: clientsLoading } = useClientBoard(workspaceId);
   const { data: scheduleProjects, isLoading: scheduleLoading } = useSchedule(workspaceId);
+  const { data: boardProjects, isLoading: boardLoading } = useProjectBoard(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
-  const [view, setView] = useState<"clients" | "board" | "calendar" | "list">("clients");
+  const [view, setView] = useState<"clients" | "projects" | "board" | "calendar" | "list">(
+    "projects",
+  );
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -168,6 +173,18 @@ function PipelinePage() {
     );
   }, [scheduleProjects, search]);
 
+  const visibleBoardProjects = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    const projects = boardProjects ?? [];
+    if (!term) return projects;
+    return projects.filter((project) =>
+      [project.name, project.accounts?.name ?? "", ...project.tasks.map((task) => task.title)]
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [boardProjects, search]);
+
   async function handleStatusChange(deal: Deal, status: DealStatus) {
     try {
       await transitionStatus.mutateAsync(deal.id, status);
@@ -207,6 +224,7 @@ function PipelinePage() {
           onValueChange={setView}
           options={[
             { value: "clients", label: "Clients" },
+            { value: "projects", label: "Projects" },
             { value: "board", label: "Deals" },
             { value: "calendar", label: "Calendar" },
             { value: "list", label: "List" },
@@ -272,7 +290,15 @@ function PipelinePage() {
         />
       </Toolbar>
 
-      {(view === "clients" ? clientsLoading : view === "calendar" ? scheduleLoading : isLoading) ? (
+      {(
+        view === "clients"
+          ? clientsLoading
+          : view === "projects"
+            ? boardLoading
+            : view === "calendar"
+              ? scheduleLoading
+              : isLoading
+      ) ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => (
             <div key={column.status} className="h-[32rem] animate-pulse rounded-xl bg-muted" />
@@ -280,6 +306,8 @@ function PipelinePage() {
         </div>
       ) : view === "clients" ? (
         <ClientBoard accounts={visibleClients} />
+      ) : view === "projects" ? (
+        <ProjectBoard projects={visibleBoardProjects} />
       ) : view === "calendar" ? (
         <ScheduleCalendar projects={visibleScheduleProjects} />
       ) : view === "board" ? (
