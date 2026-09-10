@@ -230,7 +230,7 @@ function TeamPage() {
                         >
                           <Link
                             to="/campaigns"
-                            search={{ client: campaign.account_id ?? undefined }}
+                            search={{ client: campaign.account_id ?? "" }}
                             className="min-w-0 truncate text-sm text-foreground underline-offset-4 hover:underline"
                           >
                             {campaign.name}

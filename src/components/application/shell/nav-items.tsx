@@ -10,6 +10,7 @@ import {
   ScrollText,
   Settings,
   Users,
+  UsersRound,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
