@@ -24,6 +24,14 @@ export interface ProjectBoardInvoice {
   due_date: string | null;
 }
 
+export interface ProjectBoardQuote {
+  id: string;
+  quote_number: string;
+  status: string;
+  issue_date: string;
+  account_id: string;
+}
+
 export interface ProjectBoardProject {
   id: string;
   name: string;
