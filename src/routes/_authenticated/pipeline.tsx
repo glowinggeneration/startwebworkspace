@@ -136,6 +136,23 @@ function PipelinePage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deals, accounts, search, industryFilter, ownerFilter]);
 
+  const visibleClients = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return clientAccounts ?? [];
+    return (clientAccounts ?? []).filter((account) =>
+      [
+        account.name,
+        account.primary_service ?? "",
+        account.relationship_status ?? "",
+        ...account.contacts.map((contact) => contact.name),
+        ...account.projects.map((project) => project.name),
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [clientAccounts, search]);
+
   async function handleStatusChange(deal: Deal, status: DealStatus) {
     try {
       await transitionStatus.mutateAsync(deal.id, status);
