@@ -55,6 +55,7 @@ import { ClientBoard } from "@/components/application/pipeline/client-board";
 import { ProjectBoard } from "@/components/application/pipeline/project-board";
 import { useProjectBoard } from "@/hooks/use-project-board";
 import { ScheduleCalendar } from "@/components/application/pipeline/schedule-calendar";
+import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
 import { useSchedule } from "@/hooks/use-schedule";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
@@ -217,7 +218,12 @@ function PipelinePage() {
       <PageHeader
         title="Pipeline"
         description="Manage deals and their next steps."
-        actions={<NewDealDialog />}
+        actions={
+          <div className="flex items-center gap-3">
+            {view === "calendar" ? <CalendarSyncDialog /> : null}
+            <NewDealDialog />
+          </div>
+        }
         aside={
           hasAccounts ? undefined : (
             <p className="flex items-center gap-2 text-sm text-muted-foreground">

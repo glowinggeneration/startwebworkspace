@@ -23,10 +23,10 @@ import {
   PageHeader,
   Panel,
   SegmentedControl,
-  // eslint-disable-next-line sort-imports
   Toolbar,
   UnderlineTabs,
 } from "@/components/application/shell/page-parts";
+import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
 import {
   PanelFooter,
   PanelHeader,
