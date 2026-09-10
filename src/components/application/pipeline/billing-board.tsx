@@ -173,13 +173,13 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
     <article className="rounded-xl border border-border bg-card p-4 shadow-xs">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">{flow.accountName}</h3>
-        <span className="text-sm font-semibold tabular-nums text-foreground">
+        <span className="whitespace-nowrap text-sm font-semibold tabular-nums text-foreground">
           {currency.format(invoice ? invoiceTotal : quoteTotal)}
         </span>
       </div>
 
       {/* Journey strip: quote, invoice, signed, paid */}
-      <ol className="mt-3 flex items-center gap-1 text-[0.7rem] text-muted-foreground">
+      <ol className="mt-3 flex flex-wrap items-center gap-y-1 text-[0.7rem] text-muted-foreground">
         {BILLING_STAGES.map((step, index) => {
           const reached =
             BILLING_STAGES.findIndex((s) => s.value === stage) >= index ||
@@ -212,7 +212,7 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               <FileText className="size-3.5 shrink-0" aria-hidden="true" />
               <Link
                 to="/quotes"
-                className="font-medium text-foreground underline-offset-2 hover:underline"
+                className="whitespace-nowrap font-medium text-foreground underline-offset-2 hover:underline"
               >
                 {quote.quote_number}
               </Link>
@@ -272,7 +272,7 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               <ReceiptText className="size-3.5 shrink-0" aria-hidden="true" />
               <Link
                 to="/invoicing"
-                className="font-medium text-foreground underline-offset-2 hover:underline"
+                className="whitespace-nowrap font-medium text-foreground underline-offset-2 hover:underline"
               >
                 {invoice.invoice_number}
               </Link>
@@ -300,7 +300,7 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               {invoice.signed_at.slice(0, 10)}
               {invoice.signed_note ? ` · ${invoice.signed_note}` : ""}
             </p>
-          ) : stage === "invoice" ? (
+          ) : stage === "invoice" && invoice.status !== "void" ? (
             <div className="flex flex-wrap items-center gap-2">
               {invoice.status === "draft" ? (
                 <Button
