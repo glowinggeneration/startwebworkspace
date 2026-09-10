@@ -24,6 +24,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
+import { usePipelineRealtime } from "@/hooks/use-pipeline-realtime";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useIndustries } from "@/hooks/use-industries";
 import { usePackages } from "@/hooks/use-packages";
@@ -115,6 +116,8 @@ const COLUMNS: {
 
 function PipelinePage() {
   const { workspaceId } = useActiveWorkspace();
+  // New projects, phases and next steps appear without a page reload.
+  usePipelineRealtime(workspaceId);
   const { data: deals, isLoading } = useDeals(workspaceId);
   const { data: accounts } = useAccounts(workspaceId);
   const { data: industries } = useIndustries(workspaceId);
