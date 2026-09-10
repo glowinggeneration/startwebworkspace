@@ -61,9 +61,22 @@ priority, summary, reference client), `contacts`, `account_notes`,
 next action and date, `planned_cost`, `spent_cost`, notes. Tasks link to a
 campaign through the nullable `tasks.campaign_id` (set null on delete).
 
-## Open security items
+## Internal tables and functions
 
-The Supabase linter currently reports two RLS-enabled tables without
-policies and ten security-definer functions executable by public or
-signed-in users. These predate the campaigns work and are tracked in
-`docs/build-standards/EXCEPTION_REGISTER.md`. Review before the next release.
+`audit_log`, `rate_limit_hits` and `numbering_counters` are internal. Their
+API privileges are revoked from `anon` and `authenticated`; only the
+database and privileged code touch them. Internal maintenance, numbering and
+timestamp functions likewise have execute revoked from the API, and the
+workspace and RLS helper functions are revoked from `anon`. Invitation
+preview stays readable so an invited person can see what they are joining.
+
+Remaining linter items are recorded as reviewed in
+`docs/build-standards/EXCEPTION_REGISTER.md`. Re-run the linter before each
+release and close anything new.
+
+## Data today
+
+24 clients, 7 contacts, 19 projects, 16 tasks, 10 account notes, 1 quote,
+1 invoice, 0 deals, 0 campaigns, 10 open import review items. Most client
+records came from the committed conversation import and carry
+`import_key = startweb-whatsapp-2026-09-09:...`.

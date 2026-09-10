@@ -35,7 +35,7 @@ role sees only their own account.
 | Screen        | Path                                | Purpose                                                                              |
 | ------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
 | Dashboard     | `/dashboard`                        | Monthly target, planned mix, won this month, coverage, activity table, calling block |
-| Pipeline      | `/pipeline`                         | Deals by status, board and list                                                      |
+| Pipeline      | `/pipeline`                         | Clients board by stage, plus deals board and list                                    |
 | Accounts      | `/accounts`                         | Client directory, contacts, notes                                                    |
 | Projects      | `/projects`, `/projects/$projectId` | Delivery work, phases, tasks                                                         |
 | Campaigns     | `/campaigns`                        | Campaign status, dates, owner, next action, linked tasks, planned vs spent budget    |

@@ -1,38 +1,43 @@
 # Current work
 
-Last updated 9 September 2026. Keep this short and true.
+Last updated 10 September 2026. Keep this short and true.
+
+## Live data snapshot
+
+Workspace `Startweb`, four members. Records today: 24 clients, 7 contacts,
+19 projects, 16 tasks, 10 account notes, 1 quote, 1 invoice, 0 deals,
+0 campaigns, 10 open import review items.
+
+Pipeline deals and campaigns are deliberately empty. Client work is tracked
+through accounts, projects and tasks from the conversation import.
 
 ## In progress
 
-**Campaign tracker with budgets** — `/campaigns`
+**Import review decisions** — `/import-review`
 
-- Done: `campaigns` table with RLS and grants, `tasks.campaign_id` link,
-  `src/hooks/use-campaigns.ts`, `src/routes/_authenticated/campaigns.tsx`
-  with tracker and budget views, sidebar link under Delivery.
-- Left: open the page in the preview and confirm both views, empty states
-  and the side panel behave at desktop and tablet width.
-
-**Context routine** — this folder. Rules file plus living documents and work
-templates. Keep them updated as part of each change.
+- Done: approve, reject and reopen controls wired to
+  `import_review_items`, owner and admin only.
+- Left: the ten open items still need a human decision. Each one names the
+  record, the evidence and the decision required.
 
 ## Waiting on a decision
 
-**Conversation import** (`startweb-whatsapp-2026-09-09`) — dry run complete:
-22 new clients, 7 contacts, 19 projects, 16 tasks, 10 account notes, 10
-review items. Nothing committed. Needs the owner to approve the commit in
-Settings.
-
-**Security linter findings** — two tables without policies, ten
-security-definer functions with broad execute rights. Needs review and, where
-intended, an entry in the exception register.
+**Security linter findings** — the remaining items are recorded as reviewed
+in `docs/build-standards/EXCEPTION_REGISTER.md`. Re-run the linter before
+the next release and close anything new.
 
 ## Recently finished
 
-- Pipeline and Projects cleared of all records on request
-- Sign-in and register redesigned to the floating split card layout
-- Google sign-in enabled, unsupported social buttons removed
-- Team profiles and photos loaded for the four members
-- Mobile sign-in blocked with a desktop or tablet message
+- Conversation import `startweb-whatsapp-2026-09-09` committed: 22 new
+  clients, 7 contacts, 19 projects, 16 next steps, 10 notes. AfriBiz Future
+  Tech already existed and was left untouched. The import is idempotent.
+- Pipeline gained a Clients board: four stage columns derived from each
+  account's relationship status, cards showing service, status, linked
+  projects and open next steps. Deals and List views kept beside it.
+- Campaign tracker with budget view, sidebar link under Delivery.
+- Internal tables (`audit_log`, `rate_limit_hits`, `numbering_counters`)
+  and internal database functions locked away from the API.
+- Backend connection keys rebound twice after they went stale at sign-in.
 
 ## Parked
 
