@@ -568,8 +568,17 @@ function CampaignsPage() {
                                 .filter(Boolean)
                                 .join(" · ") || "No channel set"}
                             </p>
-                          </td>
+                           </td>
                           <td className="px-5 py-4">
+                            <p className="text-foreground">
+                              {campaign.lead_source ?? "Not set"}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                              {Number(campaign.leads_count ?? 0)} leads ·{" "}
+                              {quotesByCampaign.get(campaign.id)?.count ?? 0} quotes
+                            </p>
+                          </td>
+                           <td className="px-5 py-4">
                             <StatusPill
                               label={campaign.status}
                               tone={statusTone[campaign.status as CampaignStatus] ?? "neutral"}
