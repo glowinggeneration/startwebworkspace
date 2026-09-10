@@ -15,12 +15,7 @@ import appCss from "../styles.css?url";
 
 function LostBulbIllustration() {
   return (
-    <svg
-      viewBox="0 0 200 220"
-      fill="none"
-      aria-hidden="true"
-      className="h-52 w-52 text-[#164BFA]"
-    >
+    <svg viewBox="0 0 200 220" fill="none" aria-hidden="true" className="h-52 w-52 text-[#164BFA]">
       <circle cx="100" cy="108" r="88" className="fill-[#164BFA]/[0.05]" />
       {/* Bulb glass, cracked */}
       <path
@@ -48,10 +43,7 @@ function LostBulbIllustration() {
       <rect x="80" y="150" width="40" height="8" rx="4" className="fill-[#164BFA]" />
       <rect x="82" y="162" width="36" height="8" rx="4" className="fill-[#164BFA]" />
       <rect x="84" y="174" width="32" height="8" rx="4" className="fill-[#164BFA]" />
-      <path
-        d="M90 184h20l-4 12a6 6 0 0 1-12 0l-4-12Z"
-        className="fill-[#164BFA]"
-      />
+      <path d="M90 184h20l-4 12a6 6 0 0 1-12 0l-4-12Z" className="fill-[#164BFA]" />
     </svg>
   );
 }
@@ -60,9 +52,7 @@ function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-[#EDEEF2] px-4 py-10">
       <div className="w-full max-w-4xl rounded-[28px] bg-white px-6 py-14 shadow-[0_24px_60px_-24px_rgba(15,23,42,0.25)] sm:px-14">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#164BFA]">
-          Startweb
-        </p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-[#164BFA]">Startweb</p>
         <div className="mt-8 flex flex-col items-center gap-10 md:flex-row md:items-center md:gap-16">
           <div className="shrink-0">
             <LostBulbIllustration />
@@ -75,8 +65,8 @@ function NotFoundComponent() {
               Looks like you're lost
             </h2>
             <p className="mt-2 max-w-sm text-sm text-muted-foreground">
-              The page you're looking for isn't available. It may have been moved or the
-              link is out of date.
+              The page you're looking for isn't available. It may have been moved or the link is out
+              of date.
             </p>
             <div className="mt-8">
               <Link
@@ -159,7 +149,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
     ],
-
   }),
   shellComponent: RootShell,
   component: RootComponent,
