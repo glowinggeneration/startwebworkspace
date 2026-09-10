@@ -271,7 +271,11 @@ function TeamPage() {
                 </div>
 
                 <div>
-                  <SectionHeading icon={Building2} label="Pipeline clients" count={clients.length} />
+                  <SectionHeading
+                    icon={Building2}
+                    label="Pipeline clients"
+                    count={clients.length}
+                  />
                   {clients.length === 0 ? (
                     <p className="mt-1.5 text-sm text-muted-foreground">No clients yet.</p>
                   ) : (
