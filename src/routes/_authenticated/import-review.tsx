@@ -4,7 +4,12 @@ import { Button } from "@/components/ui/button";
 import { PageHeader } from "@/components/application/shell/page-parts";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useHasWorkspaceRole } from "@/hooks/use-workspace-role";
-import { useImportReviewItems, useSetImportReviewStatus } from "@/hooks/use-import-review";
+import {
+  useImportReviewItems,
+  useSetImportReviewStatus,
+  type ImportReviewItem,
+  type ImportReviewStatus,
+} from "@/hooks/use-import-review";
 
 export const Route = createFileRoute("/_authenticated/import-review")({
   component: ImportReviewPage,
