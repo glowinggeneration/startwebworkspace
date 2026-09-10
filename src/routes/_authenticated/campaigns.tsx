@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Link2, Megaphone, Search, Trash2, Users } from "lucide-react";
+import { Building2, Link2, Megaphone, Search, Trash2, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -54,6 +54,9 @@ import { currency } from "@/lib/sales/currency";
 
 export const Route = createFileRoute("/_authenticated/campaigns")({
   component: CampaignsPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    client: typeof search["client"] === "string" ? search["client"] : "all",
+  }),
   head: () => ({
     meta: [
       { title: "Campaigns | Startweb" },
@@ -144,6 +147,11 @@ function CampaignsPage() {
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
+  const { client: accountFilter } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const setAccountFilter = (value: string) => {
+    void navigate({ search: (prev) => ({ ...prev, client: value }) });
+  };
   const [panel, setPanel] = useState<{ mode: "create" } | { mode: "edit"; id: string } | null>(
     null,
   );
@@ -205,6 +213,13 @@ function CampaignsPage() {
     return (campaigns ?? []).filter((campaign) => {
       if (tab !== "all" && campaign.status !== tab) return false;
       if (ownerFilter !== "all" && campaign.owner_id !== ownerFilter) return false;
+      if (accountFilter === "unassigned" && campaign.account_id !== null) return false;
+      if (
+        accountFilter !== "all" &&
+        accountFilter !== "unassigned" &&
+        campaign.account_id !== accountFilter
+      )
+        return false;
       if (!term) return true;
       return (
         campaign.name.toLowerCase().includes(term) ||
@@ -214,7 +229,7 @@ function CampaignsPage() {
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaigns, accounts, tab, ownerFilter, search]);
+  }, [campaigns, accounts, tab, ownerFilter, accountFilter, search]);
 
   const totals = useMemo(() => {
     return filtered.reduce(
@@ -367,6 +382,23 @@ function CampaignsPage() {
                   value: member.userId,
                   label: member.name,
                   avatarName: member.name,
+                })),
+              ]}
+            />
+            <FilterCombobox
+              value={accountFilter}
+              onValueChange={setAccountFilter}
+              icon={Building2}
+              ariaLabel="Filter by client"
+              placeholder="All clients"
+              searchPlaceholder="Search clients..."
+              emptyLabel="No client found."
+              options={[
+                { value: "all", label: "All clients" },
+                { value: "unassigned", label: "No client yet" },
+                ...(accounts ?? []).map((account) => ({
+                  value: account.id,
+                  label: account.name,
                 })),
               ]}
             />

@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, FolderOpen, Users } from "lucide-react";
+import { CalendarClock, FolderOpen, Megaphone, Users } from "lucide-react";
 import { EmptyState, Panel } from "@/components/application/shell/page-parts";
 import {
   CLIENT_STAGES,
@@ -81,6 +81,24 @@ function ClientCard({ account }: { account: ClientBoardAccount }) {
             </li>
           ))}
         </ul>
+      ) : null}
+
+      {account.campaigns.length > 0 ? (
+        <div className="mt-3 space-y-1 border-t border-border pt-3">
+          {account.campaigns.slice(0, 3).map((campaign) => (
+            <p key={campaign.id} className="flex items-start gap-2 text-xs text-muted-foreground">
+              <Megaphone className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+              <Link
+                to="/campaigns"
+                search={{ client: account.id }}
+                className="font-medium text-foreground underline-offset-2 hover:underline"
+              >
+                {campaign.name}
+              </Link>
+              <span>{campaign.status}</span>
+            </p>
+          ))}
+        </div>
       ) : null}
 
       {next.length > 0 ? (

@@ -35,6 +35,9 @@ the next release and close anything new.
   account's relationship status, cards showing service, status, linked
   projects and open next steps. Deals and List views kept beside it.
 - Campaign tracker with budget view, sidebar link under Delivery.
+- Campaigns filter by client (kept in the page address as `?client=`), and
+  pipeline client cards list that client's campaigns, each linking through to
+  the campaign page already filtered to them.
 - Internal tables (`audit_log`, `rate_limit_hits`, `numbering_counters`)
   and internal database functions locked away from the API.
 - Backend connection keys rebound twice after they went stale at sign-in.

@@ -18,6 +18,14 @@ export interface ClientBoardProject {
   tasks: ClientBoardTask[];
 }
 
+export interface ClientBoardCampaign {
+  id: string;
+  name: string;
+  status: string;
+  next_action: string | null;
+  next_action_date: string | null;
+}
+
 export interface ClientBoardAccount {
   id: string;
   name: string;
@@ -28,6 +36,7 @@ export interface ClientBoardAccount {
   summary: string | null;
   contacts: { id: string; name: string; role_title: string | null }[];
   projects: ClientBoardProject[];
+  campaigns: ClientBoardCampaign[];
 }
 
 /**
@@ -41,7 +50,7 @@ export function useClientBoard(workspaceId: string) {
       const { data, error } = await supabase
         .from("accounts")
         .select(
-          "id, name, relationship_status, review_priority, primary_service, account_type, summary, contacts(id, name, role_title), projects(id, name, status, status_label, due_date, tasks(id, title, status, status_label, due_date))",
+          "id, name, relationship_status, review_priority, primary_service, account_type, summary, contacts(id, name, role_title), projects(id, name, status, status_label, due_date, tasks(id, title, status, status_label, due_date)), campaigns(id, name, status, next_action, next_action_date)",
         )
         .eq("workspace_id", workspaceId)
         .order("name");
