@@ -1,0 +1,2 @@
+ALTER TABLE public.import_review_items DROP CONSTRAINT import_review_items_status_check;
+ALTER TABLE public.import_review_items ADD CONSTRAINT import_review_items_status_check CHECK (status = ANY (ARRAY['open'::text, 'resolved'::text, 'approved'::text, 'rejected'::text]));
