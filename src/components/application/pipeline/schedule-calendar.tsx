@@ -86,7 +86,7 @@ export function ScheduleCalendar({ projects }: { projects: ScheduleProject[] }) 
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem]">
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start">
       <Panel className="flex flex-col">
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border px-5 py-4">
           <h2 className="text-base font-semibold text-foreground">{format(month, "MMMM yyyy")}</h2>
