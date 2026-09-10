@@ -1,0 +1,1 @@
+alter publication supabase_realtime add table public.quotes, public.invoices, public.payments;
