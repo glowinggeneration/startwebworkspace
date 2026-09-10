@@ -47,6 +47,7 @@ import {
   useSetTaskCampaign,
   useUpdateCampaign,
   useWorkspaceTasks,
+  useCampaignQuotes,
   type CampaignRow,
   type CampaignStatus,
 } from "@/hooks/use-campaigns";
@@ -96,6 +97,8 @@ const campaignSchema = z
     endDate: z.string().optional(),
     nextAction: z.string().trim().optional(),
     nextActionDate: z.string().optional(),
+    leadSource: z.string().trim().optional(),
+    leadsCount: z.coerce.number().int().min(0, "Leads cannot be negative"),
     plannedCost: z.coerce.number().min(0, "Planned cost cannot be negative"),
     spentCost: z.coerce.number().min(0, "Spent cost cannot be negative"),
     notes: z.string().trim().optional(),
@@ -117,6 +120,8 @@ const EMPTY_FORM: CampaignFormValues = {
   endDate: "",
   nextAction: "",
   nextActionDate: "",
+  leadSource: "",
+  leadsCount: 0,
   plannedCost: 0,
   spentCost: 0,
   notes: "",
@@ -137,13 +142,14 @@ function CampaignsPage() {
   const { data: tasks } = useWorkspaceTasks(workspaceId);
   const { data: accounts } = useAccounts(workspaceId);
   const { data: members } = useWorkspaceMembers(workspaceId);
+  const { data: campaignQuotes } = useCampaignQuotes(workspaceId);
 
   const createCampaign = useCreateCampaign(workspaceId);
   const updateCampaign = useUpdateCampaign(workspaceId);
   const deleteCampaign = useDeleteCampaign(workspaceId);
   const setTaskCampaign = useSetTaskCampaign(workspaceId);
 
-  const [view, setView] = useState<"tracker" | "budget">("tracker");
+  const [view, setView] = useState<"tracker" | "budget" | "channels">("tracker");
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -184,6 +190,8 @@ function CampaignsPage() {
       endDate: editing.end_date ?? "",
       nextAction: editing.next_action ?? "",
       nextActionDate: editing.next_action_date ?? "",
+      leadSource: editing.lead_source ?? "",
+      leadsCount: Number(editing.leads_count ?? 0),
       plannedCost: Number(editing.planned_cost ?? 0),
       spentCost: Number(editing.spent_cost ?? 0),
       notes: editing.notes ?? "",
@@ -224,6 +232,7 @@ function CampaignsPage() {
       return (
         campaign.name.toLowerCase().includes(term) ||
         (campaign.channel ?? "").toLowerCase().includes(term) ||
+        (campaign.lead_source ?? "").toLowerCase().includes(term) ||
         (campaign.next_action ?? "").toLowerCase().includes(term) ||
         (accountName(campaign.account_id) ?? "").toLowerCase().includes(term)
       );
@@ -240,6 +249,62 @@ function CampaignsPage() {
       { planned: 0, spent: 0 },
     );
   }, [filtered]);
+
+  const quotesByCampaign = useMemo(() => {
+    const map = new Map<string, { count: number; value: number }>();
+    for (const quote of campaignQuotes ?? []) {
+      if (!quote.campaign_id) continue;
+      const value = (quote.quote_line_items ?? []).reduce(
+        (sum, item) => sum + Number(item.quantity) * Number(item.unit_price),
+        0,
+      );
+      const entry = map.get(quote.campaign_id) ?? { count: 0, value: 0 };
+      entry.count += 1;
+      entry.value += value;
+      map.set(quote.campaign_id, entry);
+    }
+    return map;
+  }, [campaignQuotes]);
+
+  const channelRows = useMemo(() => {
+    const map = new Map<
+      string,
+      { source: string; campaigns: number; leads: number; quotes: number; value: number; spent: number }
+    >();
+    for (const campaign of filtered) {
+      const source = campaign.lead_source?.trim() || "No source set";
+      const row = map.get(source) ?? {
+        source,
+        campaigns: 0,
+        leads: 0,
+        quotes: 0,
+        value: 0,
+        spent: 0,
+      };
+      const quotes = quotesByCampaign.get(campaign.id);
+      row.campaigns += 1;
+      row.leads += Number(campaign.leads_count ?? 0);
+      row.quotes += quotes?.count ?? 0;
+      row.value += quotes?.value ?? 0;
+      row.spent += Number(campaign.spent_cost ?? 0);
+      map.set(source, row);
+    }
+    return [...map.values()].sort((a, b) => b.leads - a.leads || b.quotes - a.quotes);
+  }, [filtered, quotesByCampaign]);
+
+  const channelTotals = useMemo(
+    () =>
+      channelRows.reduce(
+        (sum, row) => ({
+          leads: sum.leads + row.leads,
+          quotes: sum.quotes + row.quotes,
+          value: sum.value + row.value,
+          spent: sum.spent + row.spent,
+        }),
+        { leads: 0, quotes: 0, value: 0, spent: 0 },
+      ),
+    [channelRows],
+  );
 
   const linkedTasks = useMemo(
     () => (tasks ?? []).filter((task) => editing && task.campaign_id === editing.id),
@@ -259,6 +324,8 @@ function CampaignsPage() {
       end_date: parsed.endDate || null,
       next_action: parsed.nextAction || null,
       next_action_date: parsed.nextActionDate || null,
+      lead_source: parsed.leadSource || null,
+      leads_count: parsed.leadsCount,
       planned_cost: parsed.plannedCost,
       spent_cost: parsed.spentCost,
       notes: parsed.notes || null,
@@ -331,6 +398,7 @@ function CampaignsPage() {
               options={[
                 { value: "tracker", label: "Tracker" },
                 { value: "budget", label: "Budget" },
+                { value: "channels", label: "Channels" },
               ]}
             />
             <Button onClick={() => setPanel({ mode: "create" })}>New campaign</Button>
