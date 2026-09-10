@@ -10,6 +10,7 @@ import {
   ScrollText,
   Settings,
   Users,
+  UsersRound,
 } from "lucide-react";
 import type { ComponentType } from "react";
 
@@ -42,6 +43,7 @@ export const NAV_GROUPS: NavGroup[] = [
     items: [
       { to: "/projects", label: "Projects", icon: FolderKanban },
       { to: "/campaigns", label: "Campaigns", icon: Megaphone },
+      { to: "/team", label: "Team", icon: UsersRound },
       { to: "/workload", label: "Workload", icon: Gauge },
       { to: "/activity", label: "Activity", icon: CalendarCheck },
     ],

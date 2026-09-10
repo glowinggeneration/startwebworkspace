@@ -26,6 +26,7 @@ import { Route as AuthenticatedProjectsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated/quotes'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedStatementsRouteImport } from './routes/_authenticated/statements'
+import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
 import { Route as AuthenticatedWorkloadRouteImport } from './routes/_authenticated/workload'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as AuthenticatedProjectsProjectIdRouteImport } from './routes/_authenticated/projects.$projectId'
@@ -115,6 +116,11 @@ const AuthenticatedStatementsRoute = AuthenticatedStatementsRouteImport.update({
   path: '/statements',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedWorkloadRoute = AuthenticatedWorkloadRouteImport.update({
   id: '/workload',
   path: '/workload',
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/quotes': typeof AuthenticatedQuotesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/quotes': typeof AuthenticatedQuotesRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
+  '/team': typeof AuthenticatedTeamRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -193,6 +201,7 @@ export interface FileRoutesById {
   '/_authenticated/quotes': typeof AuthenticatedQuotesRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/statements': typeof AuthenticatedStatementsRoute
+  '/_authenticated/team': typeof AuthenticatedTeamRoute
   '/_authenticated/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/_authenticated/projects/$projectId': typeof AuthenticatedProjectsProjectIdRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/quotes'
     | '/settings'
     | '/statements'
+    | '/team'
     | '/workload'
     | '/invite/$token'
     | '/projects/$projectId'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/quotes'
     | '/settings'
     | '/statements'
+    | '/team'
     | '/workload'
     | '/invite/$token'
     | '/projects/$projectId'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/_authenticated/quotes'
     | '/_authenticated/settings'
     | '/_authenticated/statements'
+    | '/_authenticated/team'
     | '/_authenticated/workload'
     | '/invite/$token'
     | '/_authenticated/projects/$projectId'
@@ -395,6 +407,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStatementsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/team': {
+      id: '/_authenticated/team'
+      path: '/team'
+      fullPath: '/team'
+      preLoaderRoute: typeof AuthenticatedTeamRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/workload': {
       id: '/_authenticated/workload'
       path: '/workload'
@@ -444,6 +463,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedQuotesRoute: typeof AuthenticatedQuotesRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatementsRoute: typeof AuthenticatedStatementsRoute
+  AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
   AuthenticatedWorkloadRoute: typeof AuthenticatedWorkloadRoute
 }
 
@@ -459,6 +479,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedQuotesRoute: AuthenticatedQuotesRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatementsRoute: AuthenticatedStatementsRoute,
+  AuthenticatedTeamRoute: AuthenticatedTeamRoute,
   AuthenticatedWorkloadRoute: AuthenticatedWorkloadRoute,
 }
 
