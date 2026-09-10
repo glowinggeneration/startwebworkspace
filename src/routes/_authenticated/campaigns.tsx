@@ -23,6 +23,7 @@ import {
   PageHeader,
   Panel,
   SegmentedControl,
+  // eslint-disable-next-line sort-imports
   Toolbar,
   UnderlineTabs,
 } from "@/components/application/shell/page-parts";
@@ -419,6 +420,7 @@ function CampaignsPage() {
                 { value: "calendar", label: "Calendar" },
               ]}
             />
+            {view === "calendar" ? <CalendarSyncDialog /> : null}
             <Button onClick={() => setPanel({ mode: "create" })}>New campaign</Button>
           </div>
         }
