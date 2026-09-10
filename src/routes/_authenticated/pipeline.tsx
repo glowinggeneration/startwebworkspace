@@ -227,12 +227,14 @@ function PipelinePage() {
         />
       </Toolbar>
 
-      {isLoading ? (
+      {(view === "clients" ? clientsLoading : isLoading) ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => (
             <div key={column.status} className="h-[32rem] animate-pulse rounded-xl bg-muted" />
           ))}
         </div>
+      ) : view === "clients" ? (
+        <ClientBoard accounts={visibleClients} />
       ) : view === "board" ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => {
