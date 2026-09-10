@@ -111,12 +111,14 @@ function QuoteDetailPage() {
   };
 
   const handleDownload = () => {
+    const projectName = accountProjects.find((project) => project.id === projectId)?.name ?? null;
     downloadDocumentPdf({
       kind: "Quote",
       number: quote.quote_number,
       issueDate: quote.issue_date,
       dueOrExpiryDate: quote.expiry_date,
       accountName,
+      projectName,
       lineItems: lineItems.map((item) => ({
         description: item.description,
         quantity: item.quantity,

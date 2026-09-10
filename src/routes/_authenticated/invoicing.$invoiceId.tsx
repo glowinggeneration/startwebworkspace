@@ -101,12 +101,14 @@ function InvoiceDetailPage() {
   };
 
   const handleDownload = () => {
+    const projectName = accountProjects.find((project) => project.id === projectId)?.name ?? null;
     downloadDocumentPdf({
       kind: "Invoice",
       number: invoice.invoice_number,
       issueDate: invoice.issue_date,
       dueOrExpiryDate: invoice.due_date,
       accountName,
+      projectName,
       lineItems: lineItems.map((item) => ({
         description: item.description,
         quantity: item.quantity,
