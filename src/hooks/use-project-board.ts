@@ -81,7 +81,5 @@ export function currentPhaseName(project: ProjectBoardProject): string {
 }
 
 export function openTasks(project: ProjectBoardProject): ProjectBoardTask[] {
-  return project.tasks.filter(
-    (task) => task.status !== "done" && task.status !== "complete",
-  );
+  return project.tasks.filter((task) => task.status !== "done" && task.status !== "complete");
 }

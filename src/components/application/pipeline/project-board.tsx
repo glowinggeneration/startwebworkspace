@@ -88,41 +88,42 @@ function PhaseColumn({
   const { isOver, setNodeRef } = useDroppable({ id: phase });
 
   return (
-    <Panel
-      ref={setNodeRef}
-      className={cn(
-        "flex min-h-[32rem] flex-col transition-colors",
-        isOver && "bg-primary/5 ring-2 ring-primary/20",
-      )}
-    >
-      <div className="flex items-start justify-between gap-2 border-b border-border px-5 py-4">
-        <div>
-          <h2 className="text-base font-semibold text-foreground">{phase}</h2>
-          <p className="text-xs text-muted-foreground">
-            {projects.length} project{projects.length === 1 ? "" : "s"}
-          </p>
-        </div>
-        <Layers className="size-4 text-muted-foreground" aria-hidden="true" />
-      </div>
-      <div className="max-h-[34rem] flex-1 space-y-3 overflow-y-auto p-4">
-        {projects.length === 0 ? (
-          <EmptyState
-            icon={FolderOpen}
-            title="Nothing here yet"
-            description={`Drag a project card here to move it to ${phase.toLowerCase()}.`}
-            className="py-14"
-          />
-        ) : (
-          projects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              isDragging={activeId === project.id}
-            />
-          ))
+    <div ref={setNodeRef} className="h-full">
+      <Panel
+        className={cn(
+          "flex min-h-[32rem] flex-col transition-colors h-full",
+          isOver && "bg-primary/5 ring-2 ring-primary/20",
         )}
-      </div>
-    </Panel>
+      >
+        <div className="flex items-start justify-between gap-2 border-b border-border px-5 py-4">
+          <div>
+            <h2 className="text-base font-semibold text-foreground">{phase}</h2>
+            <p className="text-xs text-muted-foreground">
+              {projects.length} project{projects.length === 1 ? "" : "s"}
+            </p>
+          </div>
+          <Layers className="size-4 text-muted-foreground" aria-hidden="true" />
+        </div>
+        <div className="max-h-[34rem] flex-1 space-y-3 overflow-y-auto p-4">
+          {projects.length === 0 ? (
+            <EmptyState
+              icon={FolderOpen}
+              title="Nothing here yet"
+              description={`Drag a project card here to move it to ${phase.toLowerCase()}.`}
+              className="py-14"
+            />
+          ) : (
+            projects.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                isDragging={activeId === project.id}
+              />
+            ))
+          )}
+        </div>
+      </Panel>
+    </div>
   );
 }
 
@@ -133,10 +134,10 @@ function ProjectCard({
   project: ProjectBoardProject;
   isDragging: boolean;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: project.id,
   });
-  const style = { transform: CSS.Translate.toString(transform), transition };
+  const style = { transform: CSS.Translate.toString(transform) };
   const tasks = openTasks(project);
   const quote = project.quotes[0];
   const invoice = project.invoices[0];
@@ -164,8 +165,8 @@ function ProjectCard({
 
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <StatusPill
-          status={project.status_label ?? project.status}
-          tone={project.status === "completed" ? "success" : "default"}
+          label={project.status_label ?? project.status}
+          tone={project.status === "completed" ? "positive" : "neutral"}
         />
         {tasks.length > 0 ? (
           <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[0.7rem] text-muted-foreground">
