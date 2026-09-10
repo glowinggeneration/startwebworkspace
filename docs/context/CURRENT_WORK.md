@@ -35,6 +35,10 @@ the next release and close anything new.
   account's relationship status, cards showing service, status, linked
   projects and open next steps. Deals and List views kept beside it.
 - Campaign tracker with budget view, sidebar link under Delivery.
+- Pipeline gained a Calendar view (`use-schedule.ts`,
+  `schedule-calendar.tsx`): a month grid of project start dates, project
+  delivery dates and task deadlines, with a selected-day panel, a
+  no-date-yet list of open next steps, and links into each project.
 - Campaigns filter by client (kept in the page address as `?client=`), and
   pipeline client cards list that client's campaigns, each linking through to
   the campaign page already filtered to them.
