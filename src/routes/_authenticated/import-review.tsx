@@ -44,9 +44,9 @@ function ImportReviewPage() {
   }
 
   const open = items?.filter((item) => item.status === "open") ?? [];
-  const resolved = items?.filter((item) => item.status !== "open") ?? [];
+  const decided = items?.filter((item) => item.status !== "open") ?? [];
 
-  function update(id: string, status: "open" | "resolved") {
+  function update(id: string, status: ImportReviewStatus) {
     setStatus.mutate(
       { id, status },
       {
@@ -54,7 +54,10 @@ function ImportReviewPage() {
           toast.error("Couldn't update this item", {
             description: error instanceof Error ? error.message : undefined,
           }),
-        onSuccess: () => toast.success(status === "resolved" ? "Marked as decided" : "Reopened"),
+        onSuccess: () =>
+          toast.success(
+            status === "approved" ? "Approved" : status === "rejected" ? "Rejected" : "Reopened",
+          ),
       },
     );
   }
