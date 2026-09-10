@@ -35,6 +35,7 @@ export interface ProjectBoardProject {
   accounts: { id: string; name: string } | null;
   project_phases: ProjectBoardPhase[];
   tasks: ProjectBoardTask[];
+  quotes: ProjectBoardQuote[];
   invoices: ProjectBoardInvoice[];
 }
 
@@ -55,7 +56,27 @@ export function useProjectBoard(workspaceId: string) {
         .eq("workspace_id", workspaceId)
         .order("name");
       if (error) throw error;
-      return (data ?? []) as unknown as ProjectBoardProject[];
+      const projects = (data ?? []) as unknown as ProjectBoardProject[];
+
+      // Quotes reference accounts, not projects, so fetch them separately and
+      // attach by account_id so each project card can show its related quote.
+      const { data: quotes, error: quotesError } = await supabase
+        .from("quotes")
+        .select("id, quote_number, status, issue_date, account_id")
+        .eq("workspace_id", workspaceId);
+      if (quotesError) throw quotesError;
+
+      const quotesByAccount = new Map<string, ProjectBoardQuote[]>();
+      for (const quote of (quotes ?? []) as ProjectBoardQuote[]) {
+        const list = quotesByAccount.get(quote.account_id) ?? [];
+        list.push(quote);
+        quotesByAccount.set(quote.account_id, list);
+      }
+
+      return projects.map((project) => ({
+        ...project,
+        quotes: quotesByAccount.get(project.account_id) ?? [],
+      }));
     },
   });
 }
