@@ -17,6 +17,9 @@ const WATCHED_TABLES = [
   "project_phases",
   "tasks",
   "campaigns",
+  "quotes",
+  "invoices",
+  "payments",
 ] as const;
 
 const AFFECTED_KEYS = [
@@ -29,6 +32,9 @@ const AFFECTED_KEYS = [
   "deals",
   "accounts",
   "team",
+  "billing-flow",
+  "quotes",
+  "invoices",
 ];
 
 export function usePipelineRealtime(workspaceId: string) {

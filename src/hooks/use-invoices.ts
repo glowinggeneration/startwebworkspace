@@ -107,6 +107,7 @@ export function useCreateInvoice(workspaceId: string) {
     }) => insertInvoice(workspaceId, input, input.lineItems),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
@@ -158,6 +159,8 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
@@ -172,7 +175,45 @@ export function useUpdateInvoiceStatus(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
+    },
+  });
+}
+
+/** Records the client's sign-off on an invoice. A draft invoice is moved to
+ * sent at the same time, since a signed invoice has by definition gone out. */
+export function useSignInvoice(workspaceId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      signedBy,
+      signedAt,
+      signedNote,
+      currentStatus,
+    }: {
+      id: string;
+      signedBy: string;
+      signedAt: string;
+      signedNote?: string | null;
+      currentStatus: InvoiceStatus;
+    }) => {
+      const { error } = await supabase
+        .from("invoices")
+        .update({
+          signed_by: signedBy,
+          signed_at: new Date(`${signedAt}T12:00:00`).toISOString(),
+          signed_note: signedNote ?? null,
+          status: currentStatus === "draft" ? "sent" : currentStatus,
+        })
+        .eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
     },
   });
 }

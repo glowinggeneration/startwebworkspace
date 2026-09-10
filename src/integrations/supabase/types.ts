@@ -779,6 +779,9 @@ export type Database = {
           notes: string | null
           project_id: string | null
           quote_id: string | null
+          signed_at: string | null
+          signed_by: string | null
+          signed_note: string | null
           status: string
           updated_at: string
           workspace_id: string
@@ -794,6 +797,9 @@ export type Database = {
           notes?: string | null
           project_id?: string | null
           quote_id?: string | null
+          signed_at?: string | null
+          signed_by?: string | null
+          signed_note?: string | null
           status?: string
           updated_at?: string
           workspace_id: string
@@ -809,6 +815,9 @@ export type Database = {
           notes?: string | null
           project_id?: string | null
           quote_id?: string | null
+          signed_at?: string | null
+          signed_by?: string | null
+          signed_note?: string | null
           status?: string
           updated_at?: string
           workspace_id?: string

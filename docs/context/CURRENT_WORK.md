@@ -28,6 +28,16 @@ the next release and close anything new.
 
 ## Recently finished
 
+- Pipeline gained a Billing board (`use-billing-flow.ts`,
+  `billing-board.tsx`, `sign-invoice-dialog.tsx`): four columns Quote,
+  Invoice, Signed, Paid. One card per quote (or per direct invoice) with a
+  quote status control, Create invoice once accepted, Mark sent, Record
+  signature (name, date, reference), payment meter and Record payment.
+  Column stage is derived: no invoice = Quote, unsigned = Invoice, signed
+  with a balance = Signed, settled = Paid. Live updates cover quotes,
+  invoices and payments.
+
+
 - Conversation import `startweb-whatsapp-2026-09-09` committed: 22 new
   clients, 7 contacts, 19 projects, 16 next steps, 10 notes. AfriBiz Future
   Tech already existed and was left untouched. The import is idempotent.
