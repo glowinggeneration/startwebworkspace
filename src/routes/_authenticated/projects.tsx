@@ -260,14 +260,82 @@ function ProjectsPage() {
                 }
               />
             </Panel>
-          ) : (
-            <div
-              className={cn(
-                view === "grid" ? "grid grid-cols-1 gap-4 2xl:grid-cols-2" : "space-y-4",
-              )}
-            >
+          ) : view === "grid" ? (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
               {filtered.map(renderProjectCard)}
             </div>
+          ) : (
+            <Panel className="overflow-x-auto">
+              <PanelHeader
+                title="Projects"
+                description={`${filtered.length} ${filtered.length === 1 ? "project" : "projects"} in this workspace.`}
+              />
+              <table className="w-full min-w-[46rem] text-left text-sm">
+                <thead>
+                  <tr className="border-b border-border bg-muted/40 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th scope="col" className="px-5 py-3">
+                      Project
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Client
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Owner
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Phase
+                    </th>
+                    <th scope="col" className="px-5 py-3">
+                      Status
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filtered.map((project) => {
+                    const projectPhases = (phases ?? [])
+                      .filter((phase) => phase.project_id === project.id)
+                      .sort((a, b) => a.sort_order - b.sort_order);
+                    const currentPhase =
+                      projectPhases.find((phase) => phase.status === "in_progress") ??
+                      projectPhases.find((phase) => phase.status !== "done") ??
+                      projectPhases[0];
+                    const owner = (project as { owner_id?: string | null }).owner_id ?? null;
+                    return (
+                      <tr key={project.id} className="border-b border-border/60 last:border-0">
+                        <td className="px-5 py-3">
+                          <Link
+                            to="/projects/$projectId"
+                            params={{ projectId: project.id }}
+                            className="font-medium text-foreground hover:underline"
+                          >
+                            {project.name}
+                          </Link>
+                        </td>
+                        <td className="px-5 py-3 text-muted-foreground">
+                          {accountName(project.account_id)}
+                        </td>
+                        <td className="px-5 py-3 text-muted-foreground">{memberName(owner)}</td>
+                        <td className="px-5 py-3 text-muted-foreground">
+                          {currentPhase?.name ?? "No phases yet"}
+                        </td>
+                        <td className="px-5 py-3">
+                          <StatusPill
+                            label={project.status.replace("_", " ")}
+                            tone={
+                              project.status === "completed"
+                                ? "positive"
+                                : project.status === "in_progress"
+                                  ? "info"
+                                  : "neutral"
+                            }
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </Panel>
           )}
         </div>
 
