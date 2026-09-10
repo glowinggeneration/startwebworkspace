@@ -36,6 +36,7 @@ import {
 } from "@/components/application/shell/panel-parts";
 import { FilterCombobox } from "@/components/application/shell/filter-combobox";
 import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
+import { CampaignCalendar } from "@/components/application/campaigns/campaign-calendar";
 import { UtilityIconButton } from "@/components/application/shell/utility-icon-button";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
@@ -679,6 +680,13 @@ function CampaignsPage() {
                 </table>
               </div>
             </Panel>
+          ) : view === "calendar" ? (
+            <CampaignCalendar
+              campaigns={filtered}
+              accountName={accountName}
+              memberName={memberName}
+              onEdit={(campaign) => setPanel({ mode: "edit", id: campaign.id })}
+            />
           ) : (
             <Panel className="overflow-hidden">
               <PanelHeader
