@@ -147,7 +147,11 @@ function CampaignsPage() {
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
-  const [accountFilter, setAccountFilter] = useState("all");
+  const { client: accountFilter } = Route.useSearch();
+  const navigate = Route.useNavigate();
+  const setAccountFilter = (value: string) => {
+    void navigate({ search: (prev) => ({ ...prev, client: value }) });
+  };
   const [panel, setPanel] = useState<{ mode: "create" } | { mode: "edit"; id: string } | null>(
     null,
   );
