@@ -31,17 +31,20 @@ export function useImportReviewItems(workspaceId: string) {
   });
 }
 
+export type ImportReviewStatus = "open" | "approved" | "rejected";
+
 export function useSetImportReviewStatus(workspaceId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: { id: string; status: "open" | "resolved" }) => {
+    mutationFn: async (input: { id: string; status: ImportReviewStatus }) => {
       const { data: session } = await supabase.auth.getUser();
+      const decided = input.status !== "open";
       const { error } = await supabase
         .from("import_review_items")
         .update({
           status: input.status,
-          resolved_by: input.status === "resolved" ? (session.user?.id ?? null) : null,
-          resolved_at: input.status === "resolved" ? new Date().toISOString() : null,
+          resolved_by: decided ? (session.user?.id ?? null) : null,
+          resolved_at: decided ? new Date().toISOString() : null,
         })
         .eq("id", input.id);
       if (error) throw error;
