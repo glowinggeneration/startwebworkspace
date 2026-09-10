@@ -149,7 +149,7 @@ function CampaignsPage() {
   const deleteCampaign = useDeleteCampaign(workspaceId);
   const setTaskCampaign = useSetTaskCampaign(workspaceId);
 
-  const [view, setView] = useState<"tracker" | "budget" | "channels">("tracker");
+  const [view, setView] = useState<"tracker" | "budget" | "channels" | "calendar">("tracker");
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -415,6 +415,7 @@ function CampaignsPage() {
                 { value: "tracker", label: "Tracker" },
                 { value: "budget", label: "Budget" },
                 { value: "channels", label: "Channels" },
+                { value: "calendar", label: "Calendar" },
               ]}
             />
             <Button onClick={() => setPanel({ mode: "create" })}>New campaign</Button>
