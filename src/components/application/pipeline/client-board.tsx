@@ -1,16 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, FolderOpen, Megaphone, Users } from "lucide-react";
+import {
+  CalendarClock,
+  FileText,
+  FolderOpen,
+  Layers,
+  Megaphone,
+  ReceiptText,
+  Users,
+} from "lucide-react";
 import { EmptyState, Panel } from "@/components/application/shell/page-parts";
 import {
   CLIENT_STAGES,
   clientStage,
+  currentPhase,
+  latestDocument,
+  lineItemsTotal,
   openTasks,
   type ClientBoardAccount,
 } from "@/hooks/use-client-board";
+import { currency } from "@/lib/sales/currency";
 
 /**
- * Board of real clients with their contacts, projects and open next steps,
- * grouped by the relationship stage recorded on each account.
+ * Board of real clients with their contacts, projects, phases, campaigns,
+ * quotes and invoices, grouped by the relationship stage on each account.
  */
 export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
   return (
@@ -26,7 +38,7 @@ export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
               </div>
               <span className="text-sm text-muted-foreground">{columnAccounts.length}</span>
             </div>
-            <div className="max-h-[34rem] flex-1 space-y-3 overflow-y-auto p-4">
+            <div className="max-h-[40rem] flex-1 space-y-3 overflow-y-auto p-4">
               {columnAccounts.length === 0 ? (
                 <EmptyState
                   icon={FolderOpen}
@@ -48,6 +60,8 @@ export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
 function ClientCard({ account }: { account: ClientBoardAccount }) {
   const next = openTasks(account).slice(0, 3);
   const contact = account.contacts[0];
+  const quote = latestDocument(account.quotes ?? []);
+  const invoice = latestDocument(account.invoices ?? []);
 
   return (
     <article className="rounded-xl border border-border bg-card p-4 shadow-xs">
@@ -67,21 +81,77 @@ function ClientCard({ account }: { account: ClientBoardAccount }) {
       ) : null}
 
       {account.projects.length > 0 ? (
-        <ul className="mt-3 space-y-1">
-          {account.projects.slice(0, 3).map((project) => (
-            <li key={project.id} className="text-xs text-muted-foreground">
-              <Link
-                to="/projects/$projectId"
-                params={{ projectId: project.id }}
-                className="font-medium text-foreground underline-offset-2 hover:underline"
-              >
-                {project.name}
-              </Link>
-              {project.status_label ? ` · ${project.status_label}` : ""}
+        <ul className="mt-3 space-y-1.5">
+          {account.projects.slice(0, 3).map((project) => {
+            const phase = currentPhase(project);
+            return (
+              <li key={project.id} className="text-xs text-muted-foreground">
+                <Link
+                  to="/projects/$projectId"
+                  params={{ projectId: project.id }}
+                  className="font-medium text-foreground underline-offset-2 hover:underline"
+                >
+                  {project.name}
+                </Link>
+                {project.status_label ? ` · ${project.status_label}` : ""}
+                {phase ? (
+                  <span className="mt-1 flex items-center gap-1.5">
+                    <Layers className="size-3.5 shrink-0" aria-hidden="true" />
+                    <span>Phase: {phase.name}</span>
+                  </span>
+                ) : null}
+              </li>
+            );
+          })}
+          {account.projects.length > 3 ? (
+            <li className="text-xs text-muted-foreground">
+              +{account.projects.length - 3} more projects
             </li>
-          ))}
+          ) : null}
         </ul>
       ) : null}
+
+      {quote || invoice ? (
+        <div className="mt-3 space-y-1.5 border-t border-border pt-3">
+          {quote ? (
+            <p className="flex items-start gap-2 text-xs text-muted-foreground">
+              <FileText className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+              <Link
+                to="/quotes"
+                className="font-medium text-foreground underline-offset-2 hover:underline"
+              >
+                Quote {quote.quote_number}
+              </Link>
+              <span>
+                {quote.status} · {currency.format(lineItemsTotal(quote.quote_line_items ?? []))}
+              </span>
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">No quote yet</p>
+          )}
+          {invoice ? (
+            <p className="flex items-start gap-2 text-xs text-muted-foreground">
+              <ReceiptText className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+              <Link
+                to="/invoicing"
+                className="font-medium text-foreground underline-offset-2 hover:underline"
+              >
+                Invoice {invoice.invoice_number}
+              </Link>
+              <span>
+                {invoice.status} ·{" "}
+                {currency.format(lineItemsTotal(invoice.invoice_line_items ?? []))}
+              </span>
+            </p>
+          ) : (
+            <p className="text-xs text-muted-foreground">No invoice yet</p>
+          )}
+        </div>
+      ) : (
+        <p className="mt-3 border-t border-border pt-3 text-xs text-muted-foreground">
+          No quote or invoice yet
+        </p>
+      )}
 
       {account.campaigns.length > 0 ? (
         <div className="mt-3 space-y-1 border-t border-border pt-3">

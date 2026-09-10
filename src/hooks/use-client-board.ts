@@ -9,6 +9,13 @@ export interface ClientBoardTask {
   due_date: string | null;
 }
 
+export interface ClientBoardPhase {
+  id: string;
+  name: string;
+  status: string;
+  sort_order: number;
+}
+
 export interface ClientBoardProject {
   id: string;
   name: string;
@@ -16,6 +23,7 @@ export interface ClientBoardProject {
   status_label: string | null;
   due_date: string | null;
   tasks: ClientBoardTask[];
+  project_phases: ClientBoardPhase[];
 }
 
 export interface ClientBoardCampaign {
@@ -24,6 +32,22 @@ export interface ClientBoardCampaign {
   status: string;
   next_action: string | null;
   next_action_date: string | null;
+}
+
+export interface ClientBoardQuote {
+  id: string;
+  quote_number: string;
+  status: string;
+  issue_date: string;
+  quote_line_items: { quantity: number; unit_price: number }[];
+}
+
+export interface ClientBoardInvoice {
+  id: string;
+  invoice_number: string;
+  status: string;
+  issue_date: string;
+  invoice_line_items: { quantity: number; unit_price: number }[];
 }
 
 export interface ClientBoardAccount {
@@ -37,10 +61,13 @@ export interface ClientBoardAccount {
   contacts: { id: string; name: string; role_title: string | null }[];
   projects: ClientBoardProject[];
   campaigns: ClientBoardCampaign[];
+  quotes: ClientBoardQuote[];
+  invoices: ClientBoardInvoice[];
 }
 
 /**
- * Clients, their contacts, projects and open next steps, for the pipeline board.
+ * Clients with their contacts, projects and phases, campaigns, quotes,
+ * invoices and open next steps, for the pipeline board.
  */
 export function useClientBoard(workspaceId: string) {
   return useQuery({
@@ -50,7 +77,7 @@ export function useClientBoard(workspaceId: string) {
       const { data, error } = await supabase
         .from("accounts")
         .select(
-          "id, name, relationship_status, review_priority, primary_service, account_type, summary, contacts(id, name, role_title), projects(id, name, status, status_label, due_date, tasks(id, title, status, status_label, due_date)), campaigns(id, name, status, next_action, next_action_date)",
+          "id, name, relationship_status, review_priority, primary_service, account_type, summary, contacts(id, name, role_title), projects(id, name, status, status_label, due_date, tasks(id, title, status, status_label, due_date), project_phases(id, name, status, sort_order)), campaigns(id, name, status, next_action, next_action_date), quotes(id, quote_number, status, issue_date, quote_line_items(quantity, unit_price)), invoices(id, invoice_number, status, issue_date, invoice_line_items(quantity, unit_price))",
         )
         .eq("workspace_id", workspaceId)
         .order("name");
@@ -58,6 +85,24 @@ export function useClientBoard(workspaceId: string) {
       return (data ?? []) as ClientBoardAccount[];
     },
   });
+}
+
+/** Total of a set of line items. */
+export function lineItemsTotal(items: { quantity: number; unit_price: number }[]) {
+  return items.reduce((sum, item) => sum + Number(item.quantity) * Number(item.unit_price), 0);
+}
+
+/** Newest document by issue date, or null when the client has none. */
+export function latestDocument<T extends { issue_date: string }>(documents: T[]): T | null {
+  if (documents.length === 0) return null;
+  return [...documents].sort((a, b) => b.issue_date.localeCompare(a.issue_date))[0] ?? null;
+}
+
+/** The phase a project is currently sitting in: the first one not complete. */
+export function currentPhase(project: ClientBoardProject): ClientBoardPhase | null {
+  const phases = [...(project.project_phases ?? [])].sort((a, b) => a.sort_order - b.sort_order);
+  if (phases.length === 0) return null;
+  return phases.find((phase) => phase.status !== "complete") ?? phases[phases.length - 1] ?? null;
 }
 
 export type ClientStage = "proposal" | "active" | "attention" | "delivered";
