@@ -58,6 +58,9 @@ import { useProjectBoard } from "@/hooks/use-project-board";
 import { ScheduleCalendar } from "@/components/application/pipeline/schedule-calendar";
 import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
 import { useSchedule } from "@/hooks/use-schedule";
+import { BillingBoard } from "@/components/application/pipeline/billing-board";
+import { NewQuoteDialog } from "@/components/application/finance/new-quote-dialog";
+import { useBillingFlow } from "@/hooks/use-billing-flow";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
@@ -127,12 +130,13 @@ function PipelinePage() {
   const { data: clientAccounts, isLoading: clientsLoading } = useClientBoard(workspaceId);
   const { data: scheduleProjects, isLoading: scheduleLoading } = useSchedule(workspaceId);
   const { data: boardProjects, isLoading: boardLoading } = useProjectBoard(workspaceId);
+  const { data: billingFlows, isLoading: billingLoading } = useBillingFlow(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
   // Clients first: each client's projects, phases, campaigns, quotes and next
   // steps belong on one card rather than split across pages.
-  const [view, setView] = useState<"clients" | "projects" | "board" | "calendar" | "list">(
-    "clients",
-  );
+  const [view, setView] = useState<
+    "clients" | "projects" | "billing" | "board" | "calendar" | "list"
+  >("clients");
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -202,6 +206,23 @@ function PipelinePage() {
     );
   }, [boardProjects, search]);
 
+  const visibleBillingFlows = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    const flows = billingFlows ?? [];
+    if (!term) return flows;
+    return flows.filter((flow) =>
+      [
+        flow.accountName,
+        flow.quote?.quote_number ?? "",
+        flow.invoice?.invoice_number ?? "",
+        flow.invoice?.signed_by ?? "",
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [billingFlows, search]);
+
   async function handleStatusChange(deal: Deal, status: DealStatus) {
     try {
       await transitionStatus.mutateAsync(deal.id, status);
@@ -226,7 +247,7 @@ function PipelinePage() {
         actions={
           <div className="flex items-center gap-3">
             {view === "calendar" ? <CalendarSyncDialog /> : null}
-            <NewDealDialog />
+            {view === "billing" ? <NewQuoteDialog /> : <NewDealDialog />}
           </div>
         }
         aside={
@@ -247,6 +268,7 @@ function PipelinePage() {
           options={[
             { value: "clients", label: "Clients" },
             { value: "projects", label: "Projects" },
+            { value: "billing", label: "Billing" },
             { value: "board", label: "Deals" },
             { value: "calendar", label: "Calendar" },
             { value: "list", label: "List" },
@@ -263,16 +285,20 @@ function PipelinePage() {
             placeholder={
               view === "clients"
                 ? "Search clients..."
-                : view === "calendar"
-                  ? "Search projects..."
-                  : "Search deals..."
+                : view === "billing"
+                  ? "Search quotes and invoices..."
+                  : view === "calendar"
+                    ? "Search projects..."
+                    : "Search deals..."
             }
             aria-label={
               view === "clients"
                 ? "Search clients"
-                : view === "calendar"
-                  ? "Search projects"
-                  : "Search deals"
+                : view === "billing"
+                  ? "Search quotes and invoices"
+                  : view === "calendar"
+                    ? "Search projects"
+                    : "Search deals"
             }
             className="h-11 bg-card pl-9"
           />
@@ -332,9 +358,11 @@ function PipelinePage() {
           ? clientsLoading
           : view === "projects"
             ? boardLoading
-            : view === "calendar"
-              ? scheduleLoading
-              : isLoading
+            : view === "billing"
+              ? billingLoading
+              : view === "calendar"
+                ? scheduleLoading
+                : isLoading
       ) ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => (
@@ -345,6 +373,8 @@ function PipelinePage() {
         <ClientBoard accounts={visibleClients} />
       ) : view === "projects" ? (
         <ProjectBoard projects={visibleBoardProjects} />
+      ) : view === "billing" ? (
+        <BillingBoard flows={visibleBillingFlows} />
       ) : view === "calendar" ? (
         <ScheduleCalendar projects={visibleScheduleProjects} />
       ) : view === "board" ? (
