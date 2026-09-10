@@ -173,6 +173,18 @@ function PipelinePage() {
     );
   }, [scheduleProjects, search]);
 
+  const visibleBoardProjects = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    const projects = boardProjects ?? [];
+    if (!term) return projects;
+    return projects.filter((project) =>
+      [project.name, project.account?.name ?? "", ...project.tasks.map((task) => task.title)]
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [boardProjects, search]);
+
   async function handleStatusChange(deal: Deal, status: DealStatus) {
     try {
       await transitionStatus.mutateAsync(deal.id, status);
@@ -295,7 +307,7 @@ function PipelinePage() {
       ) : view === "clients" ? (
         <ClientBoard accounts={visibleClients} />
       ) : view === "projects" ? (
-        <ProjectBoard projects={boardProjects ?? []} />
+        <ProjectBoard projects={visibleBoardProjects} />
       ) : view === "calendar" ? (
         <ScheduleCalendar projects={visibleScheduleProjects} />
       ) : view === "board" ? (
