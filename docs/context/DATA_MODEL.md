@@ -37,7 +37,9 @@ priority, summary, reference client), `contacts`, `account_notes`,
 `deal_handoffs`, `campaigns`.
 
 **Money** — `quotes`, `quote_line_items`, `invoices`, `invoice_line_items`,
-`payments`.
+`payments`. Invoices carry client sign-off: `signed_at`, `signed_by`,
+`signed_note` (all null until the signature is recorded). `quotes`,
+`invoices` and `payments` are in the live-updates publication.
 
 **Import** — `import_review_items` (owner and admin only), plus
 `import_key` / `import_source` / `source_refs` columns on imported records.
