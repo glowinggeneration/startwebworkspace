@@ -8,7 +8,6 @@ import {
   isSameDay,
   isSameMonth,
   isToday,
-  parseISO,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
@@ -266,9 +265,4 @@ export function ScheduleCalendar({ projects }: { projects: ScheduleProject[] }) 
       </div>
     </div>
   );
-}
-
-/** Keeps the parse helper referenced for date strings coming from the database. */
-export function scheduleDate(value: string) {
-  return parseISO(value);
 }
