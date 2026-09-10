@@ -29,6 +29,7 @@ interface ProjectBoardProps {
 }
 
 export function ProjectBoard({ projects }: ProjectBoardProps) {
+  console.log("[ProjectBoard] projects count", projects.length, projects[0]);
   const { workspaceId } = useActiveWorkspace();
   const updatePhase = useUpdateProjectPhase(workspaceId);
   const [activeId, setActiveId] = useState<string | null>(null);
