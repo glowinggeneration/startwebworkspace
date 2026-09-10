@@ -28,6 +28,15 @@ function workerRequireShim(): Plugin {
 }
 
 export default defineConfig(({ command }) => ({
+  // The generated browser client intentionally uses bracket access for these
+  // public VITE values. Map that exact syntax so production builds receive the
+  // same Lovable Cloud connection that development receives.
+  define: {
+    "import.meta.env['VITE_SUPABASE_URL']": JSON.stringify(process.env.VITE_SUPABASE_URL),
+    "import.meta.env['VITE_SUPABASE_PUBLISHABLE_KEY']": JSON.stringify(
+      process.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+    ),
+  },
   // The Worker runtime has no module resolution: every dependency must be
   // bundled into the server output instead of left as a bare import. In dev the
   // module runner resolves from node_modules, and inlining CommonJS packages
