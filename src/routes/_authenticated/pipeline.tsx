@@ -178,7 +178,7 @@ function PipelinePage() {
     const projects = boardProjects ?? [];
     if (!term) return projects;
     return projects.filter((project) =>
-      [project.name, project.account?.name ?? "", ...project.tasks.map((task) => task.title)]
+      [project.name, project.accounts?.name ?? "", ...project.tasks.map((task) => task.title)]
         .join(" ")
         .toLowerCase()
         .includes(term),

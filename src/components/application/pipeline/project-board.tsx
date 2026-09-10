@@ -139,7 +139,6 @@ function ProjectCard({
   });
   const style = { transform: CSS.Translate.toString(transform) };
   const tasks = openTasks(project);
-  const quote = project.quotes[0];
   const invoice = project.invoices[0];
 
   return (
