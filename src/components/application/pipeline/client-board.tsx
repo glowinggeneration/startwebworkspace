@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarClock, FolderOpen, Users } from "lucide-react";
+import { CalendarClock, FolderOpen, Megaphone, Users } from "lucide-react";
 import { EmptyState, Panel } from "@/components/application/shell/page-parts";
 import {
   CLIENT_STAGES,
