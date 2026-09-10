@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Link2, Megaphone, Search, Trash2, Users } from "lucide-react";
+import { Building2, Link2, Megaphone, Search, Trash2, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -144,6 +144,7 @@ function CampaignsPage() {
   const [tab, setTab] = useState<"all" | CampaignStatus>("all");
   const [search, setSearch] = useState("");
   const [ownerFilter, setOwnerFilter] = useState("all");
+  const [accountFilter, setAccountFilter] = useState("all");
   const [panel, setPanel] = useState<{ mode: "create" } | { mode: "edit"; id: string } | null>(
     null,
   );
@@ -205,6 +206,13 @@ function CampaignsPage() {
     return (campaigns ?? []).filter((campaign) => {
       if (tab !== "all" && campaign.status !== tab) return false;
       if (ownerFilter !== "all" && campaign.owner_id !== ownerFilter) return false;
+      if (accountFilter === "unassigned" && campaign.account_id !== null) return false;
+      if (
+        accountFilter !== "all" &&
+        accountFilter !== "unassigned" &&
+        campaign.account_id !== accountFilter
+      )
+        return false;
       if (!term) return true;
       return (
         campaign.name.toLowerCase().includes(term) ||
@@ -214,7 +222,7 @@ function CampaignsPage() {
       );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [campaigns, accounts, tab, ownerFilter, search]);
+  }, [campaigns, accounts, tab, ownerFilter, accountFilter, search]);
 
   const totals = useMemo(() => {
     return filtered.reduce(
