@@ -23,12 +23,12 @@ only, and there are no deals.
 Derived from the free-text `accounts.relationship_status` written by the
 import:
 
-| Column          | Matches                                                |
-| --------------- | ------------------------------------------------------ |
-| Proposal        | proposal, quote, alignment, closing, enablement, follow-up |
-| In progress     | active, in progress, live, running                     |
+| Column          | Matches                                                          |
+| --------------- | ---------------------------------------------------------------- |
+| Proposal        | proposal, quote, alignment, closing, enablement, follow-up       |
+| In progress     | active, in progress, live, running                               |
 | Needs attention | at risk, paused, unpaid, payment pending, awaiting, needs review |
-| Delivered       | delivered, complete, handover, review                  |
+| Delivered       | delivered, complete, handover, review                            |
 
 Anything unmatched falls back to In progress when the client has open
 project work, otherwise Delivered.
