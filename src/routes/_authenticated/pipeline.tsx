@@ -6,6 +6,7 @@ import {
   Clock,
   FolderOpen,
   Info,
+  Layers,
   Search,
   Tag,
   Trophy,
@@ -44,7 +45,12 @@ import { Button } from "@/components/ui/button";
 import { AnimatedList } from "@/components/vendor/magicui/animated-list";
 import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
-import { useClientBoard } from "@/hooks/use-client-board";
+import {
+  CLIENT_STAGES,
+  clientStage,
+  useClientBoard,
+  type ClientStage,
+} from "@/hooks/use-client-board";
 import { ClientBoard } from "@/components/application/pipeline/client-board";
 import { ProjectBoard } from "@/components/application/pipeline/project-board";
 import { useProjectBoard } from "@/hooks/use-project-board";
@@ -124,6 +130,7 @@ function PipelinePage() {
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
+  const [stageFilter, setStageFilter] = useState<"all" | ClientStage>("all");
 
   const accountName = (id: string) => accounts?.find((a) => a.id === id)?.name ?? "Unknown account";
   const industryName = (id: string | null) => industries?.find((i) => i.id === id)?.name ?? null;
@@ -146,8 +153,12 @@ function PipelinePage() {
 
   const visibleClients = useMemo(() => {
     const term = search.trim().toLowerCase();
-    if (!term) return clientAccounts ?? [];
-    return (clientAccounts ?? []).filter((account) =>
+    const staged =
+      stageFilter === "all"
+        ? (clientAccounts ?? [])
+        : (clientAccounts ?? []).filter((account) => clientStage(account) === stageFilter);
+    if (!term) return staged;
+    return staged.filter((account) =>
       [
         account.name,
         account.primary_service ?? "",
@@ -159,7 +170,7 @@ function PipelinePage() {
         .toLowerCase()
         .includes(term),
     );
-  }, [clientAccounts, search]);
+  }, [clientAccounts, search, stageFilter]);
 
   const visibleScheduleProjects = useMemo(() => {
     const term = search.trim().toLowerCase();
@@ -255,6 +266,21 @@ function PipelinePage() {
             className="h-11 bg-card pl-9"
           />
         </div>
+        {view === "clients" ? (
+          <FilterCombobox
+            value={stageFilter}
+            onValueChange={(value) => setStageFilter(value as "all" | ClientStage)}
+            icon={Layers}
+            ariaLabel="Filter by status"
+            placeholder="All statuses"
+            searchPlaceholder="Search statuses..."
+            emptyLabel="No status found."
+            options={[
+              { value: "all", label: "All statuses" },
+              ...CLIENT_STAGES.map((stage) => ({ value: stage.value, label: stage.label })),
+            ]}
+          />
+        ) : null}
         <FilterCombobox
           value={industryFilter}
           onValueChange={setIndustryFilter}
