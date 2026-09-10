@@ -189,6 +189,8 @@ export type Database = {
           created_at: string
           end_date: string | null
           id: string
+          lead_source: string | null
+          leads_count: number
           name: string
           next_action: string | null
           next_action_date: string | null
@@ -207,6 +209,8 @@ export type Database = {
           created_at?: string
           end_date?: string | null
           id?: string
+          lead_source?: string | null
+          leads_count?: number
           name: string
           next_action?: string | null
           next_action_date?: string | null
@@ -225,6 +229,8 @@ export type Database = {
           created_at?: string
           end_date?: string | null
           id?: string
+          lead_source?: string | null
+          leads_count?: number
           name?: string
           next_action?: string | null
           next_action_date?: string | null
@@ -1295,6 +1301,7 @@ export type Database = {
       quotes: {
         Row: {
           account_id: string
+          campaign_id: string | null
           created_at: string
           deal_id: string | null
           expiry_date: string | null
@@ -1308,6 +1315,7 @@ export type Database = {
         }
         Insert: {
           account_id: string
+          campaign_id?: string | null
           created_at?: string
           deal_id?: string | null
           expiry_date?: string | null
@@ -1321,6 +1329,7 @@ export type Database = {
         }
         Update: {
           account_id?: string
+          campaign_id?: string | null
           created_at?: string
           deal_id?: string | null
           expiry_date?: string | null
@@ -1338,6 +1347,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "campaigns"
             referencedColumns: ["id"]
           },
           {
