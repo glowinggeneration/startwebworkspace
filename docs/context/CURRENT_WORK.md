@@ -34,6 +34,13 @@ the next release and close anything new.
 - Pipeline gained a Clients board: four stage columns derived from each
   account's relationship status, cards showing service, status, linked
   projects and open next steps. Deals and List views kept beside it.
+- Pipeline gained a Projects board (`use-project-board.ts`,
+  `project-board.tsx`): five phase columns (Kickoff, Design, Build, Review,
+  Launch), one card per project showing client, status, open tasks, related
+  quote and invoice, and an Open project link. Drag-and-drop moves a project
+  to a new phase by updating `project_phases` statuses; earlier phases become
+  done, the target phase becomes in_progress, and later phases reset to
+  not_started. The Projects view is now the Pipeline default.
 - Campaign tracker with budget view, sidebar link under Delivery.
 - Pipeline gained a Calendar view (`use-schedule.ts`,
   `schedule-calendar.tsx`): a month grid of project start dates, project
