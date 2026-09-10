@@ -488,6 +488,22 @@ function CampaignsPage() {
             </div>
           ) : null}
 
+          {view === "channels" ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <MetricTile label="Leads logged" value={String(channelTotals.leads)} />
+              <MetricTile label="Quotes from campaigns" value={String(channelTotals.quotes)} />
+              <MetricTile
+                label="Leads that became a quote"
+                value={
+                  channelTotals.leads > 0
+                    ? `${Math.round((channelTotals.quotes / channelTotals.leads) * 100)}%`
+                    : "0%"
+                }
+                hint="Link a quote to its campaign when you create it."
+              />
+            </div>
+          ) : null}
+
           {isLoading ? (
             <div className="h-72 animate-pulse rounded-xl bg-muted" />
           ) : filtered.length === 0 ? (
@@ -569,6 +585,72 @@ function CampaignsPage() {
                       );
                     })}
                   </tbody>
+                </table>
+              </div>
+            </Panel>
+          ) : view === "channels" ? (
+            <Panel className="overflow-hidden">
+              <PanelHeader
+                title="Leads by source"
+                description="How many logged leads from each source turned into a quote."
+              />
+              <div className="overflow-x-auto border-t border-border">
+                <table className="w-full min-w-[52rem] text-sm">
+                  <thead className="bg-muted/40 text-left text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <tr>
+                      <th className="px-5 py-3">Lead source</th>
+                      <th className="px-5 py-3 text-right">Campaigns</th>
+                      <th className="px-5 py-3 text-right">Leads</th>
+                      <th className="px-5 py-3 text-right">Quotes</th>
+                      <th className="px-5 py-3 text-right">Quote value</th>
+                      <th className="w-56 px-5 py-3">Leads to quotes</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {channelRows.map((row) => {
+                      const rate = row.leads > 0 ? (row.quotes / row.leads) * 100 : 0;
+                      return (
+                        <tr key={row.source} className="border-t border-border/70">
+                          <td className="px-5 py-4 font-medium text-foreground">{row.source}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.campaigns}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.leads}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">{row.quotes}</td>
+                          <td className="px-5 py-4 text-right tabular-nums">
+                            {currency.format(row.value)}
+                          </td>
+                          <td className="px-5 py-4">
+                            {row.leads > 0 ? (
+                              <ProgressMeter
+                                value={Math.min(rate, 100)}
+                                label={`Leads that became a quote from ${row.source}`}
+                                tone="info"
+                              />
+                            ) : (
+                              <span className="text-xs text-muted-foreground">
+                                No leads logged yet
+                              </span>
+                            )}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                  <tfoot>
+                    <tr className="border-t border-border bg-muted/30 font-medium">
+                      <td className="px-5 py-4">Total</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{filtered.length}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{channelTotals.leads}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">{channelTotals.quotes}</td>
+                      <td className="px-5 py-4 text-right tabular-nums">
+                        {currency.format(channelTotals.value)}
+                      </td>
+                      <td className="px-5 py-4 text-sm text-muted-foreground">
+                        {channelTotals.leads > 0
+                          ? `${Math.round((channelTotals.quotes / channelTotals.leads) * 100)}% overall`
+                          : "No leads logged yet"}
+                      </td>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </Panel>
