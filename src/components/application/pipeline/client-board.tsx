@@ -35,9 +35,7 @@ export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
                   className="py-14"
                 />
               ) : (
-                columnAccounts.map((account) => (
-                  <ClientCard key={account.id} account={account} />
-                ))
+                columnAccounts.map((account) => <ClientCard key={account.id} account={account} />)
               )}
             </div>
           </Panel>
