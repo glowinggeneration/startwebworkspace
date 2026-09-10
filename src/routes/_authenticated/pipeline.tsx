@@ -125,8 +125,10 @@ function PipelinePage() {
   const { data: scheduleProjects, isLoading: scheduleLoading } = useSchedule(workspaceId);
   const { data: boardProjects, isLoading: boardLoading } = useProjectBoard(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
+  // Clients first: each client's projects, phases, campaigns, quotes and next
+  // steps belong on one card rather than split across pages.
   const [view, setView] = useState<"clients" | "projects" | "board" | "calendar" | "list">(
-    "projects",
+    "clients",
   );
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
