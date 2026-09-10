@@ -58,7 +58,7 @@ export function useProjectBoard(workspaceId: string) {
       const { data, error } = await supabase
         .from("projects")
         .select(
-          "id, name, status, status_label, start_date, due_date, account_id, account:id(account_id, name), project_phases(id, name, status, sort_order), tasks(id, title, status, status_label, due_date), quotes(id, quote_number, status, issue_date), invoices(id, invoice_number, status, issue_date, due_date)",
+          "id, name, status, status_label, start_date, due_date, account_id, accounts(id, name), project_phases(id, name, status, sort_order), tasks(id, title, status, status_label, due_date), quotes(id, quote_number, status, issue_date), invoices(id, invoice_number, status, issue_date, due_date)",
         )
         .eq("workspace_id", workspaceId)
         .order("name");
