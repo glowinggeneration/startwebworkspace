@@ -27,17 +27,21 @@ function workerRequireShim(): Plugin {
   };
 }
 
-// Hosted builds provide the managed SUPABASE_* values but not always their
-// VITE_* twins. Vite only exposes VITE_-prefixed variables to the browser
-// bundle, so mirror them before the config is resolved. The client reads
-// import.meta.env with bracket access, which Vite still serialises correctly
-// once the variables are present at build time.
-if (!process.env["VITE_SUPABASE_URL"] && process.env["SUPABASE_URL"]) {
-  process.env["VITE_SUPABASE_URL"] = process.env["SUPABASE_URL"];
-}
-if (!process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] && process.env["SUPABASE_PUBLISHABLE_KEY"]) {
-  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] = process.env["SUPABASE_PUBLISHABLE_KEY"];
-}
+// Hosted builds run without the local .env file, so the browser bundle can end
+// up with no connection values at all. Vite only exposes VITE_-prefixed
+// variables to the client, so mirror the managed values (and fall back to the
+// public project URL and publishable key, both safe to ship) before the config
+// resolves. The generated client reads import.meta.env with bracket access,
+// which Vite serialises correctly once the variables exist at build time.
+const PUBLIC_SUPABASE_URL = "https://gvtkjpbxwrjazlvibuaa.supabase.co";
+const PUBLIC_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_0KE5bTaSTzSUK1xohkxtMQ_476KmWRk";
+
+process.env["VITE_SUPABASE_URL"] =
+  process.env["VITE_SUPABASE_URL"] || process.env["SUPABASE_URL"] || PUBLIC_SUPABASE_URL;
+process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] =
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ||
+  process.env["SUPABASE_PUBLISHABLE_KEY"] ||
+  PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 export default defineConfig(({ command }) => ({
   // The Worker runtime has no module resolution: every dependency must be
