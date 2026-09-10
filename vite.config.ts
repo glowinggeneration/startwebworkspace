@@ -27,17 +27,19 @@ function workerRequireShim(): Plugin {
   };
 }
 
+// Hosted builds provide the managed SUPABASE_* values but not always their
+// VITE_* twins. Vite only exposes VITE_-prefixed variables to the browser
+// bundle, so mirror them before the config is resolved. The client reads
+// import.meta.env with bracket access, which Vite still serialises correctly
+// once the variables are present at build time.
+if (!process.env["VITE_SUPABASE_URL"] && process.env["SUPABASE_URL"]) {
+  process.env["VITE_SUPABASE_URL"] = process.env["SUPABASE_URL"];
+}
+if (!process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] && process.env["SUPABASE_PUBLISHABLE_KEY"]) {
+  process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] = process.env["SUPABASE_PUBLISHABLE_KEY"];
+}
+
 export default defineConfig(({ command }) => ({
-  // Explicitly expose the two public browser values so production builds
-  // receive the same Lovable Cloud connection that development receives.
-  define: {
-    "import.meta.env.VITE_SUPABASE_URL": JSON.stringify(
-      process.env["VITE_SUPABASE_URL"] ?? process.env["SUPABASE_URL"] ?? "",
-    ),
-    "import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY": JSON.stringify(
-      process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] ?? process.env["SUPABASE_PUBLISHABLE_KEY"] ?? "",
-    ),
-  },
   // The Worker runtime has no module resolution: every dependency must be
   // bundled into the server output instead of left as a bare import. In dev the
   // module runner resolves from node_modules, and inlining CommonJS packages
