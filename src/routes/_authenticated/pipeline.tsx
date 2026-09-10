@@ -44,6 +44,8 @@ import { Button } from "@/components/ui/button";
 import { AnimatedList } from "@/components/vendor/magicui/animated-list";
 import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
+import { useClientBoard } from "@/hooks/use-client-board";
+import { ClientBoard } from "@/components/application/pipeline/client-board";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
@@ -108,8 +110,9 @@ function PipelinePage() {
   const { data: packages } = usePackages(workspaceId);
   const { data: members } = useWorkspaceMembers(workspaceId);
   const transitionStatus = useTransitionDealStatus(workspaceId);
+  const { data: clientAccounts, isLoading: clientsLoading } = useClientBoard(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
-  const [view, setView] = useState<"board" | "list">("board");
+  const [view, setView] = useState<"clients" | "board" | "list">("clients");
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
@@ -132,6 +135,23 @@ function PipelinePage() {
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deals, accounts, search, industryFilter, ownerFilter]);
+
+  const visibleClients = useMemo(() => {
+    const term = search.trim().toLowerCase();
+    if (!term) return clientAccounts ?? [];
+    return (clientAccounts ?? []).filter((account) =>
+      [
+        account.name,
+        account.primary_service ?? "",
+        account.relationship_status ?? "",
+        ...account.contacts.map((contact) => contact.name),
+        ...account.projects.map((project) => project.name),
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(term),
+    );
+  }, [clientAccounts, search]);
 
   async function handleStatusChange(deal: Deal, status: DealStatus) {
     try {
@@ -171,7 +191,8 @@ function PipelinePage() {
           value={view}
           onValueChange={setView}
           options={[
-            { value: "board", label: "Board" },
+            { value: "clients", label: "Clients" },
+            { value: "board", label: "Deals" },
             { value: "list", label: "List" },
           ]}
         />
@@ -183,8 +204,8 @@ function PipelinePage() {
           <Input
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search deals..."
-            aria-label="Search deals"
+            placeholder={view === "clients" ? "Search clients..." : "Search deals..."}
+            aria-label={view === "clients" ? "Search clients" : "Search deals"}
             className="h-11 bg-card pl-9"
           />
         </div>
@@ -223,12 +244,14 @@ function PipelinePage() {
         />
       </Toolbar>
 
-      {isLoading ? (
+      {(view === "clients" ? clientsLoading : isLoading) ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => (
             <div key={column.status} className="h-[32rem] animate-pulse rounded-xl bg-muted" />
           ))}
         </div>
+      ) : view === "clients" ? (
+        <ClientBoard accounts={visibleClients} />
       ) : view === "board" ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {COLUMNS.map((column) => {

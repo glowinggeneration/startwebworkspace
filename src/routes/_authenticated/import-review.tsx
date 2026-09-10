@@ -107,16 +107,12 @@ function ImportReviewPage() {
 function ReviewList({
   heading,
   items,
-  actionLabel,
-  onAction,
+  onDecide,
   pending,
 }: {
   heading: string;
-  items: ReturnType<typeof useImportReviewItems>["data"] extends (infer T)[] | undefined
-    ? T[]
-    : never;
-  actionLabel: string;
-  onAction: (id: string) => void;
+  items: ImportReviewItem[];
+  onDecide: (id: string, status: ImportReviewStatus) => void;
   pending: boolean;
 }) {
   if (items.length === 0) {
@@ -153,9 +149,33 @@ function ReviewList({
                 <p className="type-meta mt-1 text-muted-foreground">Source: {item.source_refs}</p>
               ) : null}
             </div>
-            <Button variant="outline" disabled={pending} onClick={() => onAction(item.id)}>
-              {actionLabel}
-            </Button>
+            <div className="flex shrink-0 items-center gap-2">
+              {item.status === "open" ? (
+                <>
+                  <Button
+                    variant="outline"
+                    disabled={pending}
+                    onClick={() => onDecide(item.id, "rejected")}
+                  >
+                    Reject
+                  </Button>
+                  <Button disabled={pending} onClick={() => onDecide(item.id, "approved")}>
+                    Approve
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <span className="type-meta capitalize text-muted-foreground">{item.status}</span>
+                  <Button
+                    variant="outline"
+                    disabled={pending}
+                    onClick={() => onDecide(item.id, "open")}
+                  >
+                    Reopen
+                  </Button>
+                </>
+              )}
+            </div>
           </li>
         ))}
       </ul>
