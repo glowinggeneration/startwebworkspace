@@ -57,6 +57,8 @@ export function useRecordPayment(workspaceId: string, invoiceId: string) {
       // and statements/workspace payment rollups read the same rows.
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["payments-workspace", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });

@@ -30,13 +30,14 @@ import type { QuoteStatus } from "@/integrations/supabase/app-types";
 
 const QUOTE_STATUSES: QuoteStatus[] = ["draft", "sent", "accepted", "declined", "expired"];
 
-const QUOTE_TONE: Record<QuoteStatus, "neutral" | "info" | "positive" | "critical" | "attention"> = {
-  draft: "neutral",
-  sent: "info",
-  accepted: "positive",
-  declined: "critical",
-  expired: "attention",
-};
+const QUOTE_TONE: Record<QuoteStatus, "neutral" | "info" | "positive" | "critical" | "attention"> =
+  {
+    draft: "neutral",
+    sent: "info",
+    accepted: "positive",
+    declined: "critical",
+    expired: "attention",
+  };
 
 /**
  * Quote to payment board. Each card follows one client document from quote,
@@ -74,7 +75,13 @@ export function BillingBoard({ flows }: { flows: BillingFlow[] }) {
             <div className="max-h-[40rem] flex-1 space-y-3 overflow-y-auto p-4">
               {columnFlows.length === 0 ? (
                 <EmptyState
-                  icon={stage.value === "quote" ? FileText : stage.value === "paid" ? Wallet : ReceiptText}
+                  icon={
+                    stage.value === "quote"
+                      ? FileText
+                      : stage.value === "paid"
+                        ? Wallet
+                        : ReceiptText
+                  }
                   title={stage.value === "quote" ? "No open quotes" : "Nothing here yet"}
                   description={
                     stage.value === "quote"
@@ -238,7 +245,12 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
 
         {stage === "quote" && quote ? (
           quote.status === "accepted" ? (
-            <Button size="sm" className="w-full" onClick={handleConvert} disabled={convert.isPending}>
+            <Button
+              size="sm"
+              className="w-full"
+              onClick={handleConvert}
+              disabled={convert.isPending}
+            >
               <ReceiptText className="size-4" aria-hidden="true" />
               {convert.isPending ? "Creating invoice" : "Create invoice"}
             </Button>

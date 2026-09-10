@@ -70,7 +70,10 @@ export function outstanding(invoice: BillingInvoice): number {
 export function billingStage(flow: BillingFlow): BillingStage {
   const { invoice } = flow;
   if (!invoice) return "quote";
-  if (invoice.status === "paid" || (lineTotal(invoice.invoice_line_items) > 0 && outstanding(invoice) <= 0)) {
+  if (
+    invoice.status === "paid" ||
+    (lineTotal(invoice.invoice_line_items) > 0 && outstanding(invoice) <= 0)
+  ) {
     return "paid";
   }
   if (invoice.signed_at) return "signed";

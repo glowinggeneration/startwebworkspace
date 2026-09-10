@@ -112,7 +112,11 @@ export function SignInvoiceDialog({
         </div>
         <DialogFooter>
           <Button onClick={handleSubmit} disabled={signInvoice.isPending}>
-            {signInvoice.isPending ? <LoadingIndicator size="sm" label="Saving" /> : "Mark as signed"}
+            {signInvoice.isPending ? (
+              <LoadingIndicator size="sm" label="Saving" />
+            ) : (
+              "Mark as signed"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>

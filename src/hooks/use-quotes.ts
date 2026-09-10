@@ -98,6 +98,8 @@ export function useCreateQuote(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
     },
   });
@@ -112,6 +114,8 @@ export function useUpdateQuoteStatus(workspaceId: string) {
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["campaign-quotes", workspaceId] });
     },
   });

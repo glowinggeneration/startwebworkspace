@@ -107,6 +107,7 @@ export function useCreateInvoice(workspaceId: string) {
     }) => insertInvoice(workspaceId, input, input.lineItems),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
@@ -158,6 +159,8 @@ export function useConvertQuoteToInvoice(workspaceId: string) {
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invoices", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["quotes", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["billing-flow", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
       void queryClient.invalidateQueries({ queryKey: ["statement", workspaceId] });
     },
   });
