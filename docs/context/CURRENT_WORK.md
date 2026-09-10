@@ -28,6 +28,13 @@ the next release and close anything new.
 
 ## Recently finished
 
+- Email sending: branded sign-in emails (confirm, invite, magic link,
+  recovery, email change, reauthentication) under `src/lib/email-templates/`
+  send through the managed email service from
+  `notify.workspace.startweb.co.za`. The domain is waiting on DNS
+  verification; emails switch to the branded sender automatically once
+  verified. `/lovable/*` routes bypass the app error middleware.
+
 - Pipeline gained a Billing board (`use-billing-flow.ts`,
   `billing-board.tsx`, `sign-invoice-dialog.tsx`): four columns Quote,
   Invoice, Signed, Paid. One card per quote (or per direct invoice) with a

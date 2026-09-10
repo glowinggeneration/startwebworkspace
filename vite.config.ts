@@ -1,4 +1,5 @@
-import { defineConfig } from "vite";
+import path from "node:path";
+import { defineConfig, loadEnv } from "vite";
 import viteReact from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsConfigPaths from "vite-tsconfig-paths";
@@ -43,19 +44,33 @@ process.env["VITE_SUPABASE_PUBLISHABLE_KEY"] =
   process.env["SUPABASE_PUBLISHABLE_KEY"] ||
   PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-export default defineConfig(({ command }) => ({
-  // The Worker runtime has no module resolution: every dependency must be
-  // bundled into the server output instead of left as a bare import. In dev the
-  // module runner resolves from node_modules, and inlining CommonJS packages
-  // there breaks SSR, so this applies to the production build only.
-  ssr: command === "build" ? { noExternal: true } : {},
-  plugins: [
-    tsConfigPaths(),
-    tailwindcss(),
-    tanstackStart({
-      server: { entry: "server" },
-    }),
-    viteReact(),
-    workerRequireShim(),
-  ],
-}));
+export default defineConfig(({ command, mode }) => {
+  // Server routes (email webhooks) read non VITE_ variables from process.env.
+  // Only server code sees these; nothing here is added to the client define.
+  Object.assign(process.env, loadEnv(mode, process.cwd(), ""));
+
+  return {
+    // The Worker runtime has no module resolution: every dependency must be
+    // bundled into the server output instead of left as a bare import. In dev the
+    // module runner resolves from node_modules, and inlining CommonJS packages
+    // there breaks SSR, so this applies to the production build only.
+    ssr: command === "build" ? { noExternal: true } : {},
+    // React Email's parser needs entities v4.5.0; a nested newer copy breaks SSR.
+    resolve: {
+      alias: {
+        "entities/lib/decode.js": path.resolve(__dirname, "node_modules/entities/lib/decode.js"),
+        "entities/lib/encode.js": path.resolve(__dirname, "node_modules/entities/lib/encode.js"),
+        entities: path.resolve(__dirname, "node_modules/entities"),
+      },
+    },
+    plugins: [
+      tsConfigPaths(),
+      tailwindcss(),
+      tanstackStart({
+        server: { entry: "server" },
+      }),
+      viteReact(),
+      workerRequireShim(),
+    ],
+  };
+});
