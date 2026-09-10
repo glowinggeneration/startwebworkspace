@@ -97,10 +97,7 @@ export function CampaignCalendar({
 
   const entries = useMemo(() => buildEntries(campaigns), [campaigns]);
   const undated = useMemo(
-    () =>
-      campaigns.filter(
-        (campaign) => campaign.next_action && !campaign.next_action_date,
-      ),
+    () => campaigns.filter((campaign) => campaign.next_action && !campaign.next_action_date),
     [campaigns],
   );
 
@@ -236,7 +233,10 @@ export function CampaignCalendar({
         <div className="flex flex-wrap items-center gap-4 px-5 py-3 text-xs text-muted-foreground">
           {(Object.keys(KIND_STYLE) as CalendarEntry["kind"][]).map((kind) => (
             <span key={kind} className="flex items-center gap-2">
-              <span className={cn("size-2 rounded-full", KIND_STYLE[kind].dot)} aria-hidden="true" />
+              <span
+                className={cn("size-2 rounded-full", KIND_STYLE[kind].dot)}
+                aria-hidden="true"
+              />
               {KIND_STYLE[kind].label}
             </span>
           ))}
@@ -272,8 +272,8 @@ export function CampaignCalendar({
                           : ""}
                       </p>
                       <p className="mt-0.5 text-xs text-muted-foreground">
-                        {memberName(entry.campaign.owner_id)} ·{" "}
-                        {currency.format(spent)} of {currency.format(planned)} spent
+                        {memberName(entry.campaign.owner_id)} · {currency.format(spent)} of{" "}
+                        {currency.format(planned)} spent
                       </p>
                       <div className="mt-2">
                         <ProgressMeter
