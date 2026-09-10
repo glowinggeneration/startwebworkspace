@@ -26,6 +26,7 @@ import {
   Toolbar,
   UnderlineTabs,
 } from "@/components/application/shell/page-parts";
+import { CalendarSyncDialog } from "@/components/application/shell/calendar-sync-dialog";
 import {
   PanelFooter,
   PanelHeader,
@@ -419,6 +420,7 @@ function CampaignsPage() {
                 { value: "calendar", label: "Calendar" },
               ]}
             />
+            {view === "calendar" ? <CalendarSyncDialog /> : null}
             <Button onClick={() => setPanel({ mode: "create" })}>New campaign</Button>
           </div>
         }
