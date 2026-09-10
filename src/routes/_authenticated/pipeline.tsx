@@ -44,6 +44,8 @@ import { Button } from "@/components/ui/button";
 import { AnimatedList } from "@/components/vendor/magicui/animated-list";
 import { ProgressiveBlur } from "@/components/core/progressive-blur";
 import { currency } from "@/lib/sales/currency";
+import { useClientBoard } from "@/hooks/use-client-board";
+import { ClientBoard } from "@/components/application/pipeline/client-board";
 import type { DealStatus } from "@/integrations/supabase/app-types";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
@@ -108,8 +110,9 @@ function PipelinePage() {
   const { data: packages } = usePackages(workspaceId);
   const { data: members } = useWorkspaceMembers(workspaceId);
   const transitionStatus = useTransitionDealStatus(workspaceId);
+  const { data: clientAccounts, isLoading: clientsLoading } = useClientBoard(workspaceId);
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
-  const [view, setView] = useState<"board" | "list">("board");
+  const [view, setView] = useState<"clients" | "board" | "list">("clients");
   const [search, setSearch] = useState("");
   const [industryFilter, setIndustryFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
