@@ -216,7 +216,6 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               >
                 {quote.quote_number}
               </Link>
-              <span>{quote.issue_date}</span>
             </p>
             {invoice ? (
               <StatusPill label={quote.status} tone={QUOTE_TONE[quote.status]} />
@@ -242,6 +241,12 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
         ) : (
           <p className="text-xs text-muted-foreground">Invoiced directly, no quote</p>
         )}
+        {quote ? (
+          <p className="text-xs text-muted-foreground">
+            Issued {quote.issue_date}
+            {quote.expiry_date ? ` · expires ${quote.expiry_date}` : ""}
+          </p>
+        ) : null}
 
         {stage === "quote" && quote ? (
           quote.status === "accepted" ? (
@@ -276,7 +281,6 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               >
                 {invoice.invoice_number}
               </Link>
-              {invoice.due_date ? <span>due {invoice.due_date}</span> : null}
             </p>
             <StatusPill
               label={overdue ? "overdue" : invoice.status}
@@ -293,6 +297,10 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
               }
             />
           </div>
+          <p className="text-xs text-muted-foreground">
+            Issued {invoice.issue_date}
+            {invoice.due_date ? ` · due ${invoice.due_date}` : ""}
+          </p>
 
           {invoice.signed_at ? (
             <p className="text-xs text-muted-foreground">
