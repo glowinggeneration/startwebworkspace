@@ -183,7 +183,10 @@ export function ScheduleCalendar({ projects }: { projects: ScheduleProject[] }) 
         <div className="flex flex-wrap items-center gap-4 px-5 py-3 text-xs text-muted-foreground">
           {(Object.keys(KIND_STYLE) as ScheduleEntry["kind"][]).map((kind) => (
             <span key={kind} className="flex items-center gap-2">
-              <span className={cn("size-2 rounded-full", KIND_STYLE[kind].dot)} aria-hidden="true" />
+              <span
+                className={cn("size-2 rounded-full", KIND_STYLE[kind].dot)}
+                aria-hidden="true"
+              />
               {KIND_STYLE[kind].label}
             </span>
           ))}
