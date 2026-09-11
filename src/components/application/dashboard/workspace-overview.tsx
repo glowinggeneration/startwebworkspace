@@ -127,20 +127,14 @@ export function WorkspaceOverview() {
   }
 
   if (clients.isError || campaigns.isError) {
-    // Logged, not shown: the message a user sees must stay generic (Master
-    // Rules §6.6), but a schema-mismatch error like "column ... does not
-    // exist" is exactly the kind of thing that's undiagnosable later
-    // without this — see docs/build-standards/EXCEPTION_REGISTER.md.
+    // Logged, not shown: the rest of /dashboard (header, CommandBoard) has
+    // its own data and works fine on its own, so a failure here just drops
+    // this section rather than replacing it with an error banner — see
+    // docs/build-standards/EXCEPTION_REGISTER.md.
     if (clients.error) console.error("[workspace-overview] clients query failed:", clients.error);
     if (campaigns.error)
       console.error("[workspace-overview] campaigns query failed:", campaigns.error);
-    return (
-      <Panel className="p-6">
-        <p className="text-sm text-destructive">
-          The workspace overview could not load. Refresh the page to try again.
-        </p>
-      </Panel>
-    );
+    return null;
   }
 
   const spendShare = totals.planned > 0 ? (totals.spent / totals.planned) * 100 : 0;
