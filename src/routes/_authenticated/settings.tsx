@@ -15,6 +15,14 @@ import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import { useInvitations, useRevokeInvitation } from "@/hooks/use-invitations";
 import { InviteDialog } from "@/components/application/settings/invite-dialog";
 import { ConversationImportCard } from "@/components/application/settings/conversation-import-card";
+import { FolderCard } from "@/components/ui/folder-card";
+
+const BRAND_ASSETS = [
+  { label: "Blue (SVG)", href: "/brand/startweb-blue.svg" },
+  { label: "Blue (PNG)", href: "/brand/startweb-blue.png" },
+  { label: "Black (SVG)", href: "/brand/startweb-black.svg" },
+  { label: "White (SVG)", href: "/brand/startweb-white.svg" },
+];
 
 export const Route = createFileRoute("/_authenticated/settings")({
   component: SettingsPage,
@@ -118,6 +126,34 @@ function SettingsPage() {
       )}
 
       {canManageMembers && <ConversationImportCard />}
+
+      <div className="card-surface p-5">
+        <h2 className="type-section mb-3">Brand assets</h2>
+        <div className="flex flex-wrap items-center gap-6">
+          <FolderCard
+            title="Startweb logo"
+            subtitle="SVG & PNG"
+            count={BRAND_ASSETS.length}
+            countLabel="Files"
+            meta="Logo pack"
+            interactive={false}
+            className="w-56"
+          />
+          <ul className="space-y-1.5">
+            {BRAND_ASSETS.map((asset) => (
+              <li key={asset.href}>
+                <a
+                  href={asset.href}
+                  download
+                  className="type-body text-primary underline-offset-2 hover:underline"
+                >
+                  {asset.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
