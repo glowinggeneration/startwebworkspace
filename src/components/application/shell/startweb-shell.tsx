@@ -64,8 +64,21 @@ export function StartwebShell({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Per-user nav trim: one person's preference, not a system-wide change —
+  // everyone else keeps every item.
+  const hideCampaigns = profile?.preferences.hideCampaigns === true;
+  const visibleNavGroups = hideCampaigns
+    ? NAV_GROUPS.map((group) => ({
+        ...group,
+        items: group.items.filter((item) => item.to !== "/campaigns"),
+      }))
+    : NAV_GROUPS;
+  const visibleNavItems = hideCampaigns
+    ? NAV_ITEMS.filter((item) => item.to !== "/campaigns")
+    : NAV_ITEMS;
+
   const currentPage =
-    NAV_ITEMS.find((item) => pathname.startsWith(item.to)) ??
+    visibleNavItems.find((item) => pathname.startsWith(item.to)) ??
     (pathname.startsWith(SETTINGS_NAV_ITEM.to) ? SETTINGS_NAV_ITEM : undefined);
 
   async function handleSignOut() {
@@ -78,7 +91,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
       <a href="#main-content" className="skip-link">
         Skip to main content
       </a>
-      <GlobalCommandPalette items={NAV_ITEMS} />
+      <GlobalCommandPalette items={visibleNavItems} />
       <Sidebar collapsible="offcanvas" className="border-r-0">
         <SidebarHeader className="h-16 justify-center px-5">
           <Link
@@ -90,7 +103,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
         </SidebarHeader>
 
         <SidebarContent className="px-2">
-          {NAV_GROUPS.map((group) => (
+          {visibleNavGroups.map((group) => (
             <SidebarGroup key={group.label}>
               <SidebarGroupLabel className="text-[0.6875rem] font-semibold tracking-[0.12em] text-sidebar-section uppercase">
                 {group.label}

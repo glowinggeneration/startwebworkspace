@@ -1081,6 +1081,7 @@ export type Database = {
           full_name: string
           id: string
           job_title: string | null
+          preferences: Json
           profile_completed: boolean
           updated_at: string
         }
@@ -1091,6 +1092,7 @@ export type Database = {
           full_name?: string
           id: string
           job_title?: string | null
+          preferences?: Json
           profile_completed?: boolean
           updated_at?: string
         }
@@ -1101,6 +1103,7 @@ export type Database = {
           full_name?: string
           id?: string
           job_title?: string | null
+          preferences?: Json
           profile_completed?: boolean
           updated_at?: string
         }

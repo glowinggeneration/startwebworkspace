@@ -123,7 +123,9 @@ export function clientStage(account: ClientBoardAccount): ClientStage {
   if (/(delivered|complete|handover|review)/.test(status)) return "delivered";
   if (/(active|in progress|live|running)/.test(status)) return "active";
   const hasOpenWork = account.projects.some((project) => project.status !== "complete");
-  return hasOpenWork ? "active" : "delivered";
+  // A brand-new account with no status text and no project yet has done
+  // nothing, let alone finished — it belongs in Proposal, not Delivered.
+  return hasOpenWork ? "active" : "proposal";
 }
 
 export function openTasks(account: ClientBoardAccount): ClientBoardTask[] {

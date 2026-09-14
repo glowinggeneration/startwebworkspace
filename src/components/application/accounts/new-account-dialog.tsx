@@ -32,25 +32,41 @@ import {
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useIndustries } from "@/hooks/use-industries";
 import { useCreateAccount } from "@/hooks/use-accounts";
+import { useProfile } from "@/hooks/use-profile";
+import { CLIENT_STAGES, type ClientStage } from "@/hooks/use-client-board";
 
 const accountSchema = z.object({
   name: z.string().trim().min(1, "Enter a company name"),
   industryId: z.string().min(1, "Pick an industry"),
   website: z.string().optional(),
   country: z.string().optional(),
+  stage: z.string().optional(),
 });
 
 type AccountFormValues = z.infer<typeof accountSchema>;
+
+// clientStage() in use-client-board.ts classifies by matching these exact
+// labels (case-insensitively) against relationship_status — picking one
+// here guarantees the account lands on the stage its creator chose,
+// instead of being guessed at from free text.
+const STAGE_LABEL: Record<ClientStage, string> = {
+  proposal: "Proposal",
+  active: "In progress",
+  attention: "Needs attention",
+  delivered: "Delivered",
+};
 
 export function NewAccountDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const [open, setOpen] = useState(false);
   const { workspaceId } = useActiveWorkspace();
   const { data: industries } = useIndustries(workspaceId);
+  const { data: profile } = useProfile();
   const createAccount = useCreateAccount(workspaceId);
+  const showStagePicker = profile?.preferences.showStagePicker === true;
 
   const form = useForm<AccountFormValues>({
     resolver: zodResolver(accountSchema),
-    defaultValues: { name: "", industryId: "", website: "", country: "" },
+    defaultValues: { name: "", industryId: "", website: "", country: "", stage: "proposal" },
   });
 
   async function onSubmit(values: AccountFormValues) {
@@ -60,6 +76,9 @@ export function NewAccountDialog({ trigger }: { trigger?: React.ReactNode } = {}
         industry_id: values.industryId,
         website: values.website || null,
         country: values.country || null,
+        ...(showStagePicker && values.stage
+          ? { relationship_status: STAGE_LABEL[values.stage as ClientStage] }
+          : {}),
       });
       toast.success("Account added");
       form.reset();
@@ -124,6 +143,32 @@ export function NewAccountDialog({ trigger }: { trigger?: React.ReactNode } = {}
                 </FormItem>
               )}
             />
+            {showStagePicker && (
+              <FormField
+                control={form.control}
+                name="stage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Stage</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value ?? "proposal"}>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue placeholder="Pick a stage" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {CLIENT_STAGES.map((stage) => (
+                          <SelectItem key={stage.value} value={stage.value}>
+                            {stage.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
             <FormField
               control={form.control}
               name="website"

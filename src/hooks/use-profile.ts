@@ -1,6 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 
+/** Per-user flags that change how the workspace looks for one person
+ * without touching the default experience everyone else gets — e.g. an
+ * individual's request to simplify their own nav or add a control the
+ * rest of the team hasn't asked for yet. */
+export interface ProfilePreferences {
+  hideCampaigns?: boolean;
+  showStagePicker?: boolean;
+}
+
 export function useProfile() {
   return useQuery({
     queryKey: ["profile"],
@@ -10,12 +19,12 @@ export function useProfile() {
 
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, email, full_name, avatar_url, job_title")
+        .select("id, email, full_name, avatar_url, job_title, preferences")
         .eq("id", userData.user.id)
         .single();
 
       if (error) throw error;
-      return data;
+      return { ...data, preferences: (data.preferences as ProfilePreferences | null) ?? {} };
     },
   });
 }

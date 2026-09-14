@@ -41,6 +41,7 @@ import { LoadingIndicator } from "@/components/application/shell/loading-indicat
 import { CampaignCalendar } from "@/components/application/campaigns/campaign-calendar";
 import { UtilityIconButton } from "@/components/application/shell/utility-icon-button";
 import { useActiveWorkspace } from "@/hooks/use-active-workspace";
+import { useProfile } from "@/hooks/use-profile";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useWorkspaceMembers } from "@/hooks/use-workspace-members";
 import {
@@ -143,6 +144,7 @@ function formatDate(value: string | null) {
 
 function CampaignsPage() {
   const { workspaceId } = useActiveWorkspace();
+  const { data: profile } = useProfile();
   const { data: campaigns, isLoading } = useCampaigns(workspaceId);
   const { data: tasks } = useWorkspaceTasks(workspaceId);
   const { data: accounts } = useAccounts(workspaceId);
@@ -406,6 +408,21 @@ function CampaignsPage() {
   }
 
   const saving = createCampaign.isPending || updateCampaign.isPending;
+
+  if (profile?.preferences.hideCampaigns) {
+    return (
+      <div className="space-y-6 p-8">
+        <PageHeader title="Campaigns" description="This page isn't part of your workspace." />
+        <Panel>
+          <EmptyState
+            icon={Megaphone}
+            title="Not available"
+            description="Campaigns has been removed from your view."
+          />
+        </Panel>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 p-8">
