@@ -63,25 +63,76 @@ function eventLines(event: FeedEvent, stamp: string, origin: string, url: string
   ];
 }
 
+function renderIcs(
+  workspaceName: string,
+  events: { event: FeedEvent; url: string }[],
+  origin: string,
+): string {
+  const stamp = `${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`;
+
+  const lines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Startweb//Workspace Calendar//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    fold(`X-WR-CALNAME:${escapeText(`${workspaceName} deadlines`)}`),
+    fold(`NAME:${escapeText(`${workspaceName} deadlines`)}`),
+    "X-PUBLISHED-TTL:PT1H",
+    "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
+    ...events.flatMap(({ event, url }) => eventLines(event, stamp, origin, url)),
+    "END:VCALENDAR",
+  ];
+
+  return `${lines.join("\r\n")}\r\n`;
+}
+
 export async function buildWorkspaceCalendar(
   workspaceId: string,
+  requestingUserId: string,
   workspaceName: string,
   origin: string,
 ): Promise<string> {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-  const [projectsResult, campaignsResult] = await Promise.all([
-    supabaseAdmin
-      .from("projects")
-      .select(
-        "id, name, status, status_label, start_date, due_date, accounts(name), tasks(id, title, status, status_label, due_date)",
-      )
-      .eq("workspace_id", workspaceId),
-    supabaseAdmin
-      .from("campaigns")
-      .select("id, name, channel, status, start_date, end_date, next_action, next_action_date")
-      .eq("workspace_id", workspaceId),
-  ]);
+  // This reads with the service-role client, which bypasses RLS entirely —
+  // so the account scoping RLS normally applies for a client-role member
+  // (see can_view_account() in the pipeline RBAC migrations) has to be
+  // reproduced here by hand. Skipping this would hand a client's calendar
+  // link every other client's projects and campaigns in the workspace.
+  const { data: membership, error: membershipError } = await supabaseAdmin
+    .from("workspace_members")
+    .select("role, client_account_id")
+    .eq("workspace_id", workspaceId)
+    .eq("user_id", requestingUserId)
+    .maybeSingle();
+  if (membershipError) throw new Error(membershipError.message);
+  if (!membership) throw new Error("Not a member of this workspace.");
+
+  const isClient = membership.role === "client";
+  // A client member with no linked account sees nothing, not everything —
+  // the fail-safe has to be "show no events", never "show all events".
+  if (isClient && !membership.client_account_id) {
+    return renderIcs(workspaceName, [], origin);
+  }
+
+  let projectsQuery = supabaseAdmin
+    .from("projects")
+    .select(
+      "id, name, status, status_label, start_date, due_date, accounts(name), tasks(id, title, status, status_label, due_date)",
+    )
+    .eq("workspace_id", workspaceId);
+  let campaignsQuery = supabaseAdmin
+    .from("campaigns")
+    .select("id, name, channel, status, start_date, end_date, next_action, next_action_date")
+    .eq("workspace_id", workspaceId);
+
+  if (isClient && membership.client_account_id) {
+    projectsQuery = projectsQuery.eq("account_id", membership.client_account_id);
+    campaignsQuery = campaignsQuery.eq("account_id", membership.client_account_id);
+  }
+
+  const [projectsResult, campaignsResult] = await Promise.all([projectsQuery, campaignsQuery]);
 
   if (projectsResult.error) throw new Error(projectsResult.error.message);
   if (campaignsResult.error) throw new Error(campaignsResult.error.message);
@@ -185,21 +236,5 @@ export async function buildWorkspaceCalendar(
     }
   }
 
-  const stamp = `${new Date().toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`;
-
-  const lines = [
-    "BEGIN:VCALENDAR",
-    "VERSION:2.0",
-    "PRODID:-//Startweb//Workspace Calendar//EN",
-    "CALSCALE:GREGORIAN",
-    "METHOD:PUBLISH",
-    fold(`X-WR-CALNAME:${escapeText(`${workspaceName} deadlines`)}`),
-    fold(`NAME:${escapeText(`${workspaceName} deadlines`)}`),
-    "X-PUBLISHED-TTL:PT1H",
-    "REFRESH-INTERVAL;VALUE=DURATION:PT1H",
-    ...events.flatMap(({ event, url }) => eventLines(event, stamp, origin, url)),
-    "END:VCALENDAR",
-  ];
-
-  return `${lines.join("\r\n")}\r\n`;
+  return renderIcs(workspaceName, events, origin);
 }

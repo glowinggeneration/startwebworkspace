@@ -17,7 +17,7 @@ export const Route = createFileRoute("/api/public/calendar/$token")({
         const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
         const { data, error } = await supabaseAdmin
           .from("calendar_feed_tokens")
-          .select("workspace_id, workspaces(name)")
+          .select("workspace_id, user_id, workspaces(name)")
           .eq("token", token)
           .maybeSingle();
 
@@ -33,7 +33,15 @@ export const Route = createFileRoute("/api/public/calendar/$token")({
         try {
           const { buildWorkspaceCalendar } = await import("@/lib/calendar-feed.server");
           const origin = new URL(request.url).origin;
-          const body = await buildWorkspaceCalendar(data.workspace_id, workspaceName, origin);
+          // The feed must reflect what data.user_id is actually allowed to see —
+          // a client-role subscriber's calendar link must not leak every other
+          // client's projects and campaigns just because it shares a workspace.
+          const body = await buildWorkspaceCalendar(
+            data.workspace_id,
+            data.user_id,
+            workspaceName,
+            origin,
+          );
 
           void supabaseAdmin
             .from("calendar_feed_tokens")

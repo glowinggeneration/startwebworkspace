@@ -57,8 +57,23 @@ export function useRevokeInvitation(workspaceId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
+      // Read email/role before deleting so the audit row still says who
+      // and what was revoked — matches the create-side log below.
+      const { data: invitation } = await supabase
+        .from("workspace_invitations")
+        .select("email, role")
+        .eq("id", id)
+        .maybeSingle();
+
       const { error } = await supabase.from("workspace_invitations").delete().eq("id", id);
       if (error) throw error;
+
+      await logAuditEvent({
+        action: "role.revoke",
+        resourceTable: "workspace_invitations",
+        resourceId: id,
+        metadata: { email: invitation?.email ?? "Unknown", role: invitation?.role ?? "Unknown" },
+      });
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["invitations", workspaceId] });

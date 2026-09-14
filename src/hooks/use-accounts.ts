@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { logAuditEvent } from "@/lib/audit/log-event";
 import type { Database } from "@/integrations/supabase/types";
 
 type AccountInsert = Database["public"]["Tables"]["accounts"]["Insert"];
@@ -30,8 +31,24 @@ export function useDeleteAccount(workspaceId: string) {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
+      // Read the name before deleting so the audit row still says what was
+      // deleted — after the delete there's nothing left in this table to
+      // join back to.
+      const { data: account } = await supabase
+        .from("accounts")
+        .select("name")
+        .eq("id", id)
+        .maybeSingle();
+
       const { error } = await supabase.from("accounts").delete().eq("id", id);
       if (error) throw error;
+
+      await logAuditEvent({
+        action: "account.delete",
+        resourceTable: "accounts",
+        resourceId: id,
+        metadata: { name: account?.name ?? "Unknown" },
+      });
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["accounts", workspaceId] });
