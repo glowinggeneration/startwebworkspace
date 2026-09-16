@@ -45,7 +45,6 @@ the next release and close anything new.
   with a balance = Signed, settled = Paid. Live updates cover quotes,
   invoices and payments.
 
-
 - Conversation import `startweb-whatsapp-2026-09-09` committed: 22 new
   clients, 7 contacts, 19 projects, 16 next steps, 10 notes. AfriBiz Future
   Tech already existed and was left untouched. The import is idempotent.

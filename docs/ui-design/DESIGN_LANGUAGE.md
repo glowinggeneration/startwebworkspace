@@ -14,26 +14,26 @@ Use text-only **STARTWEB**, uppercase, in the application sidebar and sign-in pa
 
 These are normative implementation values, not measurements sampled from generated pixels. Expose them centrally as CSS variables and map them to the existing theme system.
 
-| Token | Value | Use |
-| --- | --- | --- |
-| brand | #164BFA | Sidebar, primary actions, links |
-| brand-hover | #103BD0 | Primary hover |
-| canvas | #F7F8FA | Main background |
-| surface | #FFFFFF | Cards, inputs, panels |
-| text-primary | #101828 | Titles and values |
-| text-secondary | #475467 | Descriptions and labels |
-| text-muted | #667085 | Supporting metadata |
-| border | #D0D5DD | Inputs and essential boundaries |
-| divider | #EAECF0 | Decorative card separators |
-| selected-surface | #EFF4FF | Selected controls outside sidebar |
-| selected-text | #164BFA | Selected text outside sidebar |
-| sidebar-text | #FFFFFF | Navigation and wordmark |
-| sidebar-section | #DCE5FF | Section labels |
-| sidebar-selected | rgba(255,255,255,0.16) | Active navigation fill |
-| success-text / surface | #067647 / #ECFDF3 | Confirmed success |
-| warning-text / surface | #854A0E / #FFFAEB | Needs attention |
-| error-text / surface | #B42318 / #FEF3F2 | Error and destructive actions |
-| focus | #164BFA | Focus on light surfaces |
+| Token                  | Value                  | Use                               |
+| ---------------------- | ---------------------- | --------------------------------- |
+| brand                  | #164BFA                | Sidebar, primary actions, links   |
+| brand-hover            | #103BD0                | Primary hover                     |
+| canvas                 | #F7F8FA                | Main background                   |
+| surface                | #FFFFFF                | Cards, inputs, panels             |
+| text-primary           | #101828                | Titles and values                 |
+| text-secondary         | #475467                | Descriptions and labels           |
+| text-muted             | #667085                | Supporting metadata               |
+| border                 | #D0D5DD                | Inputs and essential boundaries   |
+| divider                | #EAECF0                | Decorative card separators        |
+| selected-surface       | #EFF4FF                | Selected controls outside sidebar |
+| selected-text          | #164BFA                | Selected text outside sidebar     |
+| sidebar-text           | #FFFFFF                | Navigation and wordmark           |
+| sidebar-section        | #DCE5FF                | Section labels                    |
+| sidebar-selected       | rgba(255,255,255,0.16) | Active navigation fill            |
+| success-text / surface | #067647 / #ECFDF3      | Confirmed success                 |
+| warning-text / surface | #854A0E / #FFFAEB      | Needs attention                   |
+| error-text / surface   | #B42318 / #FEF3F2      | Error and destructive actions     |
+| focus                  | #164BFA                | Focus on light surfaces           |
 
 Use labels or icons alongside status colour. Neutral zero values stay charcoal. A coverage warning uses an amber label, not an oversized red number. Disabled states must remain identifiable and explain prerequisites nearby.
 
@@ -51,12 +51,12 @@ Desktop content uses a flexible grid. Forms may occupy two thirds and a contextu
 
 ## Shell and navigation
 
-| Group | Pages |
-| --- | --- |
-| Workspace | Dashboard, Pipeline, Accounts |
-| Delivery | Projects, Workload, Activity |
-| Finance | Quotes, Invoicing, Statements |
-| Footer | Settings, authenticated user menu |
+| Group     | Pages                             |
+| --------- | --------------------------------- |
+| Workspace | Dashboard, Pipeline, Accounts     |
+| Delivery  | Projects, Workload, Activity      |
+| Finance   | Quotes, Invoicing, Statements     |
+| Footer    | Settings, authenticated user menu |
 
 All authenticated pages share one AppShell. Active item uses the same translucent fill, icon treatment and `aria-current`. Sidebar is solid blue edge to edge. Use one coherent outline icon family, normally 20px with consistent stroke. Top bar shows breadcrumb, functional global search if supported, theme toggle only if implemented, and real-user initials. Do not put dead controls in the shell. Keep TL only for Thabo, derive other initials from the actual user. Do not assign a stock avatar to a real identity.
 

@@ -83,7 +83,7 @@ export function ProjectBoard({ projects, showCampaigns = true }: ProjectBoardPro
             phase={phase}
             projects={columns.get(phase) ?? []}
             activeId={activeId}
-             showCampaigns={showCampaigns}
+            showCampaigns={showCampaigns}
           />
         ))}
       </div>
