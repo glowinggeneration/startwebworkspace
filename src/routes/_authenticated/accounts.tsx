@@ -152,8 +152,8 @@ function AccountsPage() {
             <div className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
               <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
               <p>
-                Reference clients are trusted past clients whose results can support proposals,
-                case studies and sales conversations.
+                Reference clients are trusted past clients whose results can support proposals, case
+                studies and sales conversations.
               </p>
             </div>
           ) : null}
