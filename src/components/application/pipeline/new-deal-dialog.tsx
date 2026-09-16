@@ -34,7 +34,15 @@ import { useActiveWorkspace } from "@/hooks/use-active-workspace";
 import { useAccounts } from "@/hooks/use-accounts";
 import { useIndustries } from "@/hooks/use-industries";
 import { usePackages } from "@/hooks/use-packages";
-import { useCreateDeal } from "@/hooks/use-deals";
+import { useCreateDeal, type ClientRelationshipStage } from "@/hooks/use-deals";
+import { useProfile } from "@/hooks/use-profile";
+
+const RELATIONSHIP_STAGES: ClientRelationshipStage[] = [
+  "Proposal",
+  "In progress",
+  "Delivered",
+  "Needs attention",
+];
 
 const dealSchema = z.object({
   accountId: z.string().min(1, "Pick an account"),
@@ -44,6 +52,7 @@ const dealSchema = z.object({
   nextStep: z.string().trim().min(1, "A deal needs a next step"),
   nextDate: z.string().min(1, "A deal needs a next date"),
   notes: z.string().optional(),
+  stage: z.enum(["Proposal", "In progress", "Delivered", "Needs attention"]),
 });
 
 // z.coerce.number() makes the schema's input type (what the form holds
@@ -58,7 +67,9 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
   const { data: accounts } = useAccounts(workspaceId);
   const { data: industries } = useIndustries(workspaceId);
   const { data: packages } = usePackages(workspaceId);
+  const { data: profile } = useProfile();
   const createDeal = useCreateDeal(workspaceId);
+  const showStagePicker = profile?.preferences.showStagePicker === true;
 
   const form = useForm<DealFormInput, unknown, DealFormOutput>({
     resolver: zodResolver(dealSchema),
@@ -70,6 +81,7 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
       nextStep: "",
       nextDate: "",
       notes: "",
+      stage: "Proposal",
     },
   });
 
@@ -83,6 +95,7 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
         next_step: values.nextStep,
         next_date: values.nextDate,
         notes: values.notes || null,
+        relationshipStage: showStagePicker ? values.stage : undefined,
       });
       toast.success("Deal added");
       form.reset();
@@ -200,6 +213,32 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="stage"
+              render={({ field }) =>
+                showStagePicker ? (
+                  <FormItem>
+                    <FormLabel>Client status</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {RELATIONSHIP_STAGES.map((stage) => (
+                          <SelectItem key={stage} value={stage}>
+                            {stage}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                ) : null
+              }
+            />
             <FormField
               control={form.control}
               name="value"

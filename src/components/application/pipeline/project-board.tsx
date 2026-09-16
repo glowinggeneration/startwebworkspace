@@ -39,9 +39,10 @@ import { toast } from "sonner";
 
 interface ProjectBoardProps {
   projects: ProjectBoardProject[];
+  showCampaigns?: boolean;
 }
 
-export function ProjectBoard({ projects }: ProjectBoardProps) {
+export function ProjectBoard({ projects, showCampaigns = true }: ProjectBoardProps) {
   const { workspaceId } = useActiveWorkspace();
   const updatePhase = useUpdateProjectPhase(workspaceId);
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -131,6 +132,7 @@ function PhaseColumn({
                 key={project.id}
                 project={project}
                 isDragging={activeId === project.id}
+                showCampaigns={showCampaigns}
               />
             ))
           )}
@@ -143,9 +145,11 @@ function PhaseColumn({
 function ProjectCard({
   project,
   isDragging,
+  showCampaigns,
 }: {
   project: ProjectBoardProject;
   isDragging: boolean;
+  showCampaigns: boolean;
 }) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: project.id,
@@ -248,7 +252,7 @@ function ProjectCard({
         ) : null}
       </div>
 
-      {campaign ? (
+      {showCampaigns && campaign ? (
         <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-2.5 py-1.5 text-xs">
           <span className="flex min-w-0 items-center gap-1.5 text-muted-foreground">
             <Megaphone className="size-3.5 shrink-0" aria-hidden="true" />

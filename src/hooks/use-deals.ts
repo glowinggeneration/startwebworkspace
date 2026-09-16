@@ -5,6 +5,16 @@ import type { Database, DealStatus } from "@/integrations/supabase/app-types";
 type DealInsert = Database["public"]["Tables"]["deals"]["Insert"];
 type DealUpdate = Database["public"]["Tables"]["deals"]["Update"];
 
+export type ClientRelationshipStage =
+  | "Proposal"
+  | "In progress"
+  | "Delivered"
+  | "Needs attention";
+
+type CreateDealInput = Omit<DealInsert, "workspace_id" | "status"> & {
+  relationshipStage?: ClientRelationshipStage;
+};
+
 const DEAL_COLUMNS =
   "id, account_id, industry_id, package_id, owner_id, value, status, next_step, next_date, won_at, invoiced_at, referral_ask_logged, notes, created_at";
 
@@ -28,17 +38,33 @@ export type Deal = NonNullable<ReturnType<typeof useDeals>["data"]>[number];
 export function useCreateDeal(workspaceId: string) {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (input: Omit<DealInsert, "workspace_id" | "status">) => {
+    mutationFn: async ({ relationshipStage, ...input }: CreateDealInput) => {
       const { data, error } = await supabase
         .from("deals")
         .insert({ ...input, workspace_id: workspaceId, status: "open" })
         .select(DEAL_COLUMNS)
         .single();
       if (error) throw error;
+
+      if (relationshipStage) {
+        const { error: accountError } = await supabase
+          .from("accounts")
+          .update({ relationship_status: relationshipStage })
+          .eq("id", input.account_id)
+          .eq("workspace_id", workspaceId);
+
+        if (accountError) {
+          await supabase.from("deals").delete().eq("id", data.id);
+          throw accountError;
+        }
+      }
+
       return data;
     },
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ["deals", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["accounts", workspaceId] });
+      void queryClient.invalidateQueries({ queryKey: ["client-board", workspaceId] });
     },
   });
 }
