@@ -90,7 +90,7 @@ const NAV_ITEMS = [
 ];
 
 function LandingNav() {
-  const [activeId, setActiveId] = useState(NAV_ITEMS[0].id);
+  const [activeId, setActiveId] = useState<string>("how-it-works");
 
   return (
     <div className="flex justify-center px-4 pt-10">
