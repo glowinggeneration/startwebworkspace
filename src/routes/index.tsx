@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AuroraText } from "@/components/vendor/magicui/aurora-text";
 import { Highlighter } from "@/components/vendor/magicui/highlighter";
 import { TextAnimate } from "@/components/vendor/magicui/text-animate";
-import { SpotlightNavbar } from "@/components/vendor/vengeance/navbar-docs/spotlight-navbar";
+
 import { HighlightGrid } from "@/components/vendor/vengeance/layout-cards/highlight-grid";
 import { FaqAccordion } from "@/components/vendor/vengeance/tooltip-marquee/faq-accordion";
 import AnimatedButton from "@/components/vendor/vengeance/buttons/animated-button";
@@ -81,6 +81,47 @@ const FAQ_ITEMS = [
 function scrollToId(id: string) {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
+
+const NAV_ITEMS = [
+  { label: "How it works", id: "how-it-works" },
+  { label: "FAQ", id: "faq" },
+];
+
+function LandingNav() {
+  const [activeId, setActiveId] = useState(NAV_ITEMS[0].id);
+
+  return (
+    <div className="flex justify-center px-4 pt-10">
+      <nav className="flex h-11 items-center gap-1 rounded-full border border-border bg-card px-2 shadow-sm">
+        {NAV_ITEMS.map((item) => {
+          const isActive = activeId === item.id;
+          return (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              aria-current={isActive ? "true" : undefined}
+              onClick={(e) => {
+                e.preventDefault();
+                setActiveId(item.id);
+                scrollToId(item.id);
+              }}
+              className={cn(
+                "rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                isActive
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+  );
+}
+
 
 function LandingPage() {
   const navigate = useNavigate();
