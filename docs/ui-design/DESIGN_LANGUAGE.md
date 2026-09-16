@@ -45,7 +45,7 @@ Format currency in ZAR with the R prefix and grouping spaces, such as R30 000; f
 
 ## Layout and spacing
 
-Use a 4px base scale: 4, 8, 12, 16, 24, 32, 40, 48. Desktop sidebar 248px, fixed alongside content. Top bar 72px. Main padding 32px, cards 24px, grid gap 24px. Sidebar navigation rows at least 44px high. Standard controls 44px high; comfortable touch targets at least 44 by 44px. Compact table visual rows may be 48px, with reachable controls. White cards use 1px dividers and 10px radius. Inputs and buttons use 8px radius; small badges 6px. Avoid oversized pills, floating docks and nested cards without a functional reason.
+Use a 4px base scale: 4, 8, 12, 16, 24, 32, 40, 48. Desktop sidebar 248px, fixed alongside content. Top bar 72px. Main padding 32px, cards 24px, grid gap 24px. Sidebar navigation rows at least 44px high. Standard controls 44px high; comfortable touch targets at least 44 by 44px. Compact table visual rows may be 48px, with reachable controls. White cards use 1px dividers and a subtle 4px radius. Inputs and buttons use 8px radius; small badges 6px. Avoid oversized pills, floating docks and nested cards without a functional reason.
 
 Desktop content uses a flexible grid. Forms may occupy two thirds and a contextual panel one third. Use a single column when space becomes constrained. Do not insert unrelated cards just to fill space. One prominent action per decision area; avoid repeating the same blue button in both a page header and empty state.
 

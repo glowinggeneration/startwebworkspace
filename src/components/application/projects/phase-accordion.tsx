@@ -65,15 +65,15 @@ function PhaseAccordionItemRow({
   const isAlone = (isAfterOpen && isLast) || (isBeforeOpen && isFirst);
   const rounded =
     isOpen || isAlone
-      ? "rounded-2xl"
+      ? "rounded-card"
       : isBeforeOpen
-        ? "rounded-b-2xl"
+        ? "rounded-b-card"
         : isAfterOpen
-          ? "rounded-t-2xl"
+          ? "rounded-t-card"
           : isFirst
-            ? "rounded-t-2xl"
+            ? "rounded-t-card"
             : isLast
-              ? "rounded-b-2xl"
+              ? "rounded-b-card"
               : "";
 
   return (

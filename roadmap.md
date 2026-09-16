@@ -6,4 +6,4 @@
 - [ ] Mobile-friendly Pipeline view with a clients-and-phases side list for deadline tracking. Blocker: phones currently see the "use a desktop or tablet" notice at sign-in; need the user's decision on lifting it.
 - [x] Email infrastructure for notify.workspace.startweb.co.za (waiting on DNS verification only).
 
-- [ ] Remove the selected animated home-page background and keep it white.
+- [x] Remove the selected animated home-page background and keep it white.

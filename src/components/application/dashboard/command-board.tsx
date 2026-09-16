@@ -217,10 +217,10 @@ export function CommandBoard({
       </div>
 
       {behindOutreach && (
-        <div className="relative flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-2xl border border-amber-200/60 bg-gradient-to-r from-amber-50 via-orange-50/50 to-amber-50 px-5 py-4 shadow-sm">
+        <div className="relative flex flex-wrap items-center justify-between gap-4 overflow-hidden rounded-card border border-amber-200/60 bg-gradient-to-r from-amber-50 via-orange-50/50 to-amber-50 px-5 py-4 shadow-sm">
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/40 to-transparent" aria-hidden="true" />
           <div className="relative z-10 flex items-start gap-4">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-amber-100 bg-white shadow-sm">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-card border border-amber-100 bg-white shadow-sm">
               <AlertTriangle className="size-5 text-amber-700" aria-hidden="true" />
             </div>
             <div>

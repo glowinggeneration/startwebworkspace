@@ -184,7 +184,7 @@ function ProjectCard({
       {...listeners}
       {...attributes}
       className={cn(
-        "cursor-grab rounded-xl border border-border bg-card p-4 shadow-xs transition-shadow active:cursor-grabbing",
+        "cursor-grab rounded-card border border-border bg-card p-4 shadow-xs transition-shadow active:cursor-grabbing",
         isDragging && "opacity-40 shadow-lg",
         "hover:shadow-sm hover:ring-1 hover:ring-primary/10",
       )}
@@ -256,7 +256,7 @@ function ProjectCard({
       </div>
 
       {showCampaigns && campaign ? (
-        <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-border bg-muted/30 px-2.5 py-1.5 text-xs">
+        <div className="mt-3 flex items-center justify-between gap-2 rounded-card border border-border bg-muted/30 px-2.5 py-1.5 text-xs">
           <span className="flex min-w-0 items-center gap-1.5 text-muted-foreground">
             <Megaphone className="size-3.5 shrink-0" aria-hidden="true" />
             <span className="truncate">{campaign.name}</span>

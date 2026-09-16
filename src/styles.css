@@ -99,7 +99,7 @@
   --allocation-gradient-start: oklch(0.69 0.17 246);
   --allocation-gradient-end: var(--brand-blue);
   --radius: 0.625rem;
-  --radius-card: 0.875rem;
+  --radius-card: 0.25rem;
   --font-sans:
     "Inter", -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, "Segoe UI", sans-serif;
 
@@ -432,6 +432,7 @@
   .rounded-2xl.border.bg-card,
   .rounded-xl.border.bg-card,
   .rounded-2xl.border.border-border.bg-card {
+    border-radius: var(--radius-card);
     box-shadow: var(--shadow-soft);
   }
 

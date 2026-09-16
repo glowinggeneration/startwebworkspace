@@ -3,7 +3,6 @@ import { AuroraText } from "@/components/vendor/magicui/aurora-text";
 import { Highlighter } from "@/components/vendor/magicui/highlighter";
 import { TextAnimate } from "@/components/vendor/magicui/text-animate";
 import { SpotlightNavbar } from "@/components/vendor/vengeance/navbar-docs/spotlight-navbar";
-import { LightLines } from "@/components/vendor/vengeance/backgrounds/light-lines";
 import { HighlightGrid } from "@/components/vendor/vengeance/layout-cards/highlight-grid";
 import { FaqAccordion } from "@/components/vendor/vengeance/tooltip-marquee/faq-accordion";
 import AnimatedButton from "@/components/vendor/vengeance/buttons/animated-button";
@@ -98,12 +97,8 @@ function LandingPage() {
         />
       </div>
 
-      <LightLines
-        gradientFrom="#0B1220"
-        gradientTo="#1E3AFF"
-        className="relative isolate flex min-h-[85dvh] items-center justify-center overflow-hidden"
-      >
-        <div className="mx-auto flex max-w-xl flex-col items-center gap-6 px-4 py-24 text-center text-white">
+      <section className="relative isolate flex min-h-[85dvh] items-center justify-center overflow-hidden bg-background">
+        <div className="mx-auto flex max-w-xl flex-col items-center gap-6 px-4 py-24 text-center text-foreground">
           <h1 className="type-display max-w-xl">
             Pipeline, delivery and invoicing in <AuroraText>one workspace</AuroraText>.
           </h1>
@@ -112,12 +107,12 @@ function LandingPage() {
             by="word"
             animation="blurInUp"
             delay={0.1}
-            className="type-body max-w-md text-white/80"
+            className="type-body max-w-md text-muted-foreground"
           >
             Startweb Workspace turns closed-won deals straight into tracked projects, one place for
             your team, your clients, and everything you bill them.
           </TextAnimate>
-          <p className="type-body max-w-md text-white/80">
+          <p className="type-body max-w-md text-muted-foreground">
             Built for teams who want <Highlighter>fewer spreadsheets</Highlighter> and a clearer
             month.
           </p>
@@ -127,13 +122,13 @@ function LandingPage() {
             </AnimatedButton>
             <Link
               to="/auth"
-              className="inline-flex h-9 items-center justify-center rounded-[0.625rem] border border-white/30 bg-white/5 px-4 text-sm font-medium text-white transition-colors hover:bg-white/15"
+              className="inline-flex h-9 items-center justify-center rounded-[0.625rem] border border-border bg-card px-4 text-sm font-medium text-foreground transition-colors hover:bg-muted"
             >
               Sign in
             </Link>
           </div>
         </div>
-      </LightLines>
+      </section>
 
       <section id="how-it-works" className="mx-auto max-w-4xl px-4 py-20 text-center">
         <h2 className="type-section text-2xl font-semibold">How it fits together</h2>

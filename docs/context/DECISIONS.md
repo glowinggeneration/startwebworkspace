@@ -20,3 +20,4 @@ Settled choices. Do not reopen without a new decision recorded here.
 | 2026-09-10 | Pipeline opens on a Clients board derived from account relationship status; Deals and List views stay                 | There are no deals yet, the real work is client based |
 | 2026-09-10 | Internal tables and maintenance functions are not reachable through the API                                           | Workspace data stays inside the database              |
 | 2026-09-10 | Project memory in `mem://` mirrors `docs/context/`; the documents stay the source of truth                            | One place to correct, both stay true                  |
+| 2026-09-16 | Content cards and panels use a subtle 4px radius; pills, avatars and controls keep their functional shapes             | Creates a more structured interface without changing layouts |

@@ -28,6 +28,7 @@ the next release and close anything new.
 
 ## Recently finished
 
+- Content cards and panels now use a consistent subtle 4px corner radius across the application. Pills, avatars, controls, menus and dialogs keep their functional shapes. The public home screen now has a static white background without the animated line artwork.
 - Email sending: branded sign-in emails (confirm, invite, magic link,
   recovery, email change, reauthentication) under `src/lib/email-templates/`
   send through the managed email service from

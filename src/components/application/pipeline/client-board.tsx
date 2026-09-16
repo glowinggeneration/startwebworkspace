@@ -78,7 +78,7 @@ function ClientCard({
   const invoice = latestDocument(account.invoices ?? []);
 
   return (
-    <article className="rounded-xl border border-border bg-card p-4 shadow-xs">
+    <article className="rounded-card border border-border bg-card p-4 shadow-xs">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">{account.name}</h3>
         {account.review_priority ? (

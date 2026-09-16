@@ -170,7 +170,7 @@ function BillingCard({ flow }: { flow: BillingFlow }) {
   }
 
   return (
-    <article className="rounded-xl border border-border bg-card p-4 shadow-xs">
+    <article className="rounded-card border border-border bg-card p-4 shadow-xs">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">{flow.accountName}</h3>
         <span className="whitespace-nowrap text-sm font-semibold tabular-nums text-foreground">
