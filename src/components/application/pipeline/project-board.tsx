@@ -83,6 +83,7 @@ export function ProjectBoard({ projects, showCampaigns = true }: ProjectBoardPro
             phase={phase}
             projects={columns.get(phase) ?? []}
             activeId={activeId}
+             showCampaigns={showCampaigns}
           />
         ))}
       </div>
@@ -94,10 +95,12 @@ function PhaseColumn({
   phase,
   projects,
   activeId,
+  showCampaigns,
 }: {
   phase: string;
   projects: ProjectBoardProject[];
   activeId: string | null;
+  showCampaigns: boolean;
 }) {
   const { isOver, setNodeRef } = useDroppable({ id: phase });
 

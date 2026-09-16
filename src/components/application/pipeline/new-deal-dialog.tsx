@@ -95,7 +95,7 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
         next_step: values.nextStep,
         next_date: values.nextDate,
         notes: values.notes || null,
-        relationshipStage: showStagePicker ? values.stage : undefined,
+        ...(showStagePicker ? { relationshipStage: values.stage } : {}),
       });
       toast.success("Deal added");
       form.reset();
@@ -213,11 +213,11 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name="stage"
-              render={({ field }) =>
-                showStagePicker ? (
+            {showStagePicker ? (
+              <FormField
+                control={form.control}
+                name="stage"
+                render={({ field }) => (
                   <FormItem>
                     <FormLabel>Client status</FormLabel>
                     <Select onValueChange={field.onChange} value={field.value}>
@@ -236,9 +236,9 @@ export function NewDealDialog({ trigger }: { trigger?: React.ReactNode } = {}) {
                     </Select>
                     <FormMessage />
                   </FormItem>
-                ) : null
-              }
-            />
+                )}
+              />
+            ) : null}
             <FormField
               control={form.control}
               name="value"
