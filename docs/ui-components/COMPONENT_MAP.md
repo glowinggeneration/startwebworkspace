@@ -42,7 +42,7 @@ tracker brief, not the supplied UI kit.
 | Component          | Source file                         | Wired into                                              | Notes                                                                                                                                                        |
 | ------------------ | ----------------------------------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | Animated Accordion | `collection/animated-accordion.tsx` | `components/application/projects/phase-accordion.tsx`   | Same dynamic corner-radius morph between open/adjacent/edge items; generalized from a fixed text string per item to arbitrary content (a phase's task list). |
-| Adaptive Slider    | `collection/adaptive-slider.tsx`    | `components/application/workload/allocation-dialog.tsx` | Used as-is for the 0-40h weekly allocation input — its colour-by-load gradient reads naturally as "how full is this week."                                   |
+| Adaptive Slider    | `collection/adaptive-slider.tsx`    | `components/application/workload/allocation-dialog.tsx` | Adapted to the Startweb blue gradient for the 0-40h weekly allocation input.                                                                                 |
 
 ## Wired (Phase 6 — landing page)
 

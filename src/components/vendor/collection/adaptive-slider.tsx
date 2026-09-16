@@ -15,40 +15,13 @@ interface AdaptiveSliderProps {
   onChange?: (value: number) => void;
 }
 
-interface ColorSettings {
-  text: string;
-  gradient: string;
-  thumbBorder: string;
-}
-
 const DEFAULT_MIN = 50;
 const DEFAULT_MAX = 350;
 const DEFAULT_STEP = 25;
 const DEFAULT_VALUE = 200;
 
-const getColorSettings = (value: number, min: number, max: number): ColorSettings => {
-  const percentage = (value - min) / (max - min);
-
-  if (percentage < 0.5) {
-    return {
-      text: "#10B981",
-      gradient: "linear-gradient(to right, #FEB101, #FE7C09)",
-      thumbBorder: "#10B981",
-    };
-  } else if (percentage < 0.7) {
-    return {
-      text: "#FE55B7",
-      gradient: "linear-gradient(to right, #FE55B74D, #FE55B7)",
-      thumbBorder: "#F97316",
-    };
-  } else {
-    return {
-      text: "#D946EF",
-      gradient: "linear-gradient(to right, #DAB0FE, #4946FF)",
-      thumbBorder: "#D946EF",
-    };
-  }
-};
+const ALLOCATION_GRADIENT =
+  "linear-gradient(90deg, var(--allocation-gradient-start), var(--allocation-gradient-end))";
 
 export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
   value,
@@ -64,8 +37,6 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
 
   const calories = value ?? internalValue;
 
-  const colorSettings = useMemo(() => getColorSettings(calories, min, max), [calories, min, max]);
-
   const percentage = ((calories - min) / (max - min)) * 100;
 
   const dots = useMemo(
@@ -73,8 +44,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
       Array.from({ length: 6 }).map((_, i) => (
         <div
           key={i}
-          className="z-30 h-1.5 w-1.5 rounded-full bg-[#C4B9FA] transition-colors dark:bg-neutral-600"
-          style={{ opacity: 0.8 }}
+          className="z-30 h-1.5 w-1.5 rounded-full bg-primary/25 transition-colors"
         />
       )),
     [],
@@ -87,8 +57,8 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
   };
 
   return (
-    <motion.div className="flex h-[60vh] w-xs flex-col items-center justify-center rounded-[36px] bg-[#FEFEFE] p-6 shadow-2xl shadow-black/5 transition-colors select-none sm:w-sm sm:p-12 dark:bg-neutral-900 dark:shadow-none">
-      <span className="mb-2 text-xl font-bold text-[#878787] sm:text-2xl dark:text-neutral-500">
+    <motion.div className="flex h-[60vh] w-xs flex-col items-center justify-center rounded-3xl bg-card p-6 shadow-[var(--shadow-elevated)] transition-colors select-none sm:w-sm sm:p-12">
+      <span className="mb-2 text-xl font-bold text-muted-foreground sm:text-2xl">
         {label}
       </span>
 
@@ -99,13 +69,13 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
         />
         <motion.span
           layout
-          className="text-4xl font-extrabold text-[#010101] transition-colors sm:text-5xl dark:text-neutral-100"
+          className="text-4xl font-extrabold text-foreground transition-colors sm:text-5xl"
         >
           {unit}
         </motion.span>
       </div>
 
-      <div className="group relative flex h-13 w-full items-center overflow-hidden rounded-full bg-[#f1f3f5] transition-colors dark:bg-neutral-800">
+      <div className="group relative flex h-13 w-full items-center overflow-hidden rounded-full bg-muted transition-colors">
         <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-4 transition-colors sm:px-8">
           {dots}
         </div>
@@ -114,7 +84,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
           className="pointer-events-none absolute top-0 left-0 h-full rounded-full"
           animate={{
             width: `calc((${percentage} / 100) * (100% - 52px) + 52px)`,
-            background: colorSettings.gradient,
+            background: ALLOCATION_GRADIENT,
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         />
@@ -137,7 +107,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
           }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
-          <div className="size-10 rounded-full bg-white shadow-[inset_0_2px_4px_rgba(0,0,0,0.06)]" />
+          <div className="size-10 rounded-full bg-card shadow-[var(--shadow-soft)] ring-1 ring-border" />
         </motion.div>
       </div>
     </motion.div>
