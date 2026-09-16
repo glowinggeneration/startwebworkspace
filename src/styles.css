@@ -20,6 +20,8 @@
 
 @theme inline {
   --color-brand-blue: var(--brand-blue);
+  --color-allocation-gradient-start: var(--allocation-gradient-start);
+  --color-allocation-gradient-end: var(--allocation-gradient-end);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -94,6 +96,8 @@
   /* Startweb brand blue #164BFA — sidebar, primary actions, links. */
   --brand-blue: oklch(0.5147 0.2622 264.55);
   --brand-hover: oklch(0.4451 0.2302 264.67);
+  --allocation-gradient-start: oklch(0.69 0.17 246);
+  --allocation-gradient-end: var(--brand-blue);
   --radius: 0.625rem;
   --radius-card: 0.875rem;
   --font-sans:
@@ -173,6 +177,8 @@
 .dark {
   --brand-blue: oklch(0.65 0.2 264);
   --brand-hover: oklch(0.7 0.18 264);
+  --allocation-gradient-start: oklch(0.74 0.15 246);
+  --allocation-gradient-end: var(--brand-blue);
   --background: oklch(0.19 0.015 264);
   --foreground: oklch(0.97 0.005 264);
   --card: oklch(0.24 0.016 264);
