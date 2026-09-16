@@ -232,6 +232,7 @@ export type Database = {
           notes: string | null
           owner_id: string | null
           planned_cost: number
+          project_id: string | null
           spent_cost: number
           start_date: string | null
           status: string
@@ -252,6 +253,7 @@ export type Database = {
           notes?: string | null
           owner_id?: string | null
           planned_cost?: number
+          project_id?: string | null
           spent_cost?: number
           start_date?: string | null
           status?: string
@@ -272,6 +274,7 @@ export type Database = {
           notes?: string | null
           owner_id?: string | null
           planned_cost?: number
+          project_id?: string | null
           spent_cost?: number
           start_date?: string | null
           status?: string
@@ -284,6 +287,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "campaigns_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
             referencedColumns: ["id"]
           },
           {
@@ -1109,6 +1119,7 @@ export type Database = {
       project_phases: {
         Row: {
           created_at: string
+          due_date: string | null
           id: string
           name: string
           project_id: string
@@ -1119,6 +1130,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          due_date?: string | null
           id?: string
           name: string
           project_id: string
@@ -1129,6 +1141,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          due_date?: string | null
           id?: string
           name?: string
           project_id?: string
@@ -1352,6 +1365,7 @@ export type Database = {
           id: string
           issue_date: string
           notes: string | null
+          project_id: string | null
           quote_number: string
           status: string
           updated_at: string
@@ -1366,6 +1380,7 @@ export type Database = {
           id?: string
           issue_date?: string
           notes?: string | null
+          project_id?: string | null
           quote_number: string
           status?: string
           updated_at?: string
@@ -1380,6 +1395,7 @@ export type Database = {
           id?: string
           issue_date?: string
           notes?: string | null
+          project_id?: string | null
           quote_number?: string
           status?: string
           updated_at?: string
@@ -1408,6 +1424,13 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "quotes_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "quotes_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
@@ -1433,6 +1456,38 @@ export type Database = {
           id?: never
         }
         Relationships: []
+      }
+      reminder_log: {
+        Row: {
+          id: string
+          recipient_email: string
+          reminder_key: string
+          sent_at: string
+          workspace_id: string
+        }
+        Insert: {
+          id?: string
+          recipient_email: string
+          reminder_key: string
+          sent_at?: string
+          workspace_id: string
+        }
+        Update: {
+          id?: string
+          recipient_email?: string
+          reminder_key?: string
+          sent_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminder_log_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       resource_allocations: {
         Row: {
