@@ -211,7 +211,7 @@ function AccountsPage() {
           </Toolbar>
 
           {isLoading ? (
-            <div className="h-72 animate-pulse rounded-xl bg-muted" />
+            <div className="h-72 animate-pulse rounded-card bg-muted" />
           ) : filtered.length === 0 ? (
             <Panel>
               <EmptyState
