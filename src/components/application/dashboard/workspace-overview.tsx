@@ -120,7 +120,7 @@ export function WorkspaceOverview() {
     return (
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
         {[0, 1, 2, 3].map((key) => (
-          <Skeleton key={key} className="h-28 rounded-xl" />
+          <Skeleton key={key} className="h-28 rounded-card" />
         ))}
       </div>
     );

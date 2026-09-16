@@ -39,7 +39,7 @@ export function MobilePipelineView({ projects }: { projects: ProjectBoardProject
   }
 
   return (
-    <div className="flex h-[calc(100dvh-10rem)] overflow-hidden rounded-xl border border-border">
+    <div className="flex h-[calc(100dvh-10rem)] overflow-hidden rounded-card border border-border">
       <nav
         aria-label="Clients"
         className="flex w-16 shrink-0 flex-col items-center gap-1 overflow-y-auto border-r border-border bg-muted/30 py-2"
@@ -81,7 +81,7 @@ export function MobilePipelineView({ projects }: { projects: ProjectBoardProject
                 key={project.id}
                 to="/projects/$projectId"
                 params={{ projectId: project.id }}
-                className="block rounded-lg border border-border bg-card p-3"
+                className="block rounded-card border border-border bg-card p-3"
               >
                 <div className="flex items-center justify-between gap-2">
                   <p className="text-sm font-medium text-foreground">{project.name}</p>

@@ -78,7 +78,7 @@ function ClientCard({
   const invoice = latestDocument(account.invoices ?? []);
 
   return (
-    <article className="rounded-xl border border-border bg-card p-4 shadow-xs">
+    <article className="rounded-card border border-border bg-card p-4 shadow-xs">
       <div className="flex items-start justify-between gap-2">
         <h3 className="text-sm font-semibold text-foreground">{account.name}</h3>
         {account.review_priority ? (
@@ -167,45 +167,50 @@ function ClientCard({
         </p>
       )}
 
-      {showCampaigns ? <div className="mt-3 space-y-1 border-t border-border pt-3">
-        {account.campaigns.length > 0 ? (
-          <>
-            {account.campaigns.slice(0, 3).map((campaign) => (
-              <p key={campaign.id} className="flex items-start gap-2 text-xs text-muted-foreground">
-                <Megaphone className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-                <Link
-                  to="/campaigns"
-                  search={{ client: account.id }}
-                  className="font-medium text-foreground underline-offset-2 hover:underline"
+      {showCampaigns ? (
+        <div className="mt-3 space-y-1 border-t border-border pt-3">
+          {account.campaigns.length > 0 ? (
+            <>
+              {account.campaigns.slice(0, 3).map((campaign) => (
+                <p
+                  key={campaign.id}
+                  className="flex items-start gap-2 text-xs text-muted-foreground"
                 >
-                  {campaign.name}
-                </Link>
-                <span>
-                  {campaign.status}
-                  {campaign.next_action ? ` · ${campaign.next_action}` : ""}
-                  {campaign.next_action_date ? ` · ${campaign.next_action_date}` : ""}
-                </span>
-              </p>
-            ))}
-            {account.campaigns.length > 3 ? (
-              <p className="text-xs text-muted-foreground">
-                +{account.campaigns.length - 3} more campaigns
-              </p>
-            ) : null}
-          </>
-        ) : (
-          <p className="flex items-start gap-2 text-xs text-muted-foreground">
-            <Megaphone className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
-            <Link
-              to="/campaigns"
-              search={{ client: account.id }}
-              className="font-medium text-foreground underline-offset-2 hover:underline"
-            >
-              No campaign yet
-            </Link>
-          </p>
-        )}
-      </div> : null}
+                  <Megaphone className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                  <Link
+                    to="/campaigns"
+                    search={{ client: account.id }}
+                    className="font-medium text-foreground underline-offset-2 hover:underline"
+                  >
+                    {campaign.name}
+                  </Link>
+                  <span>
+                    {campaign.status}
+                    {campaign.next_action ? ` · ${campaign.next_action}` : ""}
+                    {campaign.next_action_date ? ` · ${campaign.next_action_date}` : ""}
+                  </span>
+                </p>
+              ))}
+              {account.campaigns.length > 3 ? (
+                <p className="text-xs text-muted-foreground">
+                  +{account.campaigns.length - 3} more campaigns
+                </p>
+              ) : null}
+            </>
+          ) : (
+            <p className="flex items-start gap-2 text-xs text-muted-foreground">
+              <Megaphone className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+              <Link
+                to="/campaigns"
+                search={{ client: account.id }}
+                className="font-medium text-foreground underline-offset-2 hover:underline"
+              >
+                No campaign yet
+              </Link>
+            </p>
+          )}
+        </div>
+      ) : null}
 
       {next.length > 0 ? (
         <div className="mt-3 space-y-1 border-t border-border pt-3">

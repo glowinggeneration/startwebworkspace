@@ -70,7 +70,7 @@ function InvoiceDetailPage() {
   if (isLoading || !invoice) {
     return (
       <div className="p-8">
-        <div className="h-64 animate-pulse rounded-xl bg-muted" />
+        <div className="h-64 animate-pulse rounded-card bg-muted" />
       </div>
     );
   }

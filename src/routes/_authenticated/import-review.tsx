@@ -75,7 +75,7 @@ function ImportReviewPage() {
       />
 
       {isLoading ? (
-        <div className="h-24 animate-pulse rounded-xl bg-muted" />
+        <div className="h-24 animate-pulse rounded-card bg-muted" />
       ) : open.length === 0 && decided.length === 0 ? (
         <div className="card-surface p-5">
           <p className="type-body text-muted-foreground">
@@ -131,7 +131,7 @@ function ReviewList({
         {items.map((item) => (
           <li
             key={item.id}
-            className="flex flex-wrap items-start justify-between gap-3 rounded-xl border border-border p-3"
+            className="flex flex-wrap items-start justify-between gap-3 rounded-card border border-border p-3"
           >
             <div className="min-w-0">
               <p className="type-body font-medium">{item.issue}</p>

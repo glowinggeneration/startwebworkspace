@@ -63,7 +63,7 @@ export function SplitAuthLayout({
         <div className="w-full bg-card p-8 sm:p-12 lg:w-1/2 lg:p-14">
           <div
             role="status"
-            className="rounded-2xl border border-border bg-muted/50 p-6 text-center md:hidden"
+            className="rounded-card border border-border bg-muted/50 p-6 text-center md:hidden"
           >
             <Monitor className="mx-auto mb-3 size-8 text-muted-foreground" aria-hidden />
             <h2 className="text-base font-semibold tracking-tight">Use a desktop or tablet</h2>

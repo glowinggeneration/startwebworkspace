@@ -72,7 +72,7 @@ export function ConversationImportCard() {
             {shown.dryRun ? "Preview only, nothing saved." : "Saved to this workspace."} Source{" "}
             {shown.namespace}, as at {shown.asOf}.
           </p>
-          <div className="overflow-hidden rounded-xl border border-border">
+          <div className="overflow-hidden rounded-card border border-border">
             <table className="w-full text-left">
               <thead className="bg-muted/50">
                 <tr className="type-meta text-muted-foreground">
@@ -98,7 +98,7 @@ export function ConversationImportCard() {
           </div>
 
           {shown.entities.some((entity) => entity.conflicts.length > 0) ? (
-            <div className="rounded-xl border border-border p-3">
+            <div className="rounded-card border border-border p-3">
               <h3 className="type-meta mb-1 font-medium">Needs attention</h3>
               <ul className="type-meta list-disc space-y-1 pl-4 text-muted-foreground">
                 {shown.entities.flatMap((entity) =>
