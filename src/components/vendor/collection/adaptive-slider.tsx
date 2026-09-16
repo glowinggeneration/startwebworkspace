@@ -10,6 +10,8 @@ interface AdaptiveSliderProps {
   max?: number;
   step?: number;
   defaultValue?: number;
+  label?: string;
+  unit?: string;
   onChange?: (value: number) => void;
 }
 
@@ -54,6 +56,8 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
   max = DEFAULT_MAX,
   step = DEFAULT_STEP,
   defaultValue = DEFAULT_VALUE,
+  label = "Calories",
+  unit = "kCal",
   onChange,
 }) => {
   const [internalValue, setInternalValue] = useState<number>(defaultValue);
@@ -85,7 +89,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
   return (
     <motion.div className="flex h-[60vh] w-xs flex-col items-center justify-center rounded-[36px] bg-[#FEFEFE] p-6 shadow-2xl shadow-black/5 transition-colors select-none sm:w-sm sm:p-12 dark:bg-neutral-900 dark:shadow-none">
       <span className="mb-2 text-xl font-bold text-[#878787] sm:text-2xl dark:text-neutral-500">
-        Calories
+        {label}
       </span>
 
       <div className="mb-8 flex items-baseline gap-2">
@@ -97,7 +101,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
           layout
           className="text-4xl font-extrabold text-[#010101] transition-colors sm:text-5xl dark:text-neutral-100"
         >
-          kCal
+          {unit}
         </motion.span>
       </div>
 

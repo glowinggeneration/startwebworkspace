@@ -25,7 +25,7 @@ import { useProjects } from "@/hooks/use-projects";
 import { useSetAllocation } from "@/hooks/use-resource-allocations";
 
 /**
- * Uses the supplied Adaptive Slider as-is (see
+ * Uses the supplied Adaptive Slider (see
  * docs/ui-components/COMPONENT_MAP.md) for the 0-40h allocation input —
  * its colour-by-load gradient reads naturally as "how full is this week."
  */
@@ -107,7 +107,15 @@ export function AllocationDialog({
           <div className="space-y-2">
             <Label>Hours this week</Label>
             <div className="flex justify-center py-2">
-              <AdaptiveSlider min={0} max={40} step={1} value={hours} onChange={setHours} />
+              <AdaptiveSlider
+                min={0}
+                max={40}
+                step={1}
+                value={hours}
+                label="Hours"
+                unit="h"
+                onChange={setHours}
+              />
             </div>
           </div>
         </div>
