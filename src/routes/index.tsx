@@ -128,15 +128,8 @@ function LandingPage() {
 
   return (
     <div>
-      <div className="px-4">
-        <SpotlightNavbar
-          items={[
-            { label: "How it works", href: "#how-it-works" },
-            { label: "FAQ", href: "#faq" },
-          ]}
-          onItemClick={(item) => scrollToId(item.href.slice(1))}
-        />
-      </div>
+      <LandingNav />
+
 
       <section className="relative isolate flex min-h-[85dvh] items-center justify-center overflow-hidden bg-background">
         <div className="mx-auto flex max-w-xl flex-col items-center gap-6 px-4 py-24 text-center text-foreground">
