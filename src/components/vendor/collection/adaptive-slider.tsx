@@ -42,10 +42,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
   const dots = useMemo(
     () =>
       Array.from({ length: 6 }).map((_, i) => (
-        <div
-          key={i}
-          className="z-30 h-1.5 w-1.5 rounded-full bg-primary/25 transition-colors"
-        />
+        <div key={i} className="z-30 h-1.5 w-1.5 rounded-full bg-primary/25 transition-colors" />
       )),
     [],
   );
@@ -58,9 +55,7 @@ export const AdaptiveSlider: FC<AdaptiveSliderProps> = ({
 
   return (
     <motion.div className="flex h-[60vh] w-xs flex-col items-center justify-center rounded-3xl bg-card p-6 shadow-[var(--shadow-elevated)] transition-colors select-none sm:w-sm sm:p-12">
-      <span className="mb-2 text-xl font-bold text-muted-foreground sm:text-2xl">
-        {label}
-      </span>
+      <span className="mb-2 text-xl font-bold text-muted-foreground sm:text-2xl">{label}</span>
 
       <div className="mb-8 flex items-baseline gap-2">
         <AnimatedText
