@@ -67,7 +67,7 @@ function SettingsPage() {
             />
           ) : null}
         </div>
-        {membersLoading && <div className="h-16 animate-pulse rounded-xl bg-muted" />}
+        {membersLoading && <div className="h-16 animate-pulse rounded-card bg-muted" />}
         <ul className="space-y-2">
           {members?.map((member) => (
             <li
