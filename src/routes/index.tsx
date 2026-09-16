@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { AuroraText } from "@/components/vendor/magicui/aurora-text";
 import { Highlighter } from "@/components/vendor/magicui/highlighter";
 import { TextAnimate } from "@/components/vendor/magicui/text-animate";
-
 import { HighlightGrid } from "@/components/vendor/vengeance/layout-cards/highlight-grid";
 import { FaqAccordion } from "@/components/vendor/vengeance/tooltip-marquee/faq-accordion";
 import AnimatedButton from "@/components/vendor/vengeance/buttons/animated-button";
+import { cn } from "@/lib/utils";
+
 
 // A full marketing landing page (mega nav, bento grid, testimonials, device
 // mockups) is Phase 6 — see docs/ui-components/COMPONENT_MAP.md. This wires
