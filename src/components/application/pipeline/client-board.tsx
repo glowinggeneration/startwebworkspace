@@ -24,7 +24,13 @@ import { currency } from "@/lib/sales/currency";
  * Board of real clients with their contacts, projects, phases, campaigns,
  * quotes and invoices, grouped by the relationship stage on each account.
  */
-export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
+export function ClientBoard({
+  accounts,
+  showCampaigns = true,
+}: {
+  accounts: ClientBoardAccount[];
+  showCampaigns?: boolean;
+}) {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {CLIENT_STAGES.map((stage) => {
@@ -47,7 +53,9 @@ export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
                   className="py-14"
                 />
               ) : (
-                columnAccounts.map((account) => <ClientCard key={account.id} account={account} />)
+                columnAccounts.map((account) => (
+                  <ClientCard key={account.id} account={account} showCampaigns={showCampaigns} />
+                ))
               )}
             </div>
           </Panel>
@@ -57,7 +65,13 @@ export function ClientBoard({ accounts }: { accounts: ClientBoardAccount[] }) {
   );
 }
 
-function ClientCard({ account }: { account: ClientBoardAccount }) {
+function ClientCard({
+  account,
+  showCampaigns,
+}: {
+  account: ClientBoardAccount;
+  showCampaigns: boolean;
+}) {
   const next = openTasks(account).slice(0, 3);
   const contact = account.contacts[0];
   const quote = latestDocument(account.quotes ?? []);
@@ -153,7 +167,7 @@ function ClientCard({ account }: { account: ClientBoardAccount }) {
         </p>
       )}
 
-      <div className="mt-3 space-y-1 border-t border-border pt-3">
+      {showCampaigns ? <div className="mt-3 space-y-1 border-t border-border pt-3">
         {account.campaigns.length > 0 ? (
           <>
             {account.campaigns.slice(0, 3).map((campaign) => (
@@ -191,7 +205,7 @@ function ClientCard({ account }: { account: ClientBoardAccount }) {
             </Link>
           </p>
         )}
-      </div>
+      </div> : null}
 
       {next.length > 0 ? (
         <div className="mt-3 space-y-1 border-t border-border pt-3">

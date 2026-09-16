@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Building2, LayoutGrid, List, Search, Tag, X } from "lucide-react";
+import { Building2, Info, LayoutGrid, List, Search, Tag, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,6 +36,7 @@ import {
   PanelFooter,
 } from "@/components/application/shell/panel-parts";
 import { LoadingIndicator } from "@/components/application/shell/loading-indicator";
+import { useProfile } from "@/hooks/use-profile";
 
 export const Route = createFileRoute("/_authenticated/accounts")({
   component: AccountsPage,
@@ -68,6 +69,7 @@ function AccountsPage() {
   const { data: accounts, isLoading } = useAccounts(workspaceId);
   const { data: industries } = useIndustries(workspaceId);
   const createAccount = useCreateAccount(workspaceId);
+  const { data: profile } = useProfile();
 
   const [tab, setTab] = useState<"all" | "reference">("all");
   const [search, setSearch] = useState("");
@@ -145,6 +147,16 @@ function AccountsPage() {
               },
             ]}
           />
+
+          {tab === "reference" && profile?.preferences.showStagePicker === true ? (
+            <div className="flex items-start gap-3 rounded-lg border border-border bg-card px-4 py-3 text-sm text-muted-foreground">
+              <Info className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+              <p>
+                Reference clients are trusted past clients whose results can support proposals,
+                case studies and sales conversations.
+              </p>
+            </div>
+          ) : null}
 
           <Toolbar>
             <div className="relative min-w-56 flex-1">

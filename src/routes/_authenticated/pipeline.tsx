@@ -63,6 +63,7 @@ import { BillingBoard } from "@/components/application/pipeline/billing-board";
 import { NewQuoteDialog } from "@/components/application/finance/new-quote-dialog";
 import { useBillingFlow } from "@/hooks/use-billing-flow";
 import type { DealStatus } from "@/integrations/supabase/app-types";
+import { useProfile } from "@/hooks/use-profile";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
   component: PipelinePage,
@@ -132,6 +133,8 @@ function PipelinePage() {
   const { data: scheduleProjects, isLoading: scheduleLoading } = useSchedule(workspaceId);
   const { data: boardProjects, isLoading: boardLoading } = useProjectBoard(workspaceId);
   const { data: billingFlows, isLoading: billingLoading } = useBillingFlow(workspaceId);
+  const { data: profile } = useProfile();
+  const showCampaigns = profile?.preferences.hideCampaigns !== true;
   const [handoffDealId, setHandoffDealId] = useState<string | null>(null);
   // Clients first: each client's projects, phases, campaigns, quotes and next
   // steps belong on one card rather than split across pages.
@@ -376,9 +379,9 @@ function PipelinePage() {
             ))}
           </div>
         ) : view === "clients" ? (
-          <ClientBoard accounts={visibleClients} />
+          <ClientBoard accounts={visibleClients} showCampaigns={showCampaigns} />
         ) : view === "projects" ? (
-          <ProjectBoard projects={visibleBoardProjects} />
+          <ProjectBoard projects={visibleBoardProjects} showCampaigns={showCampaigns} />
         ) : view === "billing" ? (
           <BillingBoard flows={visibleBillingFlows} />
         ) : view === "calendar" ? (
