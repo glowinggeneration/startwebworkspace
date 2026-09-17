@@ -81,11 +81,16 @@ export type Database = {
           import_source: string | null
           industry_id: string | null
           is_reference_client: boolean
+          list_import_id: string | null
           name: string
+          next_date: string | null
+          next_step: string | null
+          ops_status: string | null
           primary_service: string | null
           reference_note: string | null
           relationship_status: string | null
           review_priority: string | null
+          source: string | null
           source_refs: string | null
           summary: string | null
           updated_at: string
@@ -102,11 +107,16 @@ export type Database = {
           import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
+          list_import_id?: string | null
           name: string
+          next_date?: string | null
+          next_step?: string | null
+          ops_status?: string | null
           primary_service?: string | null
           reference_note?: string | null
           relationship_status?: string | null
           review_priority?: string | null
+          source?: string | null
           source_refs?: string | null
           summary?: string | null
           updated_at?: string
@@ -123,11 +133,16 @@ export type Database = {
           import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
+          list_import_id?: string | null
           name?: string
+          next_date?: string | null
+          next_step?: string | null
+          ops_status?: string | null
           primary_service?: string | null
           reference_note?: string | null
           relationship_status?: string | null
           review_priority?: string | null
+          source?: string | null
           source_refs?: string | null
           summary?: string | null
           updated_at?: string
@@ -141,6 +156,13 @@ export type Database = {
             columns: ["industry_id"]
             isOneToOne: false
             referencedRelation: "industries"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "accounts_list_import_id_fkey"
+            columns: ["list_import_id"]
+            isOneToOne: false
+            referencedRelation: "calling_list_imports"
             referencedColumns: ["id"]
           },
           {
