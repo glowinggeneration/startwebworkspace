@@ -8,6 +8,9 @@ import { supabase } from "@/integrations/supabase/client";
 export interface ProfilePreferences {
   hideCampaigns?: boolean;
   showStagePicker?: boolean;
+  /** Shows the Operations screens: today's working list, the nightly
+   * close, the week and the month pack. */
+  showOperations?: boolean;
 }
 
 export function useProfile() {

@@ -81,16 +81,22 @@ export type Database = {
           import_source: string | null
           industry_id: string | null
           is_reference_client: boolean
+          list_import_id: string | null
           name: string
+          next_date: string | null
+          next_step: string | null
+          ops_status: string | null
           primary_service: string | null
           reference_note: string | null
           relationship_status: string | null
           review_priority: string | null
+          source: string | null
           source_refs: string | null
           summary: string | null
           updated_at: string
           website: string | null
           workspace_id: string
+          world: string
         }
         Insert: {
           account_type?: string | null
@@ -101,16 +107,22 @@ export type Database = {
           import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
+          list_import_id?: string | null
           name: string
+          next_date?: string | null
+          next_step?: string | null
+          ops_status?: string | null
           primary_service?: string | null
           reference_note?: string | null
           relationship_status?: string | null
           review_priority?: string | null
+          source?: string | null
           source_refs?: string | null
           summary?: string | null
           updated_at?: string
           website?: string | null
           workspace_id: string
+          world?: string
         }
         Update: {
           account_type?: string | null
@@ -121,16 +133,22 @@ export type Database = {
           import_source?: string | null
           industry_id?: string | null
           is_reference_client?: boolean
+          list_import_id?: string | null
           name?: string
+          next_date?: string | null
+          next_step?: string | null
+          ops_status?: string | null
           primary_service?: string | null
           reference_note?: string | null
           relationship_status?: string | null
           review_priority?: string | null
+          source?: string | null
           source_refs?: string | null
           summary?: string | null
           updated_at?: string
           website?: string | null
           workspace_id?: string
+          world?: string
         }
         Relationships: [
           {
@@ -141,7 +159,87 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "accounts_list_import_id_fkey"
+            columns: ["list_import_id"]
+            isOneToOne: false
+            referencedRelation: "calling_list_imports"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "accounts_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      activity_events: {
+        Row: {
+          account_id: string | null
+          contact_name: string | null
+          created_at: string
+          event_date: string
+          event_type: string
+          hours: number
+          id: string
+          list_import_id: string | null
+          notes: string | null
+          outcome: string | null
+          units: number
+          updated_at: string
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          account_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          event_date?: string
+          event_type: string
+          hours?: number
+          id?: string
+          list_import_id?: string | null
+          notes?: string | null
+          outcome?: string | null
+          units?: number
+          updated_at?: string
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          account_id?: string | null
+          contact_name?: string | null
+          created_at?: string
+          event_date?: string
+          event_type?: string
+          hours?: number
+          id?: string
+          list_import_id?: string | null
+          notes?: string | null
+          outcome?: string | null
+          units?: number
+          updated_at?: string
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "activity_events_account_id_fkey"
+            columns: ["account_id"]
+            isOneToOne: false
+            referencedRelation: "accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_events_list_import_id_fkey"
+            columns: ["list_import_id"]
+            isOneToOne: false
+            referencedRelation: "calling_list_imports"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "activity_events_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -210,6 +308,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "calendar_feed_tokens_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      calling_list_imports: {
+        Row: {
+          activities_created: number
+          column_mapping: Json
+          companies_created: number
+          file_name: string
+          id: string
+          imported_at: string
+          list_name: string | null
+          row_count: number
+          user_id: string
+          workspace_id: string
+        }
+        Insert: {
+          activities_created?: number
+          column_mapping?: Json
+          companies_created?: number
+          file_name: string
+          id?: string
+          imported_at?: string
+          list_name?: string | null
+          row_count?: number
+          user_id: string
+          workspace_id: string
+        }
+        Update: {
+          activities_created?: number
+          column_mapping?: Json
+          companies_created?: number
+          file_name?: string
+          id?: string
+          imported_at?: string
+          list_name?: string | null
+          row_count?: number
+          user_id?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "calling_list_imports_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -367,16 +512,23 @@ export type Database = {
       }
       daily_activity_log: {
         Row: {
+          calling_block_kept: boolean | null
+          closed_at: string | null
+          content_units: number
           conversations: number
           created_at: string
+          follow_ups: number
           hours_calling: number
           id: string
           industry_focus_id: string | null
+          list_file_name: string | null
           log_date: string
           meetings_booked: number
           meetings_held: number
           notes_for_tomorrow: string | null
           offers_sent: number
+          research_hours: number
+          theme: string | null
           touches: number
           updated_at: string
           user_id: string
@@ -384,16 +536,23 @@ export type Database = {
           workspace_id: string
         }
         Insert: {
+          calling_block_kept?: boolean | null
+          closed_at?: string | null
+          content_units?: number
           conversations?: number
           created_at?: string
+          follow_ups?: number
           hours_calling?: number
           id?: string
           industry_focus_id?: string | null
+          list_file_name?: string | null
           log_date: string
           meetings_booked?: number
           meetings_held?: number
           notes_for_tomorrow?: string | null
           offers_sent?: number
+          research_hours?: number
+          theme?: string | null
           touches?: number
           updated_at?: string
           user_id: string
@@ -401,16 +560,23 @@ export type Database = {
           workspace_id: string
         }
         Update: {
+          calling_block_kept?: boolean | null
+          closed_at?: string | null
+          content_units?: number
           conversations?: number
           created_at?: string
+          follow_ups?: number
           hours_calling?: number
           id?: string
           industry_focus_id?: string | null
+          list_file_name?: string | null
           log_date?: string
           meetings_booked?: number
           meetings_held?: number
           notes_for_tomorrow?: string | null
           offers_sent?: number
+          research_hours?: number
+          theme?: string | null
           touches?: number
           updated_at?: string
           user_id?: string

@@ -9,6 +9,7 @@ import {
   Receipt,
   ScrollText,
   Settings,
+  Sunrise,
   Users,
   UsersRound,
 } from "lucide-react";
@@ -34,6 +35,7 @@ export const NAV_GROUPS: NavGroup[] = [
     label: "Workspace",
     items: [
       { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
+      { to: "/operations", label: "Operations", icon: Sunrise },
       { to: "/pipeline", label: "Pipeline", icon: Kanban },
       { to: "/accounts", label: "Accounts", icon: Users },
     ],
