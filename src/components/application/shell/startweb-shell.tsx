@@ -67,15 +67,14 @@ export function StartwebShell({ children }: { children: ReactNode }) {
   // Per-user nav trim: one person's preference, not a system-wide change —
   // everyone else keeps every item.
   const hideCampaigns = profile?.preferences.hideCampaigns === true;
-  const visibleNavGroups = hideCampaigns
-    ? NAV_GROUPS.map((group) => ({
-        ...group,
-        items: group.items.filter((item) => item.to !== "/campaigns"),
-      }))
-    : NAV_GROUPS;
-  const visibleNavItems = hideCampaigns
-    ? NAV_ITEMS.filter((item) => item.to !== "/campaigns")
-    : NAV_ITEMS;
+  const showOperations = profile?.preferences.showOperations === true;
+  const hidden = (to: string) =>
+    (hideCampaigns && to === "/campaigns") || (!showOperations && to === "/operations");
+  const visibleNavGroups = NAV_GROUPS.map((group) => ({
+    ...group,
+    items: group.items.filter((item) => !hidden(item.to)),
+  }));
+  const visibleNavItems = NAV_ITEMS.filter((item) => !hidden(item.to));
 
   const currentPage =
     visibleNavItems.find((item) => pathname.startsWith(item.to)) ??
