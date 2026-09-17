@@ -288,7 +288,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
           </div>
         </header>
         <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
-          {children}
+          {allowed ? children : <AccessRestricted landing={roleWorkspace.landing} />}
         </main>
         <AlertDialog open={isSignOutOpen} onOpenChange={setIsSignOutOpen}>
           <AlertDialogContent>
