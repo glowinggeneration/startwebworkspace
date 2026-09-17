@@ -2,6 +2,13 @@ import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CalendarDays, Plus } from "lucide-react";
 import { useProfile } from "@/hooks/use-profile";
+import { useWorkspaceRole } from "@/hooks/use-workspace-role";
+import { useActiveWorkspace } from "@/hooks/use-active-workspace";
+import {
+  DeliveryDashboard,
+  MyWorkDashboard,
+  TechnologyDashboard,
+} from "@/components/application/dashboard/role-dashboards";
 import {
   CommandBoard,
   type DashboardPeriod,
@@ -70,6 +77,8 @@ function monthOptions(): { value: string; label: string }[] {
 
 function DashboardPage() {
   const { data: profile } = useProfile();
+  const role = useWorkspaceRole();
+  const workspace = useActiveWorkspace();
   const [period, setPeriod] = useState<DashboardPeriod>("month");
   const [month, setMonth] = useState(currentMonthKey());
   const [logOpen, setLogOpen] = useState(false);
@@ -120,6 +129,14 @@ function DashboardPage() {
         </div>
       </div>
 
+      {role === "cto" ? <TechnologyDashboard workspaceId={workspace.workspaceId} /> : null}
+      {role === "pm" || role === "member" ? (
+        <DeliveryDashboard workspaceId={workspace.workspaceId} />
+      ) : null}
+      {role === "builder" ? <MyWorkDashboard workspaceId={workspace.workspaceId} /> : null}
+
+      {role === "owner" || role === "admin" || role === "sales" ? (
+        <>
       <Tabs value={period} onValueChange={(value) => setPeriod(value as DashboardPeriod)}>
         <TabsList aria-label="Reporting period">
           <TabsTrigger value="day">Day</TabsTrigger>
@@ -132,6 +149,8 @@ function DashboardPage() {
       <CommandBoard month={month} period={period} periodLabel={PERIOD_LABEL[period]} />
 
       <WorkspaceOverview />
+        </>
+      ) : null}
     </div>
   );
 }
