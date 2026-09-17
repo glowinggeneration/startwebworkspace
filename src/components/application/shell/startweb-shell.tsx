@@ -7,7 +7,14 @@ import { initialsOf } from "@/lib/initials";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/core/theme-toggle";
 import { GlobalCommandPalette, openCommandPalette } from "@/components/core/global-command";
-import { NAV_GROUPS, NAV_ITEMS, SETTINGS_NAV_ITEM } from "@/components/application/shell/nav-items";
+import {
+  SETTINGS_NAV_ITEM,
+  canOpenPath,
+  navItemsForRole,
+  workspaceForRole,
+} from "@/lib/access/roles";
+import { useWorkspaceRole } from "@/hooks/use-workspace-role";
+import { AccessRestricted } from "@/components/application/shell/access-restricted";
 import {
   DropdownMenu,
   DropdownMenuContent,
