@@ -28,6 +28,7 @@ import { Route as AuthenticatedQuotesRouteImport } from './routes/_authenticated
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedStatementsRouteImport } from './routes/_authenticated/statements'
 import { Route as AuthenticatedTeamRouteImport } from './routes/_authenticated/team'
+import { Route as AuthenticatedTechnologyRouteImport } from './routes/_authenticated/technology'
 import { Route as AuthenticatedWorkloadRouteImport } from './routes/_authenticated/workload'
 import { Route as InviteTokenRouteImport } from './routes/invite.$token'
 import { Route as AuthenticatedInvoicingInvoiceIdRouteImport } from './routes/_authenticated/invoicing.$invoiceId'
@@ -133,6 +134,11 @@ const AuthenticatedTeamRoute = AuthenticatedTeamRouteImport.update({
   path: '/team',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedTechnologyRoute = AuthenticatedTechnologyRouteImport.update({
+  id: '/technology',
+  path: '/technology',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedWorkloadRoute = AuthenticatedWorkloadRouteImport.update({
   id: '/workload',
   path: '/workload',
@@ -202,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
   '/team': typeof AuthenticatedTeamRoute
+  '/technology': typeof AuthenticatedTechnologyRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
@@ -231,6 +238,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsRoute
   '/statements': typeof AuthenticatedStatementsRoute
   '/team': typeof AuthenticatedTeamRoute
+  '/technology': typeof AuthenticatedTechnologyRoute
   '/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
@@ -262,6 +270,7 @@ export interface FileRoutesById {
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/statements': typeof AuthenticatedStatementsRoute
   '/_authenticated/team': typeof AuthenticatedTeamRoute
+  '/_authenticated/technology': typeof AuthenticatedTechnologyRoute
   '/_authenticated/workload': typeof AuthenticatedWorkloadRoute
   '/invite/$token': typeof InviteTokenRoute
   '/_authenticated/invoicing/$invoiceId': typeof AuthenticatedInvoicingInvoiceIdRoute
@@ -293,6 +302,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/statements'
     | '/team'
+    | '/technology'
     | '/workload'
     | '/invite/$token'
     | '/invoicing/$invoiceId'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/statements'
     | '/team'
+    | '/technology'
     | '/workload'
     | '/invite/$token'
     | '/invoicing/$invoiceId'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings'
     | '/_authenticated/statements'
     | '/_authenticated/team'
+    | '/_authenticated/technology'
     | '/_authenticated/workload'
     | '/invite/$token'
     | '/_authenticated/invoicing/$invoiceId'
@@ -512,6 +524,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTeamRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/technology': {
+      id: '/_authenticated/technology'
+      path: '/technology'
+      fullPath: '/technology'
+      preLoaderRoute: typeof AuthenticatedTechnologyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/workload': {
       id: '/_authenticated/workload'
       path: '/workload'
@@ -630,6 +649,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedStatementsRoute: typeof AuthenticatedStatementsRoute
   AuthenticatedTeamRoute: typeof AuthenticatedTeamRoute
+  AuthenticatedTechnologyRoute: typeof AuthenticatedTechnologyRoute
   AuthenticatedWorkloadRoute: typeof AuthenticatedWorkloadRoute
 }
 
@@ -647,6 +667,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedStatementsRoute: AuthenticatedStatementsRoute,
   AuthenticatedTeamRoute: AuthenticatedTeamRoute,
+  AuthenticatedTechnologyRoute: AuthenticatedTechnologyRoute,
   AuthenticatedWorkloadRoute: AuthenticatedWorkloadRoute,
 }
 

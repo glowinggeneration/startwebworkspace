@@ -196,7 +196,7 @@ function TechnologyPage() {
                   <TechForm
                     projectId={project.id}
                     value={row}
-                    members={members}
+                    members={members.map((m) => ({ user_id: m.userId, full_name: m.name }))}
                     onSave={(values) => saveTech.mutate(values)}
                   />
                 </Panel>
