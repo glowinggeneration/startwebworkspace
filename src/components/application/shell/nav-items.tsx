@@ -9,6 +9,7 @@ import {
   Receipt,
   ScrollText,
   Settings,
+  Sunrise,
   Users,
   UsersRound,
 } from "lucide-react";
