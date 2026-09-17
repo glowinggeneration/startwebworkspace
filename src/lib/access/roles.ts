@@ -6,6 +6,7 @@ import {
   Kanban,
   LayoutDashboard,
   Megaphone,
+  MonitorCog,
   Receipt,
   ScrollText,
   Settings,
@@ -40,6 +41,7 @@ const ITEM = {
   pipeline: { to: "/pipeline", label: "Pipeline", icon: Kanban },
   accounts: { to: "/accounts", label: "Accounts", icon: Users },
   projects: { to: "/projects", label: "Projects", icon: FolderKanban },
+  technology: { to: "/technology", label: "Technology", icon: MonitorCog },
   campaigns: { to: "/campaigns", label: "Campaigns", icon: Megaphone },
   team: { to: "/team", label: "Team", icon: UsersRound },
   workload: { to: "/workload", label: "Workload", icon: Gauge },
@@ -68,7 +70,14 @@ const EXECUTIVE: RoleWorkspace = {
     },
     {
       label: "Delivery",
-      items: [ITEM.projects, ITEM.campaigns, ITEM.team, ITEM.workload, ITEM.activity],
+      items: [
+        ITEM.projects,
+        ITEM.technology,
+        ITEM.campaigns,
+        ITEM.team,
+        ITEM.workload,
+        ITEM.activity,
+      ],
     },
     {
       label: "Finance",
@@ -83,8 +92,8 @@ const TECHNOLOGY: RoleWorkspace = {
   navGroups: [
     { label: "Workspace", items: [ITEM.dashboard, ITEM.accounts] },
     {
-      label: "Delivery",
-      items: [ITEM.projects, ITEM.team, ITEM.workload, ITEM.activity],
+      label: "Technology",
+      items: [ITEM.technology, ITEM.projects, ITEM.team, ITEM.workload, ITEM.activity],
     },
   ],
   extraPaths: [],
