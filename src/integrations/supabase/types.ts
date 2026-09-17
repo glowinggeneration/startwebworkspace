@@ -1285,6 +1285,57 @@ export type Database = {
         }
         Relationships: []
       }
+      project_blockers: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          kind: string
+          project_id: string
+          raised_by: string | null
+          resolved_at: string | null
+          status: string
+          workspace_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          kind?: string
+          project_id: string
+          raised_by?: string | null
+          resolved_at?: string | null
+          status?: string
+          workspace_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          kind?: string
+          project_id?: string
+          raised_by?: string | null
+          resolved_at?: string | null
+          status?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_blockers_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_blockers_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       project_phases: {
         Row: {
           created_at: string
@@ -1329,6 +1380,81 @@ export type Database = {
           },
           {
             foreignKeyName: "project_phases_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_tech: {
+        Row: {
+          builder_id: string | null
+          created_at: string
+          designer_id: string | null
+          domain: string | null
+          hosting: string | null
+          id: string
+          launch_date: string | null
+          live_url: string | null
+          maintenance_notes: string | null
+          notes: string | null
+          project_id: string
+          repo_url: string | null
+          ssl_status: string | null
+          staging_url: string | null
+          tech_stack: string | null
+          updated_at: string
+          workspace_id: string
+        }
+        Insert: {
+          builder_id?: string | null
+          created_at?: string
+          designer_id?: string | null
+          domain?: string | null
+          hosting?: string | null
+          id?: string
+          launch_date?: string | null
+          live_url?: string | null
+          maintenance_notes?: string | null
+          notes?: string | null
+          project_id: string
+          repo_url?: string | null
+          ssl_status?: string | null
+          staging_url?: string | null
+          tech_stack?: string | null
+          updated_at?: string
+          workspace_id: string
+        }
+        Update: {
+          builder_id?: string | null
+          created_at?: string
+          designer_id?: string | null
+          domain?: string | null
+          hosting?: string | null
+          id?: string
+          launch_date?: string | null
+          live_url?: string | null
+          maintenance_notes?: string | null
+          notes?: string | null
+          project_id?: string
+          repo_url?: string | null
+          ssl_status?: string | null
+          staging_url?: string | null
+          tech_stack?: string | null
+          updated_at?: string
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_tech_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: true
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_tech_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -1408,6 +1534,7 @@ export type Database = {
           import_source: string | null
           name: string
           owner_id: string | null
+          production_stage: string
           service_type: string | null
           source_refs: string | null
           start_date: string | null
@@ -1427,6 +1554,7 @@ export type Database = {
           import_source?: string | null
           name: string
           owner_id?: string | null
+          production_stage?: string
           service_type?: string | null
           source_refs?: string | null
           start_date?: string | null
@@ -1446,6 +1574,7 @@ export type Database = {
           import_source?: string | null
           name?: string
           owner_id?: string | null
+          production_stage?: string
           service_type?: string | null
           source_refs?: string | null
           start_date?: string | null
@@ -1472,6 +1601,60 @@ export type Database = {
           },
           {
             foreignKeyName: "projects_workspace_id_fkey"
+            columns: ["workspace_id"]
+            isOneToOne: false
+            referencedRelation: "workspaces"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      qa_submissions: {
+        Row: {
+          id: string
+          notes: string | null
+          project_id: string
+          review_notes: string | null
+          reviewed_at: string | null
+          reviewed_by: string | null
+          status: string
+          submitted_at: string
+          submitted_by: string | null
+          workspace_id: string
+        }
+        Insert: {
+          id?: string
+          notes?: string | null
+          project_id: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          submitted_by?: string | null
+          workspace_id: string
+        }
+        Update: {
+          id?: string
+          notes?: string | null
+          project_id?: string
+          review_notes?: string | null
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          status?: string
+          submitted_at?: string
+          submitted_by?: string | null
+          workspace_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "qa_submissions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "qa_submissions_workspace_id_fkey"
             columns: ["workspace_id"]
             isOneToOne: false
             referencedRelation: "workspaces"
@@ -2014,6 +2197,10 @@ export type Database = {
         Args: { _account_id: string; _user_id: string; _workspace_id: string }
         Returns: boolean
       }
+      can_view_project: {
+        Args: { _project_id: string; _user_id: string; _workspace_id: string }
+        Returns: boolean
+      }
       client_account_id_for: {
         Args: { _user_id: string; _workspace_id: string }
         Returns: string
@@ -2075,7 +2262,15 @@ export type Database = {
       }
     }
     Enums: {
-      workspace_role: "owner" | "admin" | "sales" | "pm" | "member" | "client"
+      workspace_role:
+        | "owner"
+        | "admin"
+        | "sales"
+        | "pm"
+        | "member"
+        | "client"
+        | "cto"
+        | "builder"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2203,7 +2398,16 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      workspace_role: ["owner", "admin", "sales", "pm", "member", "client"],
+      workspace_role: [
+        "owner",
+        "admin",
+        "sales",
+        "pm",
+        "member",
+        "client",
+        "cto",
+        "builder",
+      ],
     },
   },
 } as const

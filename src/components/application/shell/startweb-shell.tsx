@@ -7,7 +7,14 @@ import { initialsOf } from "@/lib/initials";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/core/theme-toggle";
 import { GlobalCommandPalette, openCommandPalette } from "@/components/core/global-command";
-import { NAV_GROUPS, NAV_ITEMS, SETTINGS_NAV_ITEM } from "@/components/application/shell/nav-items";
+import {
+  SETTINGS_NAV_ITEM,
+  canOpenPath,
+  navItemsForRole,
+  workspaceForRole,
+} from "@/lib/access/roles";
+import { useWorkspaceRole } from "@/hooks/use-workspace-role";
+import { AccessRestricted } from "@/components/application/shell/access-restricted";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,17 +71,13 @@ export function StartwebShell({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Per-user nav trim: one person's preference, not a system-wide change —
-  // everyone else keeps every item.
-  const hideCampaigns = profile?.preferences.hideCampaigns === true;
-  const showOperations = profile?.preferences.showOperations === true;
-  const hidden = (to: string) =>
-    (hideCampaigns && to === "/campaigns") || (!showOperations && to === "/operations");
-  const visibleNavGroups = NAV_GROUPS.map((group) => ({
-    ...group,
-    items: group.items.filter((item) => !hidden(item.to)),
-  }));
-  const visibleNavItems = NAV_ITEMS.filter((item) => !hidden(item.to));
+  // The menu comes from the person's role in the workspace, so a link and the
+  // page behind it can never disagree.
+  const role = useWorkspaceRole();
+  const roleWorkspace = workspaceForRole(role);
+  const visibleNavGroups = roleWorkspace.navGroups;
+  const visibleNavItems = navItemsForRole(role);
+  const allowed = canOpenPath(role, pathname);
 
   const currentPage =
     visibleNavItems.find((item) => pathname.startsWith(item.to)) ??
@@ -285,7 +288,7 @@ export function StartwebShell({ children }: { children: ReactNode }) {
           </div>
         </header>
         <main id="main-content" tabIndex={-1} className="flex flex-1 flex-col focus:outline-none">
-          {children}
+          {allowed ? children : <AccessRestricted landing={roleWorkspace.landing} />}
         </main>
         <AlertDialog open={isSignOutOpen} onOpenChange={setIsSignOutOpen}>
           <AlertDialogContent>

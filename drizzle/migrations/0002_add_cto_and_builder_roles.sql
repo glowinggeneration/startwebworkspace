@@ -1,0 +1,2 @@
+ALTER TYPE public.workspace_role ADD VALUE IF NOT EXISTS 'cto';
+ALTER TYPE public.workspace_role ADD VALUE IF NOT EXISTS 'builder';

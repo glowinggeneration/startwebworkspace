@@ -15,6 +15,34 @@
       "when": 1789668410408,
       "tag": "0001_accounts_motion_fields",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789670891005,
+      "tag": "0002_add_cto_and_builder_roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789670907229,
+      "tag": "0003_assign_team_roles",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789671086052,
+      "tag": "0004_website_production_layer",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789671124367,
+      "tag": "0005_builder_record_access",
+      "breakpoints": true
     }
   ]
 }
