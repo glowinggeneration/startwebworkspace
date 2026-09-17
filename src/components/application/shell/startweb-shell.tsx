@@ -71,17 +71,13 @@ export function StartwebShell({ children }: { children: ReactNode }) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Per-user nav trim: one person's preference, not a system-wide change —
-  // everyone else keeps every item.
-  const hideCampaigns = profile?.preferences.hideCampaigns === true;
-  const showOperations = profile?.preferences.showOperations === true;
-  const hidden = (to: string) =>
-    (hideCampaigns && to === "/campaigns") || (!showOperations && to === "/operations");
-  const visibleNavGroups = NAV_GROUPS.map((group) => ({
-    ...group,
-    items: group.items.filter((item) => !hidden(item.to)),
-  }));
-  const visibleNavItems = NAV_ITEMS.filter((item) => !hidden(item.to));
+  // The menu comes from the person's role in the workspace, so a link and the
+  // page behind it can never disagree.
+  const role = useWorkspaceRole();
+  const roleWorkspace = workspaceForRole(role);
+  const visibleNavGroups = roleWorkspace.navGroups;
+  const visibleNavItems = navItemsForRole(role);
+  const allowed = canOpenPath(role, pathname);
 
   const currentPage =
     visibleNavItems.find((item) => pathname.startsWith(item.to)) ??
