@@ -36,6 +36,13 @@
       "when": 1789671086052,
       "tag": "0004_website_production_layer",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789671124367,
+      "tag": "0005_builder_record_access",
+      "breakpoints": true
     }
   ]
 }
