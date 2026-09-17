@@ -14,6 +14,7 @@ import {
   useReviewQa,
   useSaveProjectTech,
   useSetProductionStage,
+  type ProjectTech,
 } from "@/hooks/use-technology";
 import { PRODUCTION_STAGES, stageLabel } from "@/lib/production-stages";
 import {
@@ -302,16 +303,16 @@ function TechForm({
   onSave,
 }: {
   projectId: string;
-  value: { [key: string]: unknown } | undefined;
+  value: ProjectTech | undefined;
   members: { user_id: string; full_name: string | null }[];
   onSave: (values: Record<string, unknown> & { project_id: string }) => void;
 }) {
-  const [domain, setDomain] = useState((value?.["domain"] as string) ?? "");
-  const [hosting, setHosting] = useState((value?.["hosting"] as string) ?? "");
-  const [stack, setStack] = useState((value?.["tech_stack"] as string) ?? "");
-  const [staging, setStaging] = useState((value?.["staging_url"] as string) ?? "");
-  const [liveUrl, setLiveUrl] = useState((value?.["live_url"] as string) ?? "");
-  const [builder, setBuilder] = useState((value?.["builder_id"] as string) ?? "none");
+  const [domain, setDomain] = useState(value?.domain ?? "");
+  const [hosting, setHosting] = useState(value?.hosting ?? "");
+  const [stack, setStack] = useState(value?.tech_stack ?? "");
+  const [staging, setStaging] = useState(value?.staging_url ?? "");
+  const [liveUrl, setLiveUrl] = useState(value?.live_url ?? "");
+  const [builder, setBuilder] = useState(value?.builder_id ?? "none");
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
