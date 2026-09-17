@@ -46,6 +46,12 @@ function mondayOf(date: string): string {
   return day.toISOString().slice(0, 10);
 }
 
+function lastDayOfMonth(monthStart: string): string {
+  const start = new Date(`${monthStart}T00:00:00`);
+  const end = new Date(start.getFullYear(), start.getMonth() + 1, 0);
+  return `${end.getFullYear()}-${String(end.getMonth() + 1).padStart(2, "0")}-${String(end.getDate()).padStart(2, "0")}`;
+}
+
 function addDays(date: string, days: number): string {
   const day = new Date(`${date}T00:00:00`);
   day.setDate(day.getDate() + days);
