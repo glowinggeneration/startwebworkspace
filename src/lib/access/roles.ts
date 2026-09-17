@@ -99,17 +99,22 @@ const TECHNOLOGY: RoleWorkspace = {
   extraPaths: [],
 };
 
+/**
+ * Ntokozo and Dodi keep the workspace they had before the role split: the full
+ * set of screens, with Campaigns hidden for delivery and the Operations tools
+ * kept for sales.
+ */
 const DELIVERY: RoleWorkspace = {
   landing: "/dashboard",
   navGroups: [
-    { label: "Workspace", items: [ITEM.dashboard, ITEM.accounts] },
+    { label: "Workspace", items: [ITEM.dashboard, ITEM.pipeline, ITEM.accounts] },
     {
       label: "Delivery",
       items: [ITEM.projects, ITEM.team, ITEM.workload, ITEM.activity],
     },
-    { label: "Finance", items: [ITEM.quotes, ITEM.invoicing] },
+    { label: "Finance", items: [ITEM.quotes, ITEM.invoicing, ITEM.statements] },
   ],
-  extraPaths: [],
+  extraPaths: ["/import-review"],
 };
 
 const SALES: RoleWorkspace = {
@@ -119,11 +124,15 @@ const SALES: RoleWorkspace = {
       label: "Workspace",
       items: [ITEM.dashboard, ITEM.operations, ITEM.pipeline, ITEM.accounts],
     },
-    { label: "Delivery", items: [ITEM.campaigns, ITEM.activity] },
-    { label: "Finance", items: [ITEM.quotes, ITEM.invoicing] },
+    {
+      label: "Delivery",
+      items: [ITEM.projects, ITEM.campaigns, ITEM.team, ITEM.workload, ITEM.activity],
+    },
+    { label: "Finance", items: [ITEM.quotes, ITEM.invoicing, ITEM.statements] },
   ],
-  extraPaths: [],
+  extraPaths: ["/import-review"],
 };
+
 
 const BUILDER: RoleWorkspace = {
   landing: "/dashboard",
