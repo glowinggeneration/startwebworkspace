@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
  * Shown when someone types the address of a page their role does not cover.
  * The database policies are the real boundary; this is the polite door.
  */
-export function AccessRestricted({ landing }: { landing: string }) {
+export function AccessRestricted({ landing = "/dashboard" }: { landing?: string }) {
   return (
     <div className="flex flex-1 items-center justify-center p-10">
       <div className="card-surface max-w-md rounded-card p-8 text-center">
