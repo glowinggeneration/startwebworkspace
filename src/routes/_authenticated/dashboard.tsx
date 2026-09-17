@@ -130,12 +130,9 @@ function DashboardPage() {
       </div>
 
       {role === "cto" ? <TechnologyDashboard workspaceId={workspace.workspaceId} /> : null}
-      {role === "pm" || role === "member" ? (
-        <DeliveryDashboard workspaceId={workspace.workspaceId} />
-      ) : null}
       {role === "builder" ? <MyWorkDashboard workspaceId={workspace.workspaceId} /> : null}
 
-      {role === "owner" || role === "admin" || role === "sales" ? (
+      {role === "owner" || role === "admin" || role === "sales" || role === "pm" || role === "member" ? (
         <>
       <Tabs value={period} onValueChange={(value) => setPeriod(value as DashboardPeriod)}>
         <TabsList aria-label="Reporting period">
