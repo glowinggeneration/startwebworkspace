@@ -2075,7 +2075,15 @@ export type Database = {
       }
     }
     Enums: {
-      workspace_role: "owner" | "admin" | "sales" | "pm" | "member" | "client"
+      workspace_role:
+        | "owner"
+        | "admin"
+        | "sales"
+        | "pm"
+        | "member"
+        | "client"
+        | "cto"
+        | "builder"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2203,7 +2211,16 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      workspace_role: ["owner", "admin", "sales", "pm", "member", "client"],
+      workspace_role: [
+        "owner",
+        "admin",
+        "sales",
+        "pm",
+        "member",
+        "client",
+        "cto",
+        "builder",
+      ],
     },
   },
 } as const
