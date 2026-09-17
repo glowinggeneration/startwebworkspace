@@ -21,7 +21,9 @@ export function AccessRestricted({ landing = "/dashboard" }: { landing?: string 
           This page is not part of your role in the workspace. Ask Thabo if you need it opened up.
         </p>
         <Button asChild>
-          <Link to={landing}>Back to my dashboard</Link>
+          <Link to="/dashboard" search={{}} params={{}} data-landing={landing}>
+            Back to my dashboard
+          </Link>
         </Button>
       </div>
     </div>
