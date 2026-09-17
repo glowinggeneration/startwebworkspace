@@ -63,10 +63,7 @@ function OperationsPage() {
     [weekStart],
   );
   const monthStart = `${date.slice(0, 7)}-01`;
-  const monthEnd = addDays(
-    `${new Date(`${monthStart}T00:00:00`).getFullYear()}-${String(new Date(`${monthStart}T00:00:00`).getMonth() + 2).padStart(2, "0") === "13" ? "12" : String(new Date(`${monthStart}T00:00:00`).getMonth() + 2).padStart(2, "0")}-01`,
-    -1,
-  );
+  const monthEnd = lastDayOfMonth(monthStart);
 
   const { data: accounts } = useOpsAccounts(workspaceId);
   const { data: industries } = useIndustries(workspaceId);
